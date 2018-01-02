@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-02 19:14:38
+# @Last Modified time: 2018-01-02 22:04:52
 
 import time
 import sys
@@ -109,7 +109,7 @@ def load_data_setting(save_file):
     return data
 
 def lr_decay(optimizer, epoch, decay_rate, init_lr):
-    lr = init_lr * ((1-decay_rate)**epoch)
+    lr = init_lr/(1+decay_rate*epoch)
     print " Learning rate is setted as:", lr
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
