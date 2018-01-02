@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-11-30 11:30:13
+# @Last Modified time: 2017-12-19 22:53:39
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -16,9 +16,11 @@ PADDING = "</pad>"
 
 class Data:
     def __init__(self):
-        self.MAX_SENTENCE_LENGTH = 512
+        self.MAX_SENTENCE_LENGTH = 250
         self.MAX_WORD_LENGTH = -1
         self.number_normalized = True
+        self.norm_word_emb = True
+        self.norm_char_emb = True
         self.word_alphabet = Alphabet('word')
         self.char_alphabet = Alphabet('character')
         self.word_alphabet.add(START)
@@ -28,6 +30,7 @@ class Data:
         self.char_alphabet.add(PADDING)
         self.label_alphabet = Alphabet('label')
         self.tagScheme = "NoSeg"
+        self.char_features = "LSTM" 
 
         self.train_texts = []
         self.dev_texts = []
@@ -42,6 +45,7 @@ class Data:
         self.word_emb_dim = 50
         self.char_emb_dim = 30
         self.pretrain_word_embedding = None
+        self.pretrain_char_embedding = None
         self.label_size = 0
         self.word_alphabet_size = 0
         self.char_alphabet_size = 0
@@ -49,6 +53,7 @@ class Data:
         ### hyperparameters
         self.HP_iteration = 100
         self.HP_batch_size = 10
+        self.HP_average_batch_loss = True
         self.HP_char_hidden_dim = 50
         self.HP_hidden_dim = 200
         self.HP_dropout = 0.5
@@ -73,22 +78,28 @@ class Data:
         print("     Label alphabet size: %s"%(self.label_alphabet_size))
         print("     Word embedding size: %s"%(self.word_emb_dim))
         print("     Char embedding size: %s"%(self.char_emb_dim))
+        print("     Norm   word     emb: %s"%(self.norm_word_emb))
+        print("     Norm   char     emb: %s"%(self.norm_char_emb))
         print("     Train instance number: %s"%(len(self.train_texts)))
         print("     Dev   instance number: %s"%(len(self.dev_texts)))
         print("     Test  instance number: %s"%(len(self.test_texts)))
         print("     Raw   instance number: %s"%(len(self.raw_texts)))
-        print("     Hyperpara  iteration: %s"%(self.HP_iteration))
-        print("     Hyperpara  batch size: %s"%(self.HP_batch_size))
-        print("     Hyperpara          lr: %s"%(self.HP_lr))
-        print("     Hyperpara    lr_decay: %s"%(self.HP_lr_decay))
-        print("     Hyperpara     HP_clip: %s"%(self.HP_clip))
-        print("     Hyperpara    momentum: %s"%(self.HP_momentum))
-        print("     Hyperpara  hidden_dim: %s"%(self.HP_hidden_dim))
-        print("     Hyperpara     dropout: %s"%(self.HP_dropout))
-        print("     Hyperpara  lstm_layer: %s"%(self.HP_lstm_layer))
-        print("     Hyperpara      bilstm: %s"%(self.HP_bilstm))
-        print("     Hyperpara    use_char: %s"%(self.HP_use_char))
-        print("     Hyperpara         GPU: %s"%(self.HP_gpu))
+        print("     Hyper       iteration: %s"%(self.HP_iteration))
+        print("     Hyper      batch size: %s"%(self.HP_batch_size))
+        print("     Hyper   average batch: %s"%(self.HP_average_batch_loss))
+        print("     Hyper              lr: %s"%(self.HP_lr))
+        print("     Hyper        lr_decay: %s"%(self.HP_lr_decay))
+        print("     Hyper         HP_clip: %s"%(self.HP_clip))
+        print("     Hyper        momentum: %s"%(self.HP_momentum))
+        print("     Hyper      hidden_dim: %s"%(self.HP_hidden_dim))
+        print("     Hyper         dropout: %s"%(self.HP_dropout))
+        print("     Hyper      lstm_layer: %s"%(self.HP_lstm_layer))
+        print("     Hyper          bilstm: %s"%(self.HP_bilstm))
+        print("     Hyper             GPU: %s"%(self.HP_gpu))
+        print("     Hyper        use_char: %s"%(self.HP_use_char))
+        if self.HP_use_char:
+            print("             Char_features: %s"%(self.char_features))
+        
         print("DATA SUMMARY END.")
         sys.stdout.flush()
 
@@ -178,57 +189,26 @@ class Data:
         self.label_alphabet.close()       
 
 
-    def build_word_pretrain_emb(self, emb_path, norm=False):
-        self.pretrain_word_embedding, self.word_emb_dim = build_pretrain_embedding(emb_path, self.word_alphabet, self.word_emb_dim, norm)
+    def build_word_pretrain_emb(self, emb_path):
+        self.pretrain_word_embedding, self.word_emb_dim = build_pretrain_embedding(emb_path, self.word_alphabet, self.word_emb_dim, self.norm_word_emb)
+
+    def build_char_pretrain_emb(self, emb_path):
+        self.pretrain_char_embedding, self.char_emb_dim = build_pretrain_embedding(emb_path, self.char_alphabet, self.char_emb_dim, self.norm_char_emb)
 
 
     def generate_instance(self, input_file, name):
         self.fix_alphabet()
         if name == "train":
-            self.train_texts, self.train_Ids = read_instance(input_file, self.word_alphabet, self.char_alphabet, self.label_alphabet, self.number_normalized, self.MAX_WORD_LENGTH)
+            self.train_texts, self.train_Ids = read_instance(input_file, self.word_alphabet, self.char_alphabet, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH)
         elif name == "dev":
-            self.dev_texts, self.dev_Ids = read_instance(input_file, self.word_alphabet, self.char_alphabet, self.label_alphabet, self.number_normalized, self.MAX_WORD_LENGTH)
+            self.dev_texts, self.dev_Ids = read_instance(input_file, self.word_alphabet, self.char_alphabet, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH)
         elif name == "test":
-            self.test_texts, self.test_Ids = read_instance(input_file, self.word_alphabet, self.char_alphabet, self.label_alphabet, self.number_normalized, self.MAX_WORD_LENGTH)
+            self.test_texts, self.test_Ids = read_instance(input_file, self.word_alphabet, self.char_alphabet, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH)
         elif name == "raw":
-            self.raw_texts, self.raw_Ids = read_instance(input_file, self.word_alphabet, self.char_alphabet, self.label_alphabet, self.number_normalized, self.MAX_WORD_LENGTH)
+            self.raw_texts, self.raw_Ids = read_instance(input_file, self.word_alphabet, self.char_alphabet, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH)
         else:
             print("Error: you can only generate train/dev/test instance! Illegal input:%s"%(name))
 
-
-    # def generate_instance_variable(self):
-    #     print "Generate variable for data."
-    #     import torch
-    #     import torch.autograd as autograd
-    #     for words, chars, label in self.train_Ids:
-    #         words = autograd.Variable(torch.LongTensor(words))
-    #         new_chars = []
-    #         for char in chars:
-    #             new_chars.append(autograd.Variable(torch.LongTensor(char)))
-    #         label = autograd.Variable(torch.LongTensor(label))
-    #         self.train_Vars.append([words, new_chars, label])
-    #     for words, chars, label in self.dev_Ids:
-    #         words = autograd.Variable(torch.LongTensor(words), volatile = True)
-    #         new_chars = []
-    #         for char in chars:
-    #             new_chars.append(autograd.Variable(torch.LongTensor(char), volatile = True))
-    #         label = autograd.Variable(torch.LongTensor(label), volatile = True)
-    #         self.dev_Vars.append([words, new_chars, label])
-    #     for words, chars, label in self.test_Ids:
-    #         words = autograd.Variable(torch.LongTensor(words), volatile = True)
-    #         new_chars = []
-    #         for char in chars:
-    #             new_chars.append(autograd.Variable(torch.LongTensor(char), volatile = True))
-    #         label = autograd.Variable(torch.LongTensor(label), volatile = True)
-    #         self.test_Vars.append([words, new_chars, label])
-    #     for words, chars, label in self.raw_Ids:
-    #         words = autograd.Variable(torch.LongTensor(words), volatile = True)
-    #         new_chars = []
-    #         for char in chars:
-    #             new_chars.append(autograd.Variable(torch.LongTensor(char), volatile = True))
-    #         label = autograd.Variable(torch.LongTensor(label), volatile = True)
-    #         self.raw_Vars.append([words, new_chars, label])
-    #     return True
 
 
     def write_decoded_results(self, output_file, predict_results, name):
@@ -250,8 +230,7 @@ class Data:
             sent_length = len(predict_results[idx])
             for idy in range(sent_length):
                 ## content_list[idx] is a list with [word, char, label]
-                fout.write(content_list[idx][0][idy] + " " + predict_results[idx][idy] + '\n')
-
+                fout.write(content_list[idx][0][idy].encode('utf-8') + " " + predict_results[idx][idy] + '\n')
             fout.write('\n')
         fout.close()
         print("Predict %s result has been written into file. %s"%(name, output_file))

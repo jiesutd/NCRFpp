@@ -1,9 +1,9 @@
 python main.py --status train \
-		--wordemb glove \
-		--train ../data/$1/train.bmes \
-		--dev ../data/$1/dev.bmes \
-		--test ../data/$1/test.bmes \
-		--savemodel ../data/$1/saved_model \
+		--wordemb richchar \
+		--train ../data/onto4ner.cn/train.char.bmes \
+		--dev ../data/onto4ner.cn/dev.char.bmes \
+		--test ../data/onto4ner.cn/test.char.bmes \
+		--savemodel ../data/onto4ner.cn/saved_model \
 
 
 # python train_batch.py --status decode \

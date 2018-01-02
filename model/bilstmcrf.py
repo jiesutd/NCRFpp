@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-06 15:58:13
+# @Last Modified time: 2017-12-14 12:04:48
 
 import torch
 import torch.autograd as autograd
@@ -17,6 +17,7 @@ class BiLSTM_CRF(nn.Module):
         super(BiLSTM_CRF, self).__init__()
         print "build batched lstmcrf..."
         self.gpu = data.HP_gpu
+        self.average_batch = data.HP_average_batch_loss
         ## add two more label for downlayer lstm, use original label size for CRF
         label_size = data.label_alphabet_size
         data.label_alphabet_size += 2
@@ -30,7 +31,8 @@ class BiLSTM_CRF(nn.Module):
         seq_len = word_inputs.size(1)
         total_loss = self.crf.neg_log_likelihood_loss(outs, mask, batch_label)
         scores, tag_seq = self.crf._viterbi_decode(outs, mask)
-        # tag_seq = paths.numpy()
+        if self.average_batch:
+            total_loss = total_loss / batch_size
         return total_loss, tag_seq
 
 
@@ -39,7 +41,6 @@ class BiLSTM_CRF(nn.Module):
         batch_size = word_inputs.size(0)
         seq_len = word_inputs.size(1)
         scores, tag_seq = self.crf._viterbi_decode(outs, mask)
-        # tag_seq = paths.numpy()
         return tag_seq
 
 

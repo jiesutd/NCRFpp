@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-06 16:36:13
+# @Last Modified time: 2017-12-19 22:52:19
 
 import time
 import sys
@@ -18,7 +18,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
 from utils.metric import get_ner_fmeasure
-from model.bilstmcrf import BiLSTM_CRF
+from model.bilstmcrf import BiLSTM_CRF as SeqModel
 from utils.data import Data
 
 random.seed(100)
@@ -56,7 +56,7 @@ def predict_check(pred_variable, gold_variable, mask_variable):
 def recover_label(pred_variable, gold_variable, mask_variable, label_alphabet, word_recover):
     """
         input:
-            pred_variable (batch_size, sent_len): pred tag result, in numpy format
+            pred_variable (batch_size, sent_len): pred tag result
             gold_variable (batch_size, sent_len): gold result variable
             mask_variable (batch_size, sent_len): mask variable
     """
@@ -107,6 +107,14 @@ def load_data_setting(save_file):
     print "Data setting loaded from file: ", save_file
     data.show_data_summary()
     return data
+
+def lr_decay(optimizer, epoch, decay_rate, init_lr):
+    lr = init_lr * ((1-decay_rate)**epoch)
+    print " Learning rate is setted as:", lr
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
+    return optimizer
+
 
 
 def evaluate(data, model, name):
@@ -211,26 +219,26 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     return word_seq_tensor, word_seq_lengths, word_seq_recover, char_seq_tensor, char_seq_lengths, char_seq_recover, label_seq_tensor, mask
 
 
-
 def train(data, save_model_dir, gpu, seg=True):
     print "Training model..."
     data.HP_gpu = gpu
-    data.HP_use_char = True
+    data.HP_use_char = False
     data.HP_batch_size = 10
+    # data.char_features = "CNN"
     data.show_data_summary()
     save_data_name = save_model_dir +".dset"
     save_data_setting(data, save_data_name)
-    model = BiLSTM_CRF(data)
+    model = SeqModel(data)
     loss_function = nn.NLLLoss()
     optimizer = optim.SGD(model.parameters(), lr=data.HP_lr, momentum=data.HP_momentum)
     best_dev = -1
-    data.HP_iteration = 200
+    data.HP_iteration = 100
     ## start training
     for idx in range(data.HP_iteration):
-
         epoch_start = time.time()
         temp_start = epoch_start
         print("Epoch: %s/%s" %(idx,data.HP_iteration))
+        optimizer = lr_decay(optimizer, idx, data.HP_lr_decay, data.HP_lr)
         instance_count = 0
         sample_id = 0
         sample_loss = 0
@@ -302,16 +310,16 @@ def train(data, save_model_dir, gpu, seg=True):
         test_finish = time.time()
         test_cost = test_finish - dev_finish
         if seg:
-            print("Test: time: %.2fs, speed:%.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f"%(test_cost, speed, acc, p, r, f))
+            print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f"%(test_cost, speed, acc, p, r, f))
         else:
-            print("Test: time: %.2fs, speed:%.2fst/s; acc: %.4f"%(test_cost, speed, acc))
+            print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f"%(test_cost, speed, acc))
         gc.collect() 
 
 
 def load_model_decode(model_dir, data, name, gpu, seg=True):
     data.HP_gpu = gpu
     print "Load Model from file: ", model_dir
-    model = BiLSTM_CRF(data)
+    model = SeqModel(data)
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     if not gpu:
         model.load_state_dict(torch.load(model_dir), map_location=lambda storage, loc: storage)
@@ -334,10 +342,10 @@ def load_model_decode(model_dir, data, name, gpu, seg=True):
 
 
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Tuning with bi-directional LSTM-CRF')
-    parser.add_argument('--embedding',  help='Embedding for words', default='None')
+    parser.add_argument('--wordemb',  help='Embedding for words', default='None')
+    parser.add_argument('--charemb',  help='Embedding for chars', default='None')
     parser.add_argument('--status', choices=['train', 'test', 'decode'], help='update algorithm', default='train')
     parser.add_argument('--savemodel', default="data/model/saved_model.lstmcrf.")
     parser.add_argument('--savedset', help='Dir of saved data setting', default="data/save.dset")
@@ -383,24 +391,37 @@ if __name__ == '__main__':
     sys.stdout.flush()
     
     if status == 'train':
-        emb = args.embedding.lower()
+        emb = args.wordemb.lower()
         print "Word Embedding:", emb
         if emb == "senna":
-            emb_file = "data/SENNA.emb"
+            emb_file = "../data/SENNA.emb"
         elif emb == "glove":
-            emb_file = "data/glove.6B.100d.txt"
+            emb_file = "../data/glove.6B.100d.txt"
         elif emb == "ctb":
-            emb_file = "data/ctb.50d.vec"
+            emb_file = "../data/ctb.50d.vec"
         elif emb == "richchar":
-            emb_file = "data/joint4.all.b10c1.2h.iter17.mchar" 
+            emb_file = None
+            # emb_file = "../data/gigaword_chn.all.a2b.uni.ite50.vec"
+            emb_file = "../data/joint4.all.b10c1.2h.iter17.mchar" 
         else:
             emb_file = None
+        char_emb = args.charemb.lower()
+        print "Char Embedding:", char_emb
+        if char_emb == "rich":
+            char_emb_file = "../data/joint4.all.b10c1.2h.iter17.mchar"
+        elif char_emb == "normal":
+            char_emb_file = "../data/gigaword_chn.all.a2b.uni.ite50.vec"
+
         data = data_initialization(train_file, dev_file, test_file)
         data.generate_instance(train_file,'train')
         data.generate_instance(dev_file,'dev')
         data.generate_instance(test_file,'test')
         if emb_file:
+            print "load word emb file... norm:", data.norm_word_emb
             data.build_word_pretrain_emb(emb_file)
+        if char_emb_file:
+            print "load char emb file... norm:", data.norm_char_emb
+            data.build_char_pretrain_emb(char_emb_file)
         train(data, save_model_dir, gpu, seg)
     elif status == 'test':      
         data = load_data_setting(dset_dir)

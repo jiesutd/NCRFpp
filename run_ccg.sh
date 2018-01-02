@@ -1,9 +1,10 @@
 python main.py --status train \
 		--wordemb glove \
-		--train ../data/$1/train.bmes \
-		--dev ../data/$1/dev.bmes \
-		--test ../data/$1/test.bmes \
-		--savemodel ../data/$1/saved_model \
+		--train ../data/ccg/train.ccg \
+		--dev ../data/ccg/dev.ccg \
+		--test ../data/ccg/test.ccg \
+		--savemodel ../data/ccg/saved_model \
+		--seg False \
 
 
 # python train_batch.py --status decode \

@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-11-27 22:06:35
+# @Last Modified time: 2017-12-14 13:43:42
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -17,7 +17,7 @@ def normalize_word(word):
     return new_word
 
 
-def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, number_normalized, char_padding_size=-1, char_padding_symbol = '</pad>'):
+def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, number_normalized, max_sent_length, char_padding_size=-1, char_padding_symbol = '</pad>'):
     in_lines = open(input_file,'r').readlines()
     instence_texts = []
     instence_Ids = []
@@ -54,14 +54,13 @@ def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, numb
                 char_Id.append(char_alphabet.get_index(char))
             chars.append(char_list)
             char_Ids.append(char_Id)
-
-
         else:
-            instence_texts.append([words, chars, labels])
+            if (max_sent_length < 0) or (len(words) < max_sent_length):
+                instence_texts.append([words, chars, labels])
+                instence_Ids.append([word_Ids, char_Ids,label_Ids])
             words = []
             chars = []
             labels = []
-            instence_Ids.append([word_Ids, char_Ids,label_Ids])
             word_Ids = []
             char_Ids = []
             label_Ids = []

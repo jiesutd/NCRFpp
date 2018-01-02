@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-12-04 23:19:38
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-06 15:57:50
+# @Last Modified time: 2017-12-07 22:09:39
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -136,7 +136,8 @@ class CRF(nn.Module):
         
         
         ##  reverse mask (bug for mask = 1- mask, use this as alternative choice)
-        mask = 1 + mask * (-1)
+        # mask = 1 + (-1)*mask
+        mask =  (1 - mask.long()).byte()
         _, inivalues = seq_iter.next()  # bat_size * from_target_size * to_target_size
         # only need start from start_tag
         partition = inivalues[:, START_TAG, :].clone().view(batch_size, tag_size, 1)  # bat_size * to_target_size
@@ -162,7 +163,7 @@ class CRF(nn.Module):
         ### calculate the score from last partition to end state (and then select the STOP_TAG from it)
         last_values = last_partition.expand(batch_size, tag_size, tag_size) + self.transitions.view(1,tag_size, tag_size).expand(batch_size, tag_size, tag_size)
         _, last_bp = torch.max(last_values, 1)
-        pad_zero = torch.zeros(batch_size, tag_size).long()
+        pad_zero = autograd.Variable(torch.zeros(batch_size, tag_size)).long()
         if self.gpu:
             pad_zero = pad_zero.cuda()
         back_points.append(pad_zero)
@@ -175,7 +176,7 @@ class CRF(nn.Module):
         ## move the end ids(expand to tag_size) to the corresponding position of back_points to replace the 0 values
         # print "lp:",last_position
         # print "il:",insert_last
-        back_points.scatter_(1, last_position.data, insert_last.data)
+        back_points.scatter_(1, last_position, insert_last)
         # print "bp:",back_points
         # exit(0)
         back_points = back_points.transpose(1,0).contiguous()

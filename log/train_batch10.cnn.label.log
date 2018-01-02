@@ -1,0 +1,59 @@
+nohup: ignoring input
+CuDNN: True
+GPU available: True
+Status: train
+Seg:  True
+Train file: data/conll03/train.bmes
+Dev file: data/conll03/dev.bmes
+Test file: data/conll03/test.bmes
+Raw file: None
+Model saved to: data/conll03/saved_model.lstmcrf
+Word Embedding: glove
+Embedding:
+     pretrain word:400000, prefect match:11415, case_match:11656, oov:2235, oov%:0.088315485834
+Training model...
+DATA SUMMARY START:
+     Tag          scheme: BMES
+     MAX SENTENCE LENGTH: 512
+     MAX   WORD   LENGTH: -1
+     Number   normalized: True
+     Word  alphabet size: 25307
+     Char  alphabet size: 80
+     Label alphabet size: 18
+     Word embedding size: 100
+     Char embedding size: 30
+     Train instance number: 14987
+     Dev   instance number: 3466
+     Test  instance number: 3684
+     Raw   instance number: 0
+     Hyperpara  iteration: 100
+     Hyperpara  batch size: 10
+     Hyperpara          lr: 0.015
+     Hyperpara    lr_decay: 0.05
+     Hyperpara     HP_clip: 5.0
+     Hyperpara    momentum: 0
+     Hyperpara  hidden_dim: 200
+     Hyperpara     dropout: 0.5
+     Hyperpara  lstm_layer: 1
+     Hyperpara      bilstm: True
+     Hyperpara         GPU: True
+     Hyperpara    use_char: True
+             Char_features: CNN
+DATA SUMMARY END.
+Data setting saved to file:  data/conll03/saved_model.lstmcrf.dset
+build batched lstmcrf...
+build batched bilstm...
+build batched char cnn...
+build batched crf...
+Epoch: 0/100
+ Learning rate is setted as: 0.015
+Traceback (most recent call last):
+  File "main.py", line 411, in <module>
+    train(data, save_model_dir, gpu, seg)
+  File "main.py", line 266, in train
+    loss, tag_seq = model.neg_log_likelihood_loss(batch_word, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_label, mask)
+  File "/home/hongmin/Dropbox/Research/pytorch_learn/PyTorchSeqLabel/model/bilstmcrf.py", line 32, in neg_log_likelihood_loss
+    scores, tag_seq = self.crf._viterbi_decode(outs, mask)
+  File "/home/hongmin/Dropbox/Research/pytorch_learn/PyTorchSeqLabel/model/crf.py", line 139, in _viterbi_decode
+    mask = 1 + mask * (-1)
+RuntimeError: value cannot be converted to type uint8_t without overflow: -1

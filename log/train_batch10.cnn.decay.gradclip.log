@@ -1,0 +1,1436 @@
+nohup: ignoring input
+CuDNN: True
+GPU available: True
+Status: train
+Seg:  True
+Train file: data/conll03/train.bmes
+Dev file: data/conll03/dev.bmes
+Test file: data/conll03/test.bmes
+Raw file: None
+Model saved to: data/conll03/saved_model.lstmcrf
+Word Embedding: glove
+Embedding:
+     pretrain word:400000, prefect match:11415, case_match:11656, oov:2235, oov%:0.088315485834
+Training model...
+DATA SUMMARY START:
+     Tag          scheme: BMES
+     MAX SENTENCE LENGTH: 512
+     MAX   WORD   LENGTH: -1
+     Number   normalized: True
+     Word  alphabet size: 25307
+     Char  alphabet size: 80
+     Label alphabet size: 18
+     Word embedding size: 100
+     Char embedding size: 30
+     Train instance number: 14987
+     Dev   instance number: 3466
+     Test  instance number: 3684
+     Raw   instance number: 0
+     Hyperpara  iteration: 100
+     Hyperpara  batch size: 10
+     Hyperpara          lr: 0.015
+     Hyperpara    lr_decay: 0.05
+     Hyperpara     HP_clip: 5.0
+     Hyperpara    momentum: 0
+     Hyperpara  hidden_dim: 200
+     Hyperpara     dropout: 0.5
+     Hyperpara  lstm_layer: 1
+     Hyperpara      bilstm: True
+     Hyperpara         GPU: True
+     Hyperpara    use_char: True
+             Char_features: CNN
+DATA SUMMARY END.
+Data setting saved to file:  data/conll03/saved_model.lstmcrf.dset
+build batched lstmcrf...
+build batched bilstm...
+build batched char cnn...
+build batched crf...
+Epoch: 0/100
+ Learning rate is setted as: 0.015
+     Instance: 500; Time: 8.14s; loss: 8239.7887; acc: 5060.0/6406.0=0.7899
+     Instance: 1000; Time: 7.85s; loss: 4687.6405; acc: 10411.0/12776.0=0.8149
+     Instance: 1500; Time: 8.74s; loss: 4741.1725; acc: 16330.0/19809.0=0.8244
+     Instance: 2000; Time: 8.43s; loss: 4532.3313; acc: 21621.0/26272.0=0.8230
+     Instance: 2500; Time: 8.47s; loss: 4263.7104; acc: 27579.0/33317.0=0.8278
+     Instance: 3000; Time: 8.22s; loss: 4145.4707; acc: 33753.0/40520.0=0.8330
+     Instance: 3500; Time: 8.39s; loss: 3605.3940; acc: 39414.0/47101.0=0.8368
+     Instance: 4000; Time: 8.14s; loss: 3534.2489; acc: 45326.0/53945.0=0.8402
+     Instance: 4500; Time: 8.52s; loss: 3476.1500; acc: 51421.0/60952.0=0.8436
+     Instance: 5000; Time: 8.56s; loss: 3625.7017; acc: 57560.0/68057.0=0.8458
+     Instance: 5500; Time: 8.74s; loss: 3492.4263; acc: 63462.0/74907.0=0.8472
+     Instance: 6000; Time: 8.71s; loss: 2829.3707; acc: 69516.0/81716.0=0.8507
+     Instance: 6500; Time: 8.72s; loss: 2907.8937; acc: 75472.0/88497.0=0.8528
+     Instance: 7000; Time: 8.35s; loss: 2946.6641; acc: 81403.0/95255.0=0.8546
+     Instance: 7500; Time: 8.14s; loss: 3039.5267; acc: 87197.0/101920.0=0.8555
+     Instance: 8000; Time: 8.11s; loss: 2680.8465; acc: 92816.0/108279.0=0.8572
+     Instance: 8500; Time: 8.64s; loss: 2787.7503; acc: 99057.0/115317.0=0.8590
+     Instance: 9000; Time: 8.26s; loss: 2545.1645; acc: 104901.0/121924.0=0.8604
+     Instance: 9500; Time: 8.95s; loss: 2576.0223; acc: 111226.0/129003.0=0.8622
+     Instance: 10000; Time: 8.18s; loss: 2523.4099; acc: 117301.0/135811.0=0.8637
+     Instance: 10500; Time: 8.21s; loss: 2256.0262; acc: 123152.0/142340.0=0.8652
+     Instance: 11000; Time: 8.19s; loss: 2563.2956; acc: 129149.0/149088.0=0.8663
+     Instance: 11500; Time: 8.43s; loss: 2568.6943; acc: 135398.0/156100.0=0.8674
+     Instance: 12000; Time: 8.88s; loss: 2228.2312; acc: 141715.0/163090.0=0.8689
+     Instance: 12500; Time: 8.69s; loss: 2533.5643; acc: 148286.0/170425.0=0.8701
+     Instance: 13000; Time: 8.42s; loss: 2171.0043; acc: 154388.0/177202.0=0.8713
+     Instance: 13500; Time: 8.57s; loss: 2115.6836; acc: 160667.0/184132.0=0.8726
+     Instance: 14000; Time: 8.16s; loss: 1958.5792; acc: 166772.0/190837.0=0.8739
+     Instance: 14500; Time: 8.56s; loss: 2333.3901; acc: 173393.0/198162.0=0.8750
+     Instance: 14987; Time: 8.16s; loss: 2028.6892; acc: 179158.0/204567.0=0.8758
+Epoch: 0 training finished. Time: 252.52s, speed: 59.35st/s,  total loss: 95937.8416138
+gold_num =  5943  pred_num =  4383  right_num =  3449
+Dev: time: 6.42s, speed: 543.08st/s; acc: 0.9233, p: 0.7869, r: 0.5803, f: 0.6680
+Exceed previous best f score: -1
+gold_num =  5654  pred_num =  4429  right_num =  3369
+Test: time: 6.14s, speed:605.97st/s; acc: 0.9220, p: 0.7607, r: 0.5959, f: 0.6683
+Epoch: 1/100
+ Learning rate is setted as: 0.01425
+     Instance: 500; Time: 8.36s; loss: 2229.0309; acc: 6547.0/7279.0=0.8994
+     Instance: 1000; Time: 8.06s; loss: 1894.5142; acc: 12365.0/13710.0=0.9019
+     Instance: 1500; Time: 8.57s; loss: 1915.3137; acc: 18624.0/20589.0=0.9046
+     Instance: 2000; Time: 8.33s; loss: 2021.8346; acc: 24671.0/27307.0=0.9035
+     Instance: 2500; Time: 8.25s; loss: 1810.1845; acc: 30847.0/34059.0=0.9057
+     Instance: 3000; Time: 9.12s; loss: 1933.0029; acc: 37197.0/41070.0=0.9057
+     Instance: 3500; Time: 8.44s; loss: 1807.1821; acc: 43405.0/47866.0=0.9068
+     Instance: 4000; Time: 8.55s; loss: 1904.7345; acc: 49548.0/54641.0=0.9068
+     Instance: 4500; Time: 8.11s; loss: 1695.0132; acc: 55450.0/61067.0=0.9080
+     Instance: 5000; Time: 8.45s; loss: 2043.3456; acc: 61960.0/68200.0=0.9085
+     Instance: 5500; Time: 8.85s; loss: 1545.8082; acc: 68247.0/74975.0=0.9103
+     Instance: 6000; Time: 7.86s; loss: 1690.6197; acc: 74378.0/81649.0=0.9109
+     Instance: 6500; Time: 9.17s; loss: 1681.5229; acc: 80990.0/88799.0=0.9121
+     Instance: 7000; Time: 8.15s; loss: 1752.9143; acc: 87090.0/95465.0=0.9123
+     Instance: 7500; Time: 8.25s; loss: 1531.4239; acc: 93095.0/101986.0=0.9128
+     Instance: 8000; Time: 8.17s; loss: 1536.4774; acc: 99341.0/108740.0=0.9136
+     Instance: 8500; Time: 8.24s; loss: 1479.8303; acc: 105562.0/115444.0=0.9144
+     Instance: 9000; Time: 8.54s; loss: 1533.0807; acc: 111931.0/122310.0=0.9151
+     Instance: 9500; Time: 7.96s; loss: 1381.3491; acc: 117949.0/128798.0=0.9158
+     Instance: 10000; Time: 7.89s; loss: 1382.6252; acc: 124339.0/135623.0=0.9168
+     Instance: 10500; Time: 8.19s; loss: 1330.0870; acc: 130320.0/142065.0=0.9173
+     Instance: 11000; Time: 8.27s; loss: 1517.3259; acc: 136500.0/148753.0=0.9176
+     Instance: 11500; Time: 8.98s; loss: 1407.7609; acc: 143086.0/155796.0=0.9184
+     Instance: 12000; Time: 8.57s; loss: 1433.6027; acc: 149826.0/163016.0=0.9191
+     Instance: 12500; Time: 8.52s; loss: 1466.5160; acc: 156225.0/169894.0=0.9195
+     Instance: 13000; Time: 8.42s; loss: 1389.7835; acc: 162815.0/176959.0=0.9201
+     Instance: 13500; Time: 8.30s; loss: 1476.4818; acc: 169407.0/184051.0=0.9204
+     Instance: 14000; Time: 8.66s; loss: 1442.1421; acc: 176145.0/191272.0=0.9209
+     Instance: 14500; Time: 8.46s; loss: 1328.1520; acc: 182415.0/197976.0=0.9214
+     Instance: 14987; Time: 8.56s; loss: 1167.3666; acc: 188614.0/204567.0=0.9220
+Epoch: 1 training finished. Time: 252.27s, speed: 59.41st/s,  total loss: 48729.0262146
+gold_num =  5943  pred_num =  5830  right_num =  4814
+Dev: time: 6.39s, speed: 545.36st/s; acc: 0.9598, p: 0.8257, r: 0.8100, f: 0.8178
+Exceed previous best f score: 0.668022467558
+gold_num =  5654  pred_num =  5645  right_num =  4431
+Test: time: 6.15s, speed:603.66st/s; acc: 0.9539, p: 0.7849, r: 0.7837, f: 0.7843
+Epoch: 2/100
+ Learning rate is setted as: 0.0135375
+     Instance: 500; Time: 7.98s; loss: 1200.3748; acc: 6314.0/6732.0=0.9379
+     Instance: 1000; Time: 8.42s; loss: 1236.7381; acc: 12421.0/13249.0=0.9375
+     Instance: 1500; Time: 8.43s; loss: 1271.6513; acc: 18652.0/19882.0=0.9381
+     Instance: 2000; Time: 8.17s; loss: 1214.8434; acc: 24989.0/26624.0=0.9386
+     Instance: 2500; Time: 8.20s; loss: 1171.8986; acc: 31160.0/33181.0=0.9391
+     Instance: 3000; Time: 8.89s; loss: 1099.0381; acc: 37545.0/39946.0=0.9399
+     Instance: 3500; Time: 8.59s; loss: 1264.0137; acc: 44067.0/46898.0=0.9396
+     Instance: 4000; Time: 8.51s; loss: 1238.6421; acc: 50798.0/54074.0=0.9394
+     Instance: 4500; Time: 8.53s; loss: 1117.5504; acc: 56872.0/60530.0=0.9396
+     Instance: 5000; Time: 8.51s; loss: 1268.2238; acc: 63162.0/67237.0=0.9394
+     Instance: 5500; Time: 8.60s; loss: 1144.8295; acc: 69390.0/73860.0=0.9395
+     Instance: 6000; Time: 8.47s; loss: 1120.1660; acc: 75950.0/80835.0=0.9396
+     Instance: 6500; Time: 8.21s; loss: 948.2848; acc: 81977.0/87188.0=0.9402
+     Instance: 7000; Time: 8.58s; loss: 1159.6849; acc: 88156.0/93758.0=0.9403
+     Instance: 7500; Time: 8.53s; loss: 1049.7020; acc: 94852.0/100815.0=0.9409
+     Instance: 8000; Time: 8.65s; loss: 1161.6494; acc: 101606.0/107967.0=0.9411
+     Instance: 8500; Time: 7.66s; loss: 992.2671; acc: 107542.0/114246.0=0.9413
+     Instance: 9000; Time: 8.37s; loss: 1013.3567; acc: 113904.0/120981.0=0.9415
+     Instance: 9500; Time: 8.49s; loss: 1089.2310; acc: 120167.0/127631.0=0.9415
+     Instance: 10000; Time: 8.34s; loss: 1046.8242; acc: 126667.0/134498.0=0.9418
+     Instance: 10500; Time: 8.86s; loss: 1284.6014; acc: 133387.0/141674.0=0.9415
+     Instance: 11000; Time: 8.24s; loss: 1086.2711; acc: 139613.0/148261.0=0.9417
+     Instance: 11500; Time: 8.54s; loss: 1113.4348; acc: 146254.0/155293.0=0.9418
+     Instance: 12000; Time: 8.90s; loss: 1048.7540; acc: 153444.0/162866.0=0.9421
+     Instance: 12500; Time: 8.81s; loss: 1062.2368; acc: 160189.0/169967.0=0.9425
+     Instance: 13000; Time: 8.77s; loss: 1103.4833; acc: 166986.0/177146.0=0.9426
+     Instance: 13500; Time: 8.59s; loss: 1064.4056; acc: 173786.0/184355.0=0.9427
+     Instance: 14000; Time: 8.64s; loss: 1164.6007; acc: 180428.0/191401.0=0.9427
+     Instance: 14500; Time: 8.23s; loss: 1063.1754; acc: 186706.0/198027.0=0.9428
+     Instance: 14987; Time: 8.41s; loss: 978.2053; acc: 192897.0/204567.0=0.9430
+Epoch: 2 training finished. Time: 254.11s, speed: 58.98st/s,  total loss: 33778.1381836
+gold_num =  5943  pred_num =  6016  right_num =  5023
+Dev: time: 6.48s, speed: 538.16st/s; acc: 0.9666, p: 0.8349, r: 0.8452, f: 0.8400
+Exceed previous best f score: 0.817803448569
+gold_num =  5654  pred_num =  5779  right_num =  4586
+Test: time: 6.15s, speed:603.85st/s; acc: 0.9587, p: 0.7936, r: 0.8111, f: 0.8022
+Epoch: 3/100
+ Learning rate is setted as: 0.012860625
+     Instance: 500; Time: 8.57s; loss: 1002.9993; acc: 6442.0/6802.0=0.9471
+     Instance: 1000; Time: 8.73s; loss: 997.2097; acc: 13016.0/13723.0=0.9485
+     Instance: 1500; Time: 8.85s; loss: 1006.6742; acc: 19732.0/20803.0=0.9485
+     Instance: 2000; Time: 7.94s; loss: 1034.1002; acc: 25895.0/27333.0=0.9474
+     Instance: 2500; Time: 9.03s; loss: 1073.5670; acc: 32581.0/34419.0=0.9466
+     Instance: 3000; Time: 8.44s; loss: 978.2805; acc: 38970.0/41157.0=0.9469
+     Instance: 3500; Time: 8.16s; loss: 1026.6057; acc: 45470.0/48005.0=0.9472
+     Instance: 4000; Time: 8.21s; loss: 946.5744; acc: 51899.0/54776.0=0.9475
+     Instance: 4500; Time: 8.14s; loss: 1011.3969; acc: 58443.0/61683.0=0.9475
+     Instance: 5000; Time: 8.79s; loss: 902.1067; acc: 64462.0/68026.0=0.9476
+     Instance: 5500; Time: 8.62s; loss: 993.1173; acc: 71311.0/75250.0=0.9477
+     Instance: 6000; Time: 8.18s; loss: 842.4814; acc: 77813.0/82082.0=0.9480
+     Instance: 6500; Time: 8.40s; loss: 904.5777; acc: 83986.0/88576.0=0.9482
+     Instance: 7000; Time: 8.16s; loss: 811.0694; acc: 90509.0/95409.0=0.9486
+     Instance: 7500; Time: 8.32s; loss: 911.9221; acc: 96844.0/102079.0=0.9487
+     Instance: 8000; Time: 8.74s; loss: 869.2285; acc: 103573.0/109116.0=0.9492
+     Instance: 8500; Time: 8.73s; loss: 838.9193; acc: 110055.0/115909.0=0.9495
+     Instance: 9000; Time: 8.22s; loss: 1018.1175; acc: 116541.0/122770.0=0.9493
+     Instance: 9500; Time: 8.46s; loss: 892.4886; acc: 122998.0/129530.0=0.9496
+     Instance: 10000; Time: 8.55s; loss: 879.4649; acc: 129651.0/136513.0=0.9497
+     Instance: 10500; Time: 8.71s; loss: 987.5037; acc: 136195.0/143415.0=0.9497
+     Instance: 11000; Time: 8.85s; loss: 885.1613; acc: 143009.0/150541.0=0.9500
+     Instance: 11500; Time: 8.84s; loss: 922.4883; acc: 149447.0/157330.0=0.9499
+     Instance: 12000; Time: 8.56s; loss: 945.1815; acc: 156329.0/164559.0=0.9500
+     Instance: 12500; Time: 8.70s; loss: 951.5814; acc: 162961.0/171565.0=0.9498
+     Instance: 13000; Time: 8.16s; loss: 847.1298; acc: 169309.0/178234.0=0.9499
+     Instance: 13500; Time: 7.78s; loss: 712.2150; acc: 175002.0/184193.0=0.9501
+     Instance: 14000; Time: 8.64s; loss: 817.0038; acc: 181896.0/191380.0=0.9504
+     Instance: 14500; Time: 8.61s; loss: 808.3633; acc: 188251.0/198052.0=0.9505
+     Instance: 14987; Time: 8.26s; loss: 775.4325; acc: 194495.0/204567.0=0.9508
+Epoch: 3 training finished. Time: 254.36s, speed: 58.92st/s,  total loss: 27592.9619141
+gold_num =  5943  pred_num =  5960  right_num =  5166
+Dev: time: 6.58s, speed: 530.08st/s; acc: 0.9715, p: 0.8668, r: 0.8693, f: 0.8680
+Exceed previous best f score: 0.840036792374
+gold_num =  5654  pred_num =  5708  right_num =  4679
+Test: time: 6.12s, speed:607.06st/s; acc: 0.9635, p: 0.8197, r: 0.8276, f: 0.8236
+Epoch: 4/100
+ Learning rate is setted as: 0.01221759375
+     Instance: 500; Time: 8.20s; loss: 832.4100; acc: 6304.0/6594.0=0.9560
+     Instance: 1000; Time: 8.28s; loss: 731.5739; acc: 12555.0/13113.0=0.9574
+     Instance: 1500; Time: 8.45s; loss: 727.6987; acc: 19049.0/19865.0=0.9589
+     Instance: 2000; Time: 8.70s; loss: 670.3734; acc: 25783.0/26867.0=0.9597
+     Instance: 2500; Time: 8.84s; loss: 962.4735; acc: 32561.0/34033.0=0.9567
+     Instance: 3000; Time: 8.61s; loss: 931.2209; acc: 39000.0/40788.0=0.9562
+     Instance: 3500; Time: 8.64s; loss: 707.8272; acc: 45205.0/47251.0=0.9567
+     Instance: 4000; Time: 8.70s; loss: 859.3082; acc: 51931.0/54299.0=0.9564
+     Instance: 4500; Time: 8.50s; loss: 870.0633; acc: 58807.0/61510.0=0.9561
+     Instance: 5000; Time: 8.30s; loss: 695.2500; acc: 65276.0/68233.0=0.9567
+     Instance: 5500; Time: 8.51s; loss: 875.8369; acc: 71991.0/75267.0=0.9565
+     Instance: 6000; Time: 8.65s; loss: 815.7542; acc: 78587.0/82160.0=0.9565
+     Instance: 6500; Time: 8.85s; loss: 787.4884; acc: 85526.0/89415.0=0.9565
+     Instance: 7000; Time: 8.48s; loss: 746.1300; acc: 91835.0/95994.0=0.9567
+     Instance: 7500; Time: 8.67s; loss: 986.1595; acc: 98372.0/102914.0=0.9559
+     Instance: 8000; Time: 8.13s; loss: 862.6358; acc: 104917.0/109779.0=0.9557
+     Instance: 8500; Time: 8.26s; loss: 864.3454; acc: 111534.0/116699.0=0.9557
+     Instance: 9000; Time: 8.21s; loss: 714.0198; acc: 117618.0/123052.0=0.9558
+     Instance: 9500; Time: 8.46s; loss: 801.2865; acc: 124149.0/129884.0=0.9558
+     Instance: 10000; Time: 8.41s; loss: 715.0528; acc: 130470.0/136470.0=0.9560
+     Instance: 10500; Time: 7.82s; loss: 819.9102; acc: 136462.0/142752.0=0.9559
+     Instance: 11000; Time: 8.31s; loss: 915.3030; acc: 143204.0/149845.0=0.9557
+     Instance: 11500; Time: 8.80s; loss: 688.4440; acc: 150088.0/156981.0=0.9561
+     Instance: 12000; Time: 8.35s; loss: 823.0385; acc: 156651.0/163861.0=0.9560
+     Instance: 12500; Time: 8.60s; loss: 894.6622; acc: 163330.0/170882.0=0.9558
+     Instance: 13000; Time: 8.66s; loss: 772.2697; acc: 170027.0/177830.0=0.9561
+     Instance: 13500; Time: 8.07s; loss: 786.5045; acc: 176269.0/184381.0=0.9560
+     Instance: 14000; Time: 8.30s; loss: 742.9363; acc: 182790.0/191176.0=0.9561
+     Instance: 14500; Time: 8.66s; loss: 670.5802; acc: 189222.0/197862.0=0.9563
+     Instance: 14987; Time: 8.48s; loss: 668.9798; acc: 195668.0/204567.0=0.9565
+Epoch: 4 training finished. Time: 253.87s, speed: 59.03st/s,  total loss: 23939.5370178
+gold_num =  5943  pred_num =  5983  right_num =  5193
+Dev: time: 6.43s, speed: 541.81st/s; acc: 0.9731, p: 0.8680, r: 0.8738, f: 0.8709
+Exceed previous best f score: 0.868016466437
+gold_num =  5654  pred_num =  5749  right_num =  4733
+Test: time: 6.09s, speed:609.89st/s; acc: 0.9649, p: 0.8233, r: 0.8371, f: 0.8301
+Epoch: 5/100
+ Learning rate is setted as: 0.0116067140625
+     Instance: 500; Time: 8.60s; loss: 719.1055; acc: 6289.0/6544.0=0.9610
+     Instance: 1000; Time: 8.39s; loss: 723.9117; acc: 12981.0/13492.0=0.9621
+     Instance: 1500; Time: 8.33s; loss: 785.7188; acc: 19572.0/20402.0=0.9593
+     Instance: 2000; Time: 8.15s; loss: 820.4590; acc: 25852.0/26988.0=0.9579
+     Instance: 2500; Time: 8.55s; loss: 791.7659; acc: 32420.0/33833.0=0.9582
+     Instance: 3000; Time: 8.08s; loss: 614.9148; acc: 38651.0/40282.0=0.9595
+     Instance: 3500; Time: 8.57s; loss: 702.7379; acc: 44875.0/46771.0=0.9595
+     Instance: 4000; Time: 8.37s; loss: 719.9407; acc: 51321.0/53495.0=0.9594
+     Instance: 4500; Time: 8.30s; loss: 638.6445; acc: 57812.0/60220.0=0.9600
+     Instance: 5000; Time: 8.45s; loss: 826.6809; acc: 64398.0/67104.0=0.9597
+     Instance: 5500; Time: 8.97s; loss: 765.5534; acc: 71323.0/74312.0=0.9598
+     Instance: 6000; Time: 8.49s; loss: 759.0067; acc: 78059.0/81355.0=0.9595
+     Instance: 6500; Time: 8.15s; loss: 684.2125; acc: 84509.0/88068.0=0.9596
+     Instance: 7000; Time: 8.46s; loss: 702.3370; acc: 91259.0/95089.0=0.9597
+     Instance: 7500; Time: 8.49s; loss: 760.3806; acc: 98125.0/102229.0=0.9599
+     Instance: 8000; Time: 8.41s; loss: 843.5637; acc: 104851.0/109292.0=0.9594
+     Instance: 8500; Time: 8.09s; loss: 765.4543; acc: 111379.0/116101.0=0.9593
+     Instance: 9000; Time: 8.93s; loss: 666.2474; acc: 117917.0/122879.0=0.9596
+     Instance: 9500; Time: 8.62s; loss: 719.4183; acc: 124378.0/129628.0=0.9595
+     Instance: 10000; Time: 8.02s; loss: 726.9217; acc: 130621.0/136126.0=0.9596
+     Instance: 10500; Time: 8.37s; loss: 735.4918; acc: 137255.0/143039.0=0.9596
+     Instance: 11000; Time: 8.39s; loss: 728.4963; acc: 143931.0/149985.0=0.9596
+     Instance: 11500; Time: 8.44s; loss: 759.8489; acc: 150738.0/157062.0=0.9597
+     Instance: 12000; Time: 8.16s; loss: 686.1489; acc: 157118.0/163691.0=0.9598
+     Instance: 12500; Time: 8.26s; loss: 681.7302; acc: 164118.0/170932.0=0.9601
+     Instance: 13000; Time: 8.27s; loss: 551.8896; acc: 170453.0/177480.0=0.9604
+     Instance: 13500; Time: 8.10s; loss: 735.6412; acc: 176629.0/183933.0=0.9603
+     Instance: 14000; Time: 8.27s; loss: 669.2052; acc: 183131.0/190691.0=0.9604
+     Instance: 14500; Time: 8.58s; loss: 705.4740; acc: 189755.0/197575.0=0.9604
+     Instance: 14987; Time: 8.34s; loss: 683.1634; acc: 196460.0/204567.0=0.9604
+Epoch: 5 training finished. Time: 251.59s, speed: 59.57st/s,  total loss: 21674.0647583
+gold_num =  5943  pred_num =  5980  right_num =  5301
+Dev: time: 6.38s, speed: 546.17st/s; acc: 0.9762, p: 0.8865, r: 0.8920, f: 0.8892
+Exceed previous best f score: 0.870870367265
+gold_num =  5654  pred_num =  5755  right_num =  4862
+Test: time: 6.10s, speed:608.55st/s; acc: 0.9682, p: 0.8448, r: 0.8599, f: 0.8523
+Epoch: 6/100
+ Learning rate is setted as: 0.0110263783594
+     Instance: 500; Time: 8.33s; loss: 598.0044; acc: 6645.0/6870.0=0.9672
+     Instance: 1000; Time: 8.84s; loss: 698.6400; acc: 13560.0/14036.0=0.9661
+     Instance: 1500; Time: 8.11s; loss: 716.6970; acc: 19993.0/20735.0=0.9642
+     Instance: 2000; Time: 8.46s; loss: 778.0663; acc: 26905.0/27949.0=0.9626
+     Instance: 2500; Time: 8.61s; loss: 710.4637; acc: 33395.0/34727.0=0.9616
+     Instance: 3000; Time: 8.55s; loss: 658.7009; acc: 40275.0/41850.0=0.9624
+     Instance: 3500; Time: 8.41s; loss: 753.2814; acc: 46813.0/48656.0=0.9621
+     Instance: 4000; Time: 8.06s; loss: 686.5652; acc: 52854.0/54946.0=0.9619
+     Instance: 4500; Time: 8.32s; loss: 741.3953; acc: 59738.0/62097.0=0.9620
+     Instance: 5000; Time: 8.55s; loss: 567.4661; acc: 66134.0/68708.0=0.9625
+     Instance: 5500; Time: 8.96s; loss: 695.8394; acc: 72800.0/75616.0=0.9628
+     Instance: 6000; Time: 8.38s; loss: 678.2979; acc: 79516.0/82607.0=0.9626
+     Instance: 6500; Time: 7.95s; loss: 676.0372; acc: 85382.0/88705.0=0.9625
+     Instance: 7000; Time: 8.20s; loss: 587.8833; acc: 91810.0/95361.0=0.9628
+     Instance: 7500; Time: 7.84s; loss: 688.7397; acc: 97766.0/101560.0=0.9626
+     Instance: 8000; Time: 8.39s; loss: 808.6858; acc: 104242.0/108338.0=0.9622
+     Instance: 8500; Time: 8.49s; loss: 757.4277; acc: 111162.0/115538.0=0.9621
+     Instance: 9000; Time: 9.02s; loss: 654.4364; acc: 118197.0/122844.0=0.9622
+     Instance: 9500; Time: 8.00s; loss: 593.1148; acc: 124351.0/129229.0=0.9623
+     Instance: 10000; Time: 8.38s; loss: 669.3271; acc: 131006.0/136144.0=0.9623
+     Instance: 10500; Time: 8.40s; loss: 710.1403; acc: 137368.0/142762.0=0.9622
+     Instance: 11000; Time: 8.66s; loss: 705.4951; acc: 143906.0/149592.0=0.9620
+     Instance: 11500; Time: 8.31s; loss: 667.7739; acc: 150541.0/156469.0=0.9621
+     Instance: 12000; Time: 8.13s; loss: 640.4456; acc: 156722.0/162912.0=0.9620
+     Instance: 12500; Time: 8.22s; loss: 679.2762; acc: 163383.0/169815.0=0.9621
+     Instance: 13000; Time: 8.55s; loss: 664.3168; acc: 170402.0/177076.0=0.9623
+     Instance: 13500; Time: 8.37s; loss: 706.0625; acc: 177203.0/184152.0=0.9623
+     Instance: 14000; Time: 8.78s; loss: 660.4468; acc: 183944.0/191143.0=0.9623
+     Instance: 14500; Time: 8.42s; loss: 579.6358; acc: 190243.0/197666.0=0.9624
+     Instance: 14987; Time: 8.35s; loss: 599.1075; acc: 196909.0/204567.0=0.9626
+Epoch: 6 training finished. Time: 252.05s, speed: 59.46st/s,  total loss: 20331.7698975
+gold_num =  5943  pred_num =  5918  right_num =  5309
+Dev: time: 6.44s, speed: 541.62st/s; acc: 0.9769, p: 0.8971, r: 0.8933, f: 0.8952
+Exceed previous best f score: 0.889205736811
+gold_num =  5654  pred_num =  5684  right_num =  4878
+Test: time: 6.08s, speed:610.12st/s; acc: 0.9693, p: 0.8582, r: 0.8628, f: 0.8605
+Epoch: 7/100
+ Learning rate is setted as: 0.0104750594414
+     Instance: 500; Time: 8.92s; loss: 639.5825; acc: 6627.0/6873.0=0.9642
+     Instance: 1000; Time: 8.24s; loss: 628.4616; acc: 13427.0/13929.0=0.9640
+     Instance: 1500; Time: 8.68s; loss: 652.0056; acc: 20338.0/21093.0=0.9642
+     Instance: 2000; Time: 8.01s; loss: 558.1060; acc: 26700.0/27656.0=0.9654
+     Instance: 2500; Time: 8.67s; loss: 697.2416; acc: 33093.0/34312.0=0.9645
+     Instance: 3000; Time: 8.23s; loss: 714.9826; acc: 39401.0/40885.0=0.9637
+     Instance: 3500; Time: 8.00s; loss: 574.3876; acc: 45774.0/47487.0=0.9639
+     Instance: 4000; Time: 8.17s; loss: 625.4387; acc: 51772.0/53727.0=0.9636
+     Instance: 4500; Time: 8.57s; loss: 547.2820; acc: 58533.0/60717.0=0.9640
+     Instance: 5000; Time: 8.40s; loss: 666.5255; acc: 65083.0/67515.0=0.9640
+     Instance: 5500; Time: 8.67s; loss: 570.4525; acc: 71934.0/74574.0=0.9646
+     Instance: 6000; Time: 7.90s; loss: 596.2682; acc: 78680.0/81545.0=0.9649
+     Instance: 6500; Time: 8.56s; loss: 638.9127; acc: 85258.0/88356.0=0.9649
+     Instance: 7000; Time: 8.55s; loss: 680.1390; acc: 91847.0/95219.0=0.9646
+     Instance: 7500; Time: 9.08s; loss: 747.3450; acc: 98794.0/102468.0=0.9641
+     Instance: 8000; Time: 8.34s; loss: 688.0081; acc: 105502.0/109439.0=0.9640
+     Instance: 8500; Time: 8.36s; loss: 622.9480; acc: 112358.0/116530.0=0.9642
+     Instance: 9000; Time: 8.66s; loss: 611.3605; acc: 118986.0/123378.0=0.9644
+     Instance: 9500; Time: 8.50s; loss: 560.9265; acc: 125520.0/130135.0=0.9645
+     Instance: 10000; Time: 8.80s; loss: 735.4962; acc: 132001.0/136901.0=0.9642
+     Instance: 10500; Time: 7.89s; loss: 616.8510; acc: 138474.0/143620.0=0.9642
+     Instance: 11000; Time: 8.04s; loss: 656.1208; acc: 144953.0/150356.0=0.9641
+     Instance: 11500; Time: 8.63s; loss: 596.6944; acc: 151351.0/156966.0=0.9642
+     Instance: 12000; Time: 8.19s; loss: 640.9828; acc: 157844.0/163737.0=0.9640
+     Instance: 12500; Time: 9.07s; loss: 688.6570; acc: 164471.0/170648.0=0.9638
+     Instance: 13000; Time: 8.40s; loss: 630.7746; acc: 170887.0/177307.0=0.9638
+     Instance: 13500; Time: 8.40s; loss: 695.2811; acc: 177653.0/184345.0=0.9637
+     Instance: 14000; Time: 8.71s; loss: 674.0710; acc: 184456.0/191393.0=0.9638
+     Instance: 14500; Time: 8.09s; loss: 669.7656; acc: 190791.0/197979.0=0.9637
+     Instance: 14987; Time: 8.32s; loss: 564.5587; acc: 197163.0/204567.0=0.9638
+Epoch: 7 training finished. Time: 253.03s, speed: 59.23st/s,  total loss: 19189.627533
+gold_num =  5943  pred_num =  5958  right_num =  5327
+Dev: time: 6.38s, speed: 546.39st/s; acc: 0.9775, p: 0.8941, r: 0.8963, f: 0.8952
+Exceed previous best f score: 0.895202765365
+gold_num =  5654  pred_num =  5727  right_num =  4894
+Test: time: 6.08s, speed:610.36st/s; acc: 0.9696, p: 0.8545, r: 0.8656, f: 0.8600
+Epoch: 8/100
+ Learning rate is setted as: 0.00995130646934
+     Instance: 500; Time: 7.97s; loss: 676.8454; acc: 6203.0/6469.0=0.9589
+     Instance: 1000; Time: 8.19s; loss: 554.9258; acc: 13105.0/13571.0=0.9657
+     Instance: 1500; Time: 8.38s; loss: 553.5912; acc: 19763.0/20438.0=0.9670
+     Instance: 2000; Time: 8.22s; loss: 609.5278; acc: 26646.0/27526.0=0.9680
+     Instance: 2500; Time: 8.24s; loss: 600.1270; acc: 32893.0/34006.0=0.9673
+     Instance: 3000; Time: 8.31s; loss: 606.5526; acc: 39077.0/40420.0=0.9668
+     Instance: 3500; Time: 8.13s; loss: 582.0007; acc: 45559.0/47129.0=0.9667
+     Instance: 4000; Time: 8.14s; loss: 647.6035; acc: 51893.0/53722.0=0.9660
+     Instance: 4500; Time: 8.44s; loss: 610.2449; acc: 58337.0/60404.0=0.9658
+     Instance: 5000; Time: 8.41s; loss: 560.7791; acc: 64718.0/67011.0=0.9658
+     Instance: 5500; Time: 8.52s; loss: 691.2455; acc: 71441.0/74031.0=0.9650
+     Instance: 6000; Time: 8.38s; loss: 672.5254; acc: 78065.0/80891.0=0.9651
+     Instance: 6500; Time: 8.43s; loss: 591.1418; acc: 85004.0/88050.0=0.9654
+     Instance: 7000; Time: 8.60s; loss: 623.2391; acc: 91291.0/94586.0=0.9652
+     Instance: 7500; Time: 8.13s; loss: 571.0519; acc: 97654.0/101150.0=0.9654
+     Instance: 8000; Time: 7.93s; loss: 524.0977; acc: 104315.0/108014.0=0.9658
+     Instance: 8500; Time: 8.45s; loss: 517.2275; acc: 111046.0/114946.0=0.9661
+     Instance: 9000; Time: 8.19s; loss: 648.1239; acc: 117523.0/121646.0=0.9661
+     Instance: 9500; Time: 8.55s; loss: 530.5982; acc: 123843.0/128165.0=0.9663
+     Instance: 10000; Time: 8.42s; loss: 621.2824; acc: 130371.0/134927.0=0.9662
+     Instance: 10500; Time: 8.37s; loss: 568.4880; acc: 137306.0/142081.0=0.9664
+     Instance: 11000; Time: 8.57s; loss: 620.7321; acc: 144092.0/149104.0=0.9664
+     Instance: 11500; Time: 8.31s; loss: 633.1567; acc: 150400.0/155658.0=0.9662
+     Instance: 12000; Time: 8.82s; loss: 602.1084; acc: 157419.0/162913.0=0.9663
+     Instance: 12500; Time: 8.64s; loss: 614.1709; acc: 164326.0/170072.0=0.9662
+     Instance: 13000; Time: 8.64s; loss: 505.1906; acc: 171255.0/177200.0=0.9665
+     Instance: 13500; Time: 8.61s; loss: 572.6144; acc: 177848.0/184001.0=0.9666
+     Instance: 14000; Time: 8.71s; loss: 640.5606; acc: 184923.0/191319.0=0.9666
+     Instance: 14500; Time: 8.07s; loss: 655.6190; acc: 191430.0/198104.0=0.9663
+     Instance: 14987; Time: 8.23s; loss: 628.4063; acc: 197630.0/204567.0=0.9661
+Epoch: 8 training finished. Time: 250.98s, speed: 59.71st/s,  total loss: 18033.7785339
+gold_num =  5943  pred_num =  5915  right_num =  5340
+Dev: time: 6.38s, speed: 546.73st/s; acc: 0.9781, p: 0.9028, r: 0.8985, f: 0.9007
+Exceed previous best f score: 0.895218889169
+gold_num =  5654  pred_num =  5689  right_num =  4921
+Test: time: 6.03s, speed:615.45st/s; acc: 0.9706, p: 0.8650, r: 0.8704, f: 0.8677
+Epoch: 9/100
+ Learning rate is setted as: 0.00945374114587
+     Instance: 500; Time: 7.78s; loss: 621.7463; acc: 6654.0/6905.0=0.9636
+     Instance: 1000; Time: 8.57s; loss: 561.3410; acc: 13468.0/13937.0=0.9663
+     Instance: 1500; Time: 9.26s; loss: 578.0804; acc: 20590.0/21273.0=0.9679
+     Instance: 2000; Time: 8.43s; loss: 561.4343; acc: 27101.0/28005.0=0.9677
+     Instance: 2500; Time: 8.79s; loss: 553.6497; acc: 33850.0/34963.0=0.9682
+     Instance: 3000; Time: 8.30s; loss: 531.5919; acc: 40180.0/41511.0=0.9679
+     Instance: 3500; Time: 7.83s; loss: 443.4418; acc: 46344.0/47854.0=0.9684
+     Instance: 4000; Time: 8.85s; loss: 590.5663; acc: 53213.0/54957.0=0.9683
+     Instance: 4500; Time: 8.55s; loss: 625.4276; acc: 60145.0/62136.0=0.9680
+     Instance: 5000; Time: 8.37s; loss: 556.5698; acc: 66924.0/69145.0=0.9679
+     Instance: 5500; Time: 8.61s; loss: 594.3637; acc: 73496.0/75947.0=0.9677
+     Instance: 6000; Time: 8.91s; loss: 546.5895; acc: 80501.0/83157.0=0.9681
+     Instance: 6500; Time: 8.07s; loss: 652.4419; acc: 86920.0/89816.0=0.9678
+     Instance: 7000; Time: 8.32s; loss: 639.6349; acc: 93074.0/96225.0=0.9673
+     Instance: 7500; Time: 8.74s; loss: 549.8898; acc: 99807.0/103189.0=0.9672
+     Instance: 8000; Time: 8.59s; loss: 570.6148; acc: 106809.0/110421.0=0.9673
+     Instance: 8500; Time: 8.88s; loss: 576.6633; acc: 113223.0/117050.0=0.9673
+     Instance: 9000; Time: 8.54s; loss: 641.1044; acc: 119907.0/123983.0=0.9671
+     Instance: 9500; Time: 8.23s; loss: 561.0768; acc: 126437.0/130726.0=0.9672
+     Instance: 10000; Time: 8.07s; loss: 515.7122; acc: 132797.0/137279.0=0.9674
+     Instance: 10500; Time: 8.45s; loss: 631.5803; acc: 139462.0/144168.0=0.9674
+     Instance: 11000; Time: 8.57s; loss: 662.8430; acc: 145750.0/150723.0=0.9670
+     Instance: 11500; Time: 8.44s; loss: 643.5886; acc: 152457.0/157694.0=0.9668
+     Instance: 12000; Time: 8.21s; loss: 525.1588; acc: 159150.0/164586.0=0.9670
+     Instance: 12500; Time: 7.74s; loss: 659.3683; acc: 165641.0/171321.0=0.9668
+     Instance: 13000; Time: 8.14s; loss: 519.0836; acc: 172057.0/177952.0=0.9669
+     Instance: 13500; Time: 8.09s; loss: 466.9629; acc: 178656.0/184729.0=0.9671
+     Instance: 14000; Time: 7.99s; loss: 586.9447; acc: 185001.0/191280.0=0.9672
+     Instance: 14500; Time: 8.48s; loss: 506.7831; acc: 191208.0/197684.0=0.9672
+     Instance: 14987; Time: 8.38s; loss: 503.4101; acc: 197898.0/204567.0=0.9674
+Epoch: 9 training finished. Time: 252.17s, speed: 59.43st/s,  total loss: 17177.6639099
+gold_num =  5943  pred_num =  5907  right_num =  5358
+Dev: time: 6.39s, speed: 545.26st/s; acc: 0.9790, p: 0.9071, r: 0.9016, f: 0.9043
+Exceed previous best f score: 0.900657783775
+gold_num =  5654  pred_num =  5674  right_num =  4912
+Test: time: 6.20s, speed:599.23st/s; acc: 0.9710, p: 0.8657, r: 0.8688, f: 0.8672
+Epoch: 10/100
+ Learning rate is setted as: 0.00898105408858
+     Instance: 500; Time: 8.04s; loss: 594.4512; acc: 6639.0/6879.0=0.9651
+     Instance: 1000; Time: 7.90s; loss: 567.2344; acc: 12709.0/13166.0=0.9653
+     Instance: 1500; Time: 8.68s; loss: 640.0967; acc: 19672.0/20379.0=0.9653
+     Instance: 2000; Time: 8.78s; loss: 530.6134; acc: 26228.0/27160.0=0.9657
+     Instance: 2500; Time: 8.74s; loss: 603.6770; acc: 33092.0/34251.0=0.9662
+     Instance: 3000; Time: 7.86s; loss: 515.8993; acc: 39235.0/40604.0=0.9663
+     Instance: 3500; Time: 8.86s; loss: 595.1979; acc: 45606.0/47199.0=0.9662
+     Instance: 4000; Time: 8.69s; loss: 539.9081; acc: 52546.0/54362.0=0.9666
+     Instance: 4500; Time: 8.59s; loss: 675.8066; acc: 59494.0/61574.0=0.9662
+     Instance: 5000; Time: 8.41s; loss: 510.5400; acc: 65926.0/68208.0=0.9665
+     Instance: 5500; Time: 7.96s; loss: 560.0004; acc: 72422.0/74910.0=0.9668
+     Instance: 6000; Time: 8.37s; loss: 618.5530; acc: 79032.0/81739.0=0.9669
+     Instance: 6500; Time: 8.31s; loss: 588.7310; acc: 85876.0/88811.0=0.9670
+     Instance: 7000; Time: 8.53s; loss: 511.6469; acc: 92443.0/95578.0=0.9672
+     Instance: 7500; Time: 8.80s; loss: 679.5479; acc: 99329.0/102728.0=0.9669
+     Instance: 8000; Time: 8.23s; loss: 443.4283; acc: 105828.0/109403.0=0.9673
+     Instance: 8500; Time: 8.20s; loss: 562.8839; acc: 112636.0/116462.0=0.9671
+     Instance: 9000; Time: 8.11s; loss: 439.4609; acc: 118661.0/122674.0=0.9673
+     Instance: 9500; Time: 8.55s; loss: 526.7057; acc: 125457.0/129672.0=0.9675
+     Instance: 10000; Time: 8.03s; loss: 603.8517; acc: 131768.0/136222.0=0.9673
+     Instance: 10500; Time: 8.46s; loss: 515.2542; acc: 138503.0/143152.0=0.9675
+     Instance: 11000; Time: 8.06s; loss: 528.3814; acc: 145092.0/149943.0=0.9676
+     Instance: 11500; Time: 8.61s; loss: 502.5112; acc: 151861.0/156903.0=0.9679
+     Instance: 12000; Time: 8.54s; loss: 518.9357; acc: 158976.0/164227.0=0.9680
+     Instance: 12500; Time: 8.17s; loss: 564.5128; acc: 165393.0/170892.0=0.9678
+     Instance: 13000; Time: 8.80s; loss: 531.8365; acc: 171846.0/177548.0=0.9679
+     Instance: 13500; Time: 8.56s; loss: 508.8895; acc: 178616.0/184525.0=0.9680
+     Instance: 14000; Time: 8.54s; loss: 570.3729; acc: 184888.0/191020.0=0.9679
+     Instance: 14500; Time: 8.18s; loss: 558.3610; acc: 191286.0/197656.0=0.9678
+     Instance: 14987; Time: 8.44s; loss: 627.4763; acc: 197968.0/204567.0=0.9677
+Epoch: 10 training finished. Time: 252.02s, speed: 59.47st/s,  total loss: 16734.7658997
+gold_num =  5943  pred_num =  5899  right_num =  5373
+Dev: time: 6.44s, speed: 541.00st/s; acc: 0.9795, p: 0.9108, r: 0.9041, f: 0.9074
+Exceed previous best f score: 0.904303797468
+gold_num =  5654  pred_num =  5668  right_num =  4956
+Test: time: 6.21s, speed:597.56st/s; acc: 0.9722, p: 0.8744, r: 0.8765, f: 0.8755
+Epoch: 11/100
+ Learning rate is setted as: 0.00853200138415
+     Instance: 500; Time: 8.60s; loss: 501.0931; acc: 6739.0/6928.0=0.9727
+     Instance: 1000; Time: 8.50s; loss: 550.9790; acc: 13230.0/13638.0=0.9701
+     Instance: 1500; Time: 9.21s; loss: 655.6581; acc: 20582.0/21255.0=0.9683
+     Instance: 2000; Time: 8.65s; loss: 611.1776; acc: 27360.0/28241.0=0.9688
+     Instance: 2500; Time: 8.42s; loss: 522.1977; acc: 33784.0/34871.0=0.9688
+     Instance: 3000; Time: 8.35s; loss: 552.6721; acc: 40447.0/41756.0=0.9687
+     Instance: 3500; Time: 8.53s; loss: 493.8215; acc: 47327.0/48848.0=0.9689
+     Instance: 4000; Time: 8.71s; loss: 605.2359; acc: 54383.0/56157.0=0.9684
+     Instance: 4500; Time: 8.79s; loss: 533.0599; acc: 61057.0/63016.0=0.9689
+     Instance: 5000; Time: 8.04s; loss: 469.7409; acc: 67105.0/69253.0=0.9690
+     Instance: 5500; Time: 8.90s; loss: 654.0963; acc: 74097.0/76517.0=0.9684
+     Instance: 6000; Time: 8.59s; loss: 612.3264; acc: 80669.0/83325.0=0.9681
+     Instance: 6500; Time: 8.10s; loss: 420.5743; acc: 86842.0/89678.0=0.9684
+     Instance: 7000; Time: 7.46s; loss: 452.4987; acc: 92724.0/95739.0=0.9685
+     Instance: 7500; Time: 8.27s; loss: 507.1369; acc: 99138.0/102351.0=0.9686
+     Instance: 8000; Time: 8.05s; loss: 584.2914; acc: 105849.0/109287.0=0.9685
+     Instance: 8500; Time: 8.41s; loss: 595.6462; acc: 112460.0/116137.0=0.9683
+     Instance: 9000; Time: 8.81s; loss: 686.5372; acc: 119325.0/123262.0=0.9681
+     Instance: 9500; Time: 8.51s; loss: 460.8389; acc: 126204.0/130323.0=0.9684
+     Instance: 10000; Time: 8.84s; loss: 505.2474; acc: 133186.0/137512.0=0.9685
+     Instance: 10500; Time: 8.27s; loss: 521.0211; acc: 139666.0/144192.0=0.9686
+     Instance: 11000; Time: 8.67s; loss: 537.3800; acc: 146574.0/151309.0=0.9687
+     Instance: 11500; Time: 7.90s; loss: 518.5184; acc: 152729.0/157680.0=0.9686
+     Instance: 12000; Time: 8.02s; loss: 549.6631; acc: 158960.0/164115.0=0.9686
+     Instance: 12500; Time: 7.98s; loss: 546.5645; acc: 165028.0/170421.0=0.9684
+     Instance: 13000; Time: 8.35s; loss: 521.5697; acc: 171535.0/177145.0=0.9683
+     Instance: 13500; Time: 8.08s; loss: 678.5072; acc: 177915.0/183805.0=0.9680
+     Instance: 14000; Time: 8.91s; loss: 540.9658; acc: 184639.0/190756.0=0.9679
+     Instance: 14500; Time: 8.56s; loss: 523.1686; acc: 191210.0/197533.0=0.9680
+     Instance: 14987; Time: 8.12s; loss: 493.7746; acc: 198024.0/204567.0=0.9680
+Epoch: 11 training finished. Time: 252.58s, speed: 59.34st/s,  total loss: 16405.9625244
+gold_num =  5943  pred_num =  5910  right_num =  5388
+Dev: time: 6.51s, speed: 535.02st/s; acc: 0.9798, p: 0.9117, r: 0.9066, f: 0.9091
+Exceed previous best f score: 0.907448066205
+gold_num =  5654  pred_num =  5676  right_num =  4962
+Test: time: 6.12s, speed:606.84st/s; acc: 0.9724, p: 0.8742, r: 0.8776, f: 0.8759
+Epoch: 12/100
+ Learning rate is setted as: 0.00810540131494
+     Instance: 500; Time: 8.27s; loss: 519.8320; acc: 6439.0/6637.0=0.9702
+     Instance: 1000; Time: 8.18s; loss: 603.6326; acc: 13057.0/13536.0=0.9646
+     Instance: 1500; Time: 8.38s; loss: 515.2963; acc: 19689.0/20371.0=0.9665
+     Instance: 2000; Time: 8.08s; loss: 562.8079; acc: 26350.0/27243.0=0.9672
+     Instance: 2500; Time: 8.43s; loss: 561.0856; acc: 32968.0/34106.0=0.9666
+     Instance: 3000; Time: 8.10s; loss: 479.8235; acc: 39239.0/40565.0=0.9673
+     Instance: 3500; Time: 8.52s; loss: 520.7169; acc: 45975.0/47500.0=0.9679
+     Instance: 4000; Time: 8.91s; loss: 476.5479; acc: 52399.0/54133.0=0.9680
+     Instance: 4500; Time: 8.34s; loss: 558.1465; acc: 58742.0/60693.0=0.9679
+     Instance: 5000; Time: 8.26s; loss: 483.9603; acc: 65338.0/67482.0=0.9682
+     Instance: 5500; Time: 8.57s; loss: 467.3632; acc: 72154.0/74490.0=0.9686
+     Instance: 6000; Time: 8.44s; loss: 537.9112; acc: 79055.0/81610.0=0.9687
+     Instance: 6500; Time: 8.19s; loss: 516.4080; acc: 85530.0/88316.0=0.9685
+     Instance: 7000; Time: 8.51s; loss: 488.8978; acc: 92251.0/95230.0=0.9687
+     Instance: 7500; Time: 8.66s; loss: 487.7252; acc: 99060.0/102234.0=0.9690
+     Instance: 8000; Time: 8.16s; loss: 502.4304; acc: 105499.0/108869.0=0.9690
+     Instance: 8500; Time: 8.81s; loss: 524.6322; acc: 112304.0/115856.0=0.9693
+     Instance: 9000; Time: 8.67s; loss: 574.1315; acc: 119054.0/122848.0=0.9691
+     Instance: 9500; Time: 8.26s; loss: 533.4352; acc: 125727.0/129711.0=0.9693
+     Instance: 10000; Time: 8.56s; loss: 617.2756; acc: 132804.0/137030.0=0.9692
+     Instance: 10500; Time: 8.35s; loss: 534.8859; acc: 139349.0/143798.0=0.9691
+     Instance: 11000; Time: 8.48s; loss: 524.0386; acc: 145703.0/150371.0=0.9690
+     Instance: 11500; Time: 8.96s; loss: 505.4293; acc: 152593.0/157462.0=0.9691
+     Instance: 12000; Time: 8.03s; loss: 499.4140; acc: 159164.0/164226.0=0.9692
+     Instance: 12500; Time: 8.32s; loss: 403.2184; acc: 165588.0/170822.0=0.9694
+     Instance: 13000; Time: 8.75s; loss: 526.6473; acc: 172193.0/177649.0=0.9693
+     Instance: 13500; Time: 8.58s; loss: 467.6129; acc: 179120.0/184778.0=0.9694
+     Instance: 14000; Time: 8.56s; loss: 406.6611; acc: 185617.0/191429.0=0.9696
+     Instance: 14500; Time: 8.17s; loss: 602.6321; acc: 192140.0/198158.0=0.9696
+     Instance: 14987; Time: 7.92s; loss: 495.5572; acc: 198349.0/204567.0=0.9696
+Epoch: 12 training finished. Time: 252.44s, speed: 59.37st/s,  total loss: 15498.1563416
+gold_num =  5943  pred_num =  5930  right_num =  5385
+Dev: time: 6.56s, speed: 531.50st/s; acc: 0.9798, p: 0.9081, r: 0.9061, f: 0.9071
+gold_num =  5654  pred_num =  5693  right_num =  4969
+Test: time: 6.05s, speed:612.93st/s; acc: 0.9725, p: 0.8728, r: 0.8788, f: 0.8758
+Epoch: 13/100
+ Learning rate is setted as: 0.00770013124919
+     Instance: 500; Time: 8.36s; loss: 544.2800; acc: 6839.0/7058.0=0.9690
+     Instance: 1000; Time: 8.36s; loss: 484.5126; acc: 13486.0/13914.0=0.9692
+     Instance: 1500; Time: 7.90s; loss: 496.4692; acc: 19632.0/20248.0=0.9696
+     Instance: 2000; Time: 8.83s; loss: 509.5895; acc: 26520.0/27332.0=0.9703
+     Instance: 2500; Time: 8.79s; loss: 655.8297; acc: 33391.0/34450.0=0.9693
+     Instance: 3000; Time: 8.22s; loss: 480.2301; acc: 40204.0/41462.0=0.9697
+     Instance: 3500; Time: 7.95s; loss: 457.9161; acc: 46582.0/48032.0=0.9698
+     Instance: 4000; Time: 8.09s; loss: 518.8557; acc: 52870.0/54518.0=0.9698
+     Instance: 4500; Time: 8.20s; loss: 510.7572; acc: 59186.0/61046.0=0.9695
+     Instance: 5000; Time: 8.25s; loss: 500.0986; acc: 65544.0/67595.0=0.9697
+     Instance: 5500; Time: 8.86s; loss: 582.0672; acc: 72246.0/74516.0=0.9695
+     Instance: 6000; Time: 8.36s; loss: 529.3501; acc: 79257.0/81726.0=0.9698
+     Instance: 6500; Time: 8.35s; loss: 513.2254; acc: 86031.0/88724.0=0.9696
+     Instance: 7000; Time: 8.14s; loss: 540.0054; acc: 92426.0/95340.0=0.9694
+     Instance: 7500; Time: 8.58s; loss: 535.4296; acc: 99189.0/102319.0=0.9694
+     Instance: 8000; Time: 8.37s; loss: 529.1730; acc: 105868.0/109206.0=0.9694
+     Instance: 8500; Time: 8.34s; loss: 456.1466; acc: 112517.0/116037.0=0.9697
+     Instance: 9000; Time: 8.72s; loss: 508.6476; acc: 118994.0/122731.0=0.9696
+     Instance: 9500; Time: 8.24s; loss: 521.3661; acc: 125684.0/129632.0=0.9695
+     Instance: 10000; Time: 8.33s; loss: 472.0340; acc: 131915.0/136040.0=0.9697
+     Instance: 10500; Time: 8.63s; loss: 485.2832; acc: 138466.0/142778.0=0.9698
+     Instance: 11000; Time: 8.09s; loss: 508.0424; acc: 145076.0/149563.0=0.9700
+     Instance: 11500; Time: 8.53s; loss: 575.9163; acc: 151556.0/156261.0=0.9699
+     Instance: 12000; Time: 8.59s; loss: 458.2506; acc: 158302.0/163199.0=0.9700
+     Instance: 12500; Time: 8.39s; loss: 477.0542; acc: 165110.0/170195.0=0.9701
+     Instance: 13000; Time: 8.21s; loss: 512.4294; acc: 171518.0/176795.0=0.9702
+     Instance: 13500; Time: 8.73s; loss: 534.0896; acc: 178651.0/184143.0=0.9702
+     Instance: 14000; Time: 8.92s; loss: 515.2259; acc: 185509.0/191204.0=0.9702
+     Instance: 14500; Time: 8.27s; loss: 505.3068; acc: 192049.0/197963.0=0.9701
+     Instance: 14987; Time: 8.85s; loss: 518.4758; acc: 198425.0/204567.0=0.9700
+Epoch: 13 training finished. Time: 252.45s, speed: 59.37st/s,  total loss: 15436.0580444
+gold_num =  5943  pred_num =  5930  right_num =  5408
+Dev: time: 6.44s, speed: 541.17st/s; acc: 0.9805, p: 0.9120, r: 0.9100, f: 0.9110
+Exceed previous best f score: 0.90913692736
+gold_num =  5654  pred_num =  5700  right_num =  4976
+Test: time: 6.20s, speed:598.89st/s; acc: 0.9724, p: 0.8730, r: 0.8801, f: 0.8765
+Epoch: 14/100
+ Learning rate is setted as: 0.00731512468673
+     Instance: 500; Time: 7.97s; loss: 500.4241; acc: 6330.0/6545.0=0.9672
+     Instance: 1000; Time: 8.58s; loss: 435.4929; acc: 12914.0/13316.0=0.9698
+     Instance: 1500; Time: 8.29s; loss: 540.6891; acc: 19688.0/20292.0=0.9702
+     Instance: 2000; Time: 8.21s; loss: 409.3510; acc: 26470.0/27255.0=0.9712
+     Instance: 2500; Time: 8.36s; loss: 495.8057; acc: 33210.0/34181.0=0.9716
+     Instance: 3000; Time: 8.27s; loss: 499.7613; acc: 39674.0/40834.0=0.9716
+     Instance: 3500; Time: 8.51s; loss: 446.6774; acc: 46293.0/47630.0=0.9719
+     Instance: 4000; Time: 8.34s; loss: 571.7898; acc: 52813.0/54357.0=0.9716
+     Instance: 4500; Time: 8.52s; loss: 509.5171; acc: 59563.0/61305.0=0.9716
+     Instance: 5000; Time: 8.68s; loss: 539.2891; acc: 66278.0/68241.0=0.9712
+     Instance: 5500; Time: 9.70s; loss: 529.0466; acc: 73433.0/75601.0=0.9713
+     Instance: 6000; Time: 7.95s; loss: 540.6608; acc: 79588.0/81975.0=0.9709
+     Instance: 6500; Time: 8.34s; loss: 508.5292; acc: 86132.0/88725.0=0.9708
+     Instance: 7000; Time: 8.31s; loss: 503.1875; acc: 92992.0/95781.0=0.9709
+     Instance: 7500; Time: 8.34s; loss: 511.3090; acc: 99215.0/102222.0=0.9706
+     Instance: 8000; Time: 8.35s; loss: 464.3773; acc: 105948.0/109142.0=0.9707
+     Instance: 8500; Time: 8.00s; loss: 456.0716; acc: 112729.0/116109.0=0.9709
+     Instance: 9000; Time: 8.61s; loss: 492.0365; acc: 119383.0/122953.0=0.9710
+     Instance: 9500; Time: 8.21s; loss: 577.4442; acc: 125776.0/129551.0=0.9709
+     Instance: 10000; Time: 8.45s; loss: 458.1003; acc: 132129.0/136093.0=0.9709
+     Instance: 10500; Time: 8.73s; loss: 531.0585; acc: 138876.0/143061.0=0.9707
+     Instance: 11000; Time: 8.27s; loss: 466.8766; acc: 145333.0/149722.0=0.9707
+     Instance: 11500; Time: 8.43s; loss: 479.9883; acc: 151952.0/156531.0=0.9707
+     Instance: 12000; Time: 8.56s; loss: 561.0842; acc: 158655.0/163446.0=0.9707
+     Instance: 12500; Time: 8.61s; loss: 455.6587; acc: 165353.0/170333.0=0.9708
+     Instance: 13000; Time: 8.09s; loss: 410.1921; acc: 171978.0/177134.0=0.9709
+     Instance: 13500; Time: 8.56s; loss: 545.6072; acc: 178889.0/184258.0=0.9709
+     Instance: 14000; Time: 8.46s; loss: 421.2590; acc: 185400.0/190934.0=0.9710
+     Instance: 14500; Time: 8.34s; loss: 545.4254; acc: 191901.0/197638.0=0.9710
+     Instance: 14987; Time: 8.74s; loss: 450.4741; acc: 198623.0/204567.0=0.9709
+Epoch: 14 training finished. Time: 252.74s, speed: 59.30st/s,  total loss: 14857.1846924
+gold_num =  5943  pred_num =  5932  right_num =  5421
+Dev: time: 6.40s, speed: 544.53st/s; acc: 0.9810, p: 0.9139, r: 0.9122, f: 0.9130
+Exceed previous best f score: 0.910974479912
+gold_num =  5654  pred_num =  5702  right_num =  4997
+Test: time: 6.04s, speed:614.61st/s; acc: 0.9731, p: 0.8764, r: 0.8838, f: 0.8801
+Epoch: 15/100
+ Learning rate is setted as: 0.0069493684524
+     Instance: 500; Time: 8.22s; loss: 644.1970; acc: 6891.0/7155.0=0.9631
+     Instance: 1000; Time: 8.09s; loss: 416.4910; acc: 13572.0/14006.0=0.9690
+     Instance: 1500; Time: 8.42s; loss: 444.0820; acc: 19985.0/20601.0=0.9701
+     Instance: 2000; Time: 8.39s; loss: 469.7491; acc: 26600.0/27417.0=0.9702
+     Instance: 2500; Time: 8.48s; loss: 544.0627; acc: 33444.0/34478.0=0.9700
+     Instance: 3000; Time: 8.80s; loss: 462.9773; acc: 40226.0/41449.0=0.9705
+     Instance: 3500; Time: 8.14s; loss: 469.7900; acc: 46768.0/48192.0=0.9705
+     Instance: 4000; Time: 7.97s; loss: 548.7623; acc: 52756.0/54395.0=0.9699
+     Instance: 4500; Time: 8.14s; loss: 466.8930; acc: 59244.0/61060.0=0.9703
+     Instance: 5000; Time: 8.72s; loss: 533.5812; acc: 65941.0/67961.0=0.9703
+     Instance: 5500; Time: 8.43s; loss: 520.5732; acc: 72741.0/74988.0=0.9700
+     Instance: 6000; Time: 8.27s; loss: 495.0923; acc: 79223.0/81662.0=0.9701
+     Instance: 6500; Time: 8.37s; loss: 496.2798; acc: 85833.0/88481.0=0.9701
+     Instance: 7000; Time: 8.05s; loss: 372.0602; acc: 92222.0/95039.0=0.9704
+     Instance: 7500; Time: 8.06s; loss: 495.0042; acc: 98544.0/101556.0=0.9703
+     Instance: 8000; Time: 8.70s; loss: 457.5619; acc: 105214.0/108436.0=0.9703
+     Instance: 8500; Time: 8.54s; loss: 454.5829; acc: 111970.0/115353.0=0.9707
+     Instance: 9000; Time: 8.31s; loss: 469.3096; acc: 118512.0/122068.0=0.9709
+     Instance: 9500; Time: 8.97s; loss: 540.5094; acc: 125469.0/129232.0=0.9709
+     Instance: 10000; Time: 8.44s; loss: 495.2856; acc: 132055.0/136011.0=0.9709
+     Instance: 10500; Time: 8.10s; loss: 465.3928; acc: 138885.0/143030.0=0.9710
+     Instance: 11000; Time: 8.35s; loss: 559.7478; acc: 145672.0/150053.0=0.9708
+     Instance: 11500; Time: 8.09s; loss: 439.5801; acc: 152489.0/157066.0=0.9709
+     Instance: 12000; Time: 8.57s; loss: 511.6895; acc: 158800.0/163576.0=0.9708
+     Instance: 12500; Time: 8.74s; loss: 529.4120; acc: 165529.0/170515.0=0.9708
+     Instance: 13000; Time: 8.50s; loss: 444.2675; acc: 172173.0/177344.0=0.9708
+     Instance: 13500; Time: 8.00s; loss: 464.4520; acc: 178682.0/184036.0=0.9709
+     Instance: 14000; Time: 8.49s; loss: 492.9553; acc: 185517.0/191093.0=0.9708
+     Instance: 14500; Time: 8.75s; loss: 509.7579; acc: 192408.0/198187.0=0.9708
+     Instance: 14987; Time: 8.14s; loss: 397.8836; acc: 198607.0/204567.0=0.9709
+Epoch: 15 training finished. Time: 251.25s, speed: 59.65st/s,  total loss: 14611.9832153
+gold_num =  5943  pred_num =  5910  right_num =  5417
+Dev: time: 6.34s, speed: 549.91st/s; acc: 0.9810, p: 0.9166, r: 0.9115, f: 0.9140
+Exceed previous best f score: 0.913010526316
+gold_num =  5654  pred_num =  5680  right_num =  4988
+Test: time: 6.20s, speed:599.01st/s; acc: 0.9730, p: 0.8782, r: 0.8822, f: 0.8802
+Epoch: 16/100
+ Learning rate is setted as: 0.00660190002978
+     Instance: 500; Time: 8.60s; loss: 467.0173; acc: 6911.0/7078.0=0.9764
+     Instance: 1000; Time: 8.27s; loss: 468.8088; acc: 13542.0/13895.0=0.9746
+     Instance: 1500; Time: 8.82s; loss: 469.2386; acc: 20276.0/20802.0=0.9747
+     Instance: 2000; Time: 8.70s; loss: 397.5388; acc: 26933.0/27618.0=0.9752
+     Instance: 2500; Time: 8.53s; loss: 456.2363; acc: 33403.0/34278.0=0.9745
+     Instance: 3000; Time: 8.32s; loss: 371.2006; acc: 39982.0/41006.0=0.9750
+     Instance: 3500; Time: 8.49s; loss: 479.0560; acc: 46729.0/47932.0=0.9749
+     Instance: 4000; Time: 8.47s; loss: 513.0469; acc: 53560.0/54955.0=0.9746
+     Instance: 4500; Time: 8.26s; loss: 436.5928; acc: 59963.0/61541.0=0.9744
+     Instance: 5000; Time: 8.86s; loss: 438.9079; acc: 66971.0/68727.0=0.9744
+     Instance: 5500; Time: 8.50s; loss: 429.3564; acc: 73632.0/75573.0=0.9743
+     Instance: 6000; Time: 8.37s; loss: 488.4196; acc: 80239.0/82368.0=0.9742
+     Instance: 6500; Time: 8.13s; loss: 536.0562; acc: 86678.0/89004.0=0.9739
+     Instance: 7000; Time: 8.07s; loss: 464.4485; acc: 93127.0/95650.0=0.9736
+     Instance: 7500; Time: 8.81s; loss: 494.2042; acc: 99961.0/102678.0=0.9735
+     Instance: 8000; Time: 8.31s; loss: 582.5312; acc: 106367.0/109305.0=0.9731
+     Instance: 8500; Time: 8.59s; loss: 467.5905; acc: 113128.0/116243.0=0.9732
+     Instance: 9000; Time: 8.31s; loss: 402.4982; acc: 119580.0/122850.0=0.9734
+     Instance: 9500; Time: 7.67s; loss: 445.0964; acc: 126079.0/129529.0=0.9734
+     Instance: 10000; Time: 8.69s; loss: 457.1754; acc: 132698.0/136352.0=0.9732
+     Instance: 10500; Time: 8.48s; loss: 504.6981; acc: 139234.0/143113.0=0.9729
+     Instance: 11000; Time: 8.27s; loss: 528.8898; acc: 145928.0/150039.0=0.9726
+     Instance: 11500; Time: 8.90s; loss: 533.0878; acc: 152965.0/157291.0=0.9725
+     Instance: 12000; Time: 8.39s; loss: 462.6091; acc: 159466.0/163976.0=0.9725
+     Instance: 12500; Time: 9.12s; loss: 452.2593; acc: 166307.0/171007.0=0.9725
+     Instance: 13000; Time: 8.45s; loss: 483.2155; acc: 172847.0/177725.0=0.9726
+     Instance: 13500; Time: 8.06s; loss: 474.9081; acc: 179164.0/184246.0=0.9724
+     Instance: 14000; Time: 8.32s; loss: 463.8369; acc: 185877.0/191118.0=0.9726
+     Instance: 14500; Time: 8.41s; loss: 505.8757; acc: 192625.0/198061.0=0.9726
+     Instance: 14987; Time: 7.81s; loss: 461.0626; acc: 198930.0/204567.0=0.9724
+Epoch: 16 training finished. Time: 252.97s, speed: 59.25st/s,  total loss: 14135.4634094
+gold_num =  5943  pred_num =  5886  right_num =  5415
+Dev: time: 6.36s, speed: 548.16st/s; acc: 0.9813, p: 0.9200, r: 0.9112, f: 0.9155
+Exceed previous best f score: 0.914030203324
+gold_num =  5654  pred_num =  5655  right_num =  5007
+Test: time: 6.10s, speed:608.14st/s; acc: 0.9743, p: 0.8854, r: 0.8856, f: 0.8855
+Epoch: 17/100
+ Learning rate is setted as: 0.00627180502829
+     Instance: 500; Time: 8.13s; loss: 509.7621; acc: 6486.0/6690.0=0.9695
+     Instance: 1000; Time: 8.05s; loss: 420.9518; acc: 12773.0/13150.0=0.9713
+     Instance: 1500; Time: 8.50s; loss: 492.2651; acc: 19873.0/20453.0=0.9716
+     Instance: 2000; Time: 8.47s; loss: 429.5189; acc: 26488.0/27254.0=0.9719
+     Instance: 2500; Time: 8.76s; loss: 404.6727; acc: 33380.0/34303.0=0.9731
+     Instance: 3000; Time: 8.40s; loss: 465.2351; acc: 39968.0/41094.0=0.9726
+     Instance: 3500; Time: 8.57s; loss: 462.2349; acc: 46602.0/47919.0=0.9725
+     Instance: 4000; Time: 8.46s; loss: 410.2272; acc: 53216.0/54701.0=0.9729
+     Instance: 4500; Time: 8.74s; loss: 421.9211; acc: 59837.0/61512.0=0.9728
+     Instance: 5000; Time: 8.33s; loss: 441.6481; acc: 66366.0/68211.0=0.9730
+     Instance: 5500; Time: 8.75s; loss: 598.0295; acc: 73404.0/75484.0=0.9724
+     Instance: 6000; Time: 8.16s; loss: 545.5378; acc: 80123.0/82414.0=0.9722
+     Instance: 6500; Time: 8.51s; loss: 496.4013; acc: 87118.0/89617.0=0.9721
+     Instance: 7000; Time: 8.28s; loss: 516.4379; acc: 93793.0/96511.0=0.9718
+     Instance: 7500; Time: 8.27s; loss: 583.2896; acc: 100875.0/103814.0=0.9717
+     Instance: 8000; Time: 8.59s; loss: 528.1278; acc: 107213.0/110370.0=0.9714
+     Instance: 8500; Time: 8.21s; loss: 472.5627; acc: 114114.0/117463.0=0.9715
+     Instance: 9000; Time: 8.39s; loss: 488.1326; acc: 120620.0/124153.0=0.9715
+     Instance: 9500; Time: 7.64s; loss: 451.6646; acc: 126647.0/130369.0=0.9715
+     Instance: 10000; Time: 7.93s; loss: 520.7577; acc: 133092.0/137028.0=0.9713
+     Instance: 10500; Time: 8.57s; loss: 460.3611; acc: 139861.0/144018.0=0.9711
+     Instance: 11000; Time: 7.77s; loss: 475.0626; acc: 145908.0/150270.0=0.9710
+     Instance: 11500; Time: 8.65s; loss: 405.7001; acc: 152763.0/157282.0=0.9713
+     Instance: 12000; Time: 8.39s; loss: 385.0526; acc: 159073.0/163771.0=0.9713
+     Instance: 12500; Time: 8.37s; loss: 480.2585; acc: 165553.0/170437.0=0.9713
+     Instance: 13000; Time: 8.17s; loss: 473.5856; acc: 172261.0/177352.0=0.9713
+     Instance: 13500; Time: 8.28s; loss: 472.4868; acc: 179190.0/184489.0=0.9713
+     Instance: 14000; Time: 8.46s; loss: 421.8234; acc: 185577.0/191063.0=0.9713
+     Instance: 14500; Time: 8.75s; loss: 423.5555; acc: 192413.0/198052.0=0.9715
+     Instance: 14987; Time: 8.15s; loss: 381.1631; acc: 198780.0/204567.0=0.9717
+Epoch: 17 training finished. Time: 250.70s, speed: 59.78st/s,  total loss: 14038.4277344
+gold_num =  5943  pred_num =  5890  right_num =  5417
+Dev: time: 6.53s, speed: 533.53st/s; acc: 0.9815, p: 0.9197, r: 0.9115, f: 0.9156
+Exceed previous best f score: 0.915546538169
+gold_num =  5654  pred_num =  5637  right_num =  5015
+Test: time: 6.32s, speed:587.84st/s; acc: 0.9750, p: 0.8897, r: 0.8870, f: 0.8883
+Epoch: 18/100
+ Learning rate is setted as: 0.00595821477687
+     Instance: 500; Time: 8.63s; loss: 493.2147; acc: 7331.0/7540.0=0.9723
+     Instance: 1000; Time: 7.99s; loss: 439.4573; acc: 13696.0/14081.0=0.9727
+     Instance: 1500; Time: 8.90s; loss: 449.1188; acc: 20514.0/21080.0=0.9731
+     Instance: 2000; Time: 8.46s; loss: 457.8759; acc: 27465.0/28230.0=0.9729
+     Instance: 2500; Time: 8.03s; loss: 485.0112; acc: 34048.0/35003.0=0.9727
+     Instance: 3000; Time: 8.41s; loss: 490.0152; acc: 40693.0/41831.0=0.9728
+     Instance: 3500; Time: 8.25s; loss: 493.9977; acc: 47291.0/48646.0=0.9721
+     Instance: 4000; Time: 8.30s; loss: 372.0829; acc: 54421.0/55914.0=0.9733
+     Instance: 4500; Time: 8.30s; loss: 457.4528; acc: 60871.0/62547.0=0.9732
+     Instance: 5000; Time: 8.15s; loss: 456.8917; acc: 67588.0/69451.0=0.9732
+     Instance: 5500; Time: 8.80s; loss: 464.8754; acc: 74213.0/76255.0=0.9732
+     Instance: 6000; Time: 8.76s; loss: 436.7096; acc: 80956.0/83185.0=0.9732
+     Instance: 6500; Time: 8.05s; loss: 354.0961; acc: 87237.0/89600.0=0.9736
+     Instance: 7000; Time: 8.36s; loss: 446.6617; acc: 93459.0/96006.0=0.9735
+     Instance: 7500; Time: 8.36s; loss: 483.8585; acc: 100196.0/102957.0=0.9732
+     Instance: 8000; Time: 8.11s; loss: 441.9655; acc: 106327.0/109264.0=0.9731
+     Instance: 8500; Time: 8.31s; loss: 480.2034; acc: 113008.0/116139.0=0.9730
+     Instance: 9000; Time: 8.59s; loss: 427.6849; acc: 119423.0/122715.0=0.9732
+     Instance: 9500; Time: 9.04s; loss: 415.8473; acc: 126347.0/129824.0=0.9732
+     Instance: 10000; Time: 8.31s; loss: 506.2407; acc: 132878.0/136561.0=0.9730
+     Instance: 10500; Time: 8.76s; loss: 421.4874; acc: 139219.0/143083.0=0.9730
+     Instance: 11000; Time: 8.31s; loss: 464.0522; acc: 145625.0/149683.0=0.9729
+     Instance: 11500; Time: 7.85s; loss: 401.8260; acc: 152204.0/156443.0=0.9729
+     Instance: 12000; Time: 7.97s; loss: 494.7868; acc: 158858.0/163279.0=0.9729
+     Instance: 12500; Time: 8.37s; loss: 495.1112; acc: 165633.0/170243.0=0.9729
+     Instance: 13000; Time: 8.77s; loss: 587.1546; acc: 172738.0/177587.0=0.9727
+     Instance: 13500; Time: 8.43s; loss: 472.2998; acc: 179478.0/184502.0=0.9728
+     Instance: 14000; Time: 8.91s; loss: 507.7500; acc: 186344.0/191582.0=0.9727
+     Instance: 14500; Time: 8.21s; loss: 477.3567; acc: 192733.0/198157.0=0.9726
+     Instance: 14987; Time: 7.99s; loss: 451.8057; acc: 198952.0/204567.0=0.9726
+Epoch: 18 training finished. Time: 251.68s, speed: 59.55st/s,  total loss: 13826.891571
+gold_num =  5943  pred_num =  5911  right_num =  5436
+Dev: time: 6.60s, speed: 527.99st/s; acc: 0.9819, p: 0.9196, r: 0.9147, f: 0.9172
+Exceed previous best f score: 0.915575086622
+gold_num =  5654  pred_num =  5684  right_num =  5021
+Test: time: 6.31s, speed:587.95st/s; acc: 0.9742, p: 0.8834, r: 0.8880, f: 0.8857
+Epoch: 19/100
+ Learning rate is setted as: 0.00566030403803
+     Instance: 500; Time: 8.48s; loss: 477.5900; acc: 7043.0/7255.0=0.9708
+     Instance: 1000; Time: 8.85s; loss: 464.8659; acc: 13742.0/14117.0=0.9734
+     Instance: 1500; Time: 8.27s; loss: 293.3186; acc: 20182.0/20668.0=0.9765
+     Instance: 2000; Time: 8.46s; loss: 523.4505; acc: 27365.0/28084.0=0.9744
+     Instance: 2500; Time: 8.21s; loss: 428.5458; acc: 33967.0/34849.0=0.9747
+     Instance: 3000; Time: 8.66s; loss: 431.8199; acc: 40550.0/41611.0=0.9745
+     Instance: 3500; Time: 8.81s; loss: 478.9327; acc: 47600.0/48845.0=0.9745
+     Instance: 4000; Time: 8.65s; loss: 504.4440; acc: 54513.0/55961.0=0.9741
+     Instance: 4500; Time: 8.42s; loss: 488.3057; acc: 60767.0/62428.0=0.9734
+     Instance: 5000; Time: 8.20s; loss: 464.6038; acc: 67236.0/69086.0=0.9732
+     Instance: 5500; Time: 8.36s; loss: 382.4022; acc: 73906.0/75901.0=0.9737
+     Instance: 6000; Time: 8.85s; loss: 424.3077; acc: 80372.0/82556.0=0.9735
+     Instance: 6500; Time: 8.14s; loss: 472.4203; acc: 87155.0/89521.0=0.9736
+     Instance: 7000; Time: 8.39s; loss: 436.0516; acc: 93976.0/96507.0=0.9738
+     Instance: 7500; Time: 8.58s; loss: 472.5630; acc: 100693.0/103415.0=0.9737
+     Instance: 8000; Time: 8.49s; loss: 542.4393; acc: 107645.0/110568.0=0.9736
+     Instance: 8500; Time: 8.55s; loss: 375.8465; acc: 114527.0/117597.0=0.9739
+     Instance: 9000; Time: 8.44s; loss: 495.3097; acc: 121415.0/124699.0=0.9737
+     Instance: 9500; Time: 8.42s; loss: 464.1034; acc: 127990.0/131457.0=0.9736
+     Instance: 10000; Time: 8.46s; loss: 449.1777; acc: 134538.0/138169.0=0.9737
+     Instance: 10500; Time: 8.33s; loss: 434.2793; acc: 141150.0/144984.0=0.9736
+     Instance: 11000; Time: 8.31s; loss: 478.0511; acc: 147563.0/151582.0=0.9735
+     Instance: 11500; Time: 7.92s; loss: 410.7545; acc: 154093.0/158264.0=0.9736
+     Instance: 12000; Time: 8.24s; loss: 521.9357; acc: 160426.0/164831.0=0.9733
+     Instance: 12500; Time: 8.12s; loss: 454.2685; acc: 166772.0/171352.0=0.9733
+     Instance: 13000; Time: 8.61s; loss: 382.3243; acc: 173511.0/178248.0=0.9734
+     Instance: 13500; Time: 7.83s; loss: 372.9048; acc: 180075.0/184965.0=0.9736
+     Instance: 14000; Time: 9.07s; loss: 460.1903; acc: 186997.0/192077.0=0.9736
+     Instance: 14500; Time: 8.00s; loss: 439.5013; acc: 193247.0/198497.0=0.9736
+     Instance: 14987; Time: 7.60s; loss: 396.8810; acc: 199163.0/204567.0=0.9736
+Epoch: 19 training finished. Time: 251.73s, speed: 59.54st/s,  total loss: 13421.5894165
+gold_num =  5943  pred_num =  5908  right_num =  5442
+Dev: time: 6.35s, speed: 549.04st/s; acc: 0.9822, p: 0.9211, r: 0.9157, f: 0.9184
+Exceed previous best f score: 0.917158764974
+gold_num =  5654  pred_num =  5686  right_num =  5002
+Test: time: 6.10s, speed:608.22st/s; acc: 0.9735, p: 0.8797, r: 0.8847, f: 0.8822
+Epoch: 20/100
+ Learning rate is setted as: 0.00537728883613
+     Instance: 500; Time: 8.17s; loss: 547.3306; acc: 6486.0/6703.0=0.9676
+     Instance: 1000; Time: 8.61s; loss: 398.2893; acc: 12923.0/13311.0=0.9709
+     Instance: 1500; Time: 8.45s; loss: 392.7927; acc: 19549.0/20098.0=0.9727
+     Instance: 2000; Time: 8.55s; loss: 435.5392; acc: 26375.0/27118.0=0.9726
+     Instance: 2500; Time: 8.59s; loss: 440.1382; acc: 32996.0/33923.0=0.9727
+     Instance: 3000; Time: 9.01s; loss: 498.5280; acc: 40151.0/41279.0=0.9727
+     Instance: 3500; Time: 8.42s; loss: 439.4453; acc: 46932.0/48235.0=0.9730
+     Instance: 4000; Time: 8.45s; loss: 450.7114; acc: 53612.0/55097.0=0.9730
+     Instance: 4500; Time: 8.27s; loss: 498.4950; acc: 60244.0/61917.0=0.9730
+     Instance: 5000; Time: 8.61s; loss: 421.1168; acc: 67101.0/68926.0=0.9735
+     Instance: 5500; Time: 8.58s; loss: 433.4858; acc: 73750.0/75752.0=0.9736
+     Instance: 6000; Time: 8.24s; loss: 419.2743; acc: 80173.0/82342.0=0.9737
+     Instance: 6500; Time: 8.24s; loss: 459.6233; acc: 86461.0/88821.0=0.9734
+     Instance: 7000; Time: 8.37s; loss: 447.4948; acc: 92833.0/95370.0=0.9734
+     Instance: 7500; Time: 8.28s; loss: 382.2830; acc: 99283.0/101988.0=0.9735
+     Instance: 8000; Time: 8.50s; loss: 497.4394; acc: 106310.0/109220.0=0.9734
+     Instance: 8500; Time: 8.35s; loss: 486.4788; acc: 112888.0/116003.0=0.9731
+     Instance: 9000; Time: 9.06s; loss: 397.2903; acc: 119639.0/122905.0=0.9734
+     Instance: 9500; Time: 8.44s; loss: 488.5362; acc: 126686.0/130150.0=0.9734
+     Instance: 10000; Time: 8.57s; loss: 505.7784; acc: 133642.0/137304.0=0.9733
+     Instance: 10500; Time: 8.32s; loss: 449.1686; acc: 140546.0/144397.0=0.9733
+     Instance: 11000; Time: 8.21s; loss: 411.6304; acc: 147121.0/151139.0=0.9734
+     Instance: 11500; Time: 8.29s; loss: 390.9142; acc: 153646.0/157844.0=0.9734
+     Instance: 12000; Time: 8.30s; loss: 454.6988; acc: 160565.0/164950.0=0.9734
+     Instance: 12500; Time: 8.01s; loss: 391.4592; acc: 166870.0/171418.0=0.9735
+     Instance: 13000; Time: 8.69s; loss: 562.0625; acc: 173511.0/178290.0=0.9732
+     Instance: 13500; Time: 8.08s; loss: 423.9431; acc: 179646.0/184596.0=0.9732
+     Instance: 14000; Time: 8.12s; loss: 426.5919; acc: 185829.0/190970.0=0.9731
+     Instance: 14500; Time: 8.01s; loss: 419.9043; acc: 192374.0/197712.0=0.9730
+     Instance: 14987; Time: 8.41s; loss: 424.5201; acc: 199062.0/204567.0=0.9731
+Epoch: 20 training finished. Time: 252.20s, speed: 59.43st/s,  total loss: 13394.9641113
+gold_num =  5943  pred_num =  5885  right_num =  5424
+Dev: time: 6.35s, speed: 549.03st/s; acc: 0.9818, p: 0.9217, r: 0.9127, f: 0.9171
+gold_num =  5654  pred_num =  5640  right_num =  5010
+Test: time: 6.03s, speed:614.87st/s; acc: 0.9745, p: 0.8883, r: 0.8861, f: 0.8872
+Epoch: 21/100
+ Learning rate is setted as: 0.00510842439432
+     Instance: 500; Time: 8.63s; loss: 475.7163; acc: 6801.0/6975.0=0.9751
+     Instance: 1000; Time: 7.96s; loss: 347.9612; acc: 13300.0/13620.0=0.9765
+     Instance: 1500; Time: 8.84s; loss: 388.0058; acc: 20363.0/20823.0=0.9779
+     Instance: 2000; Time: 7.94s; loss: 451.6161; acc: 26798.0/27438.0=0.9767
+     Instance: 2500; Time: 8.11s; loss: 423.4753; acc: 33232.0/34040.0=0.9763
+     Instance: 3000; Time: 8.28s; loss: 490.7606; acc: 39817.0/40827.0=0.9753
+     Instance: 3500; Time: 8.46s; loss: 525.4647; acc: 46441.0/47646.0=0.9747
+     Instance: 4000; Time: 8.77s; loss: 460.4417; acc: 53301.0/54696.0=0.9745
+     Instance: 4500; Time: 8.18s; loss: 523.1813; acc: 60097.0/61704.0=0.9740
+     Instance: 5000; Time: 8.55s; loss: 485.8640; acc: 66886.0/68694.0=0.9737
+     Instance: 5500; Time: 8.47s; loss: 389.1627; acc: 73176.0/75142.0=0.9738
+     Instance: 6000; Time: 8.40s; loss: 405.5965; acc: 79515.0/81650.0=0.9739
+     Instance: 6500; Time: 8.84s; loss: 504.8579; acc: 86417.0/88758.0=0.9736
+     Instance: 7000; Time: 8.27s; loss: 434.8654; acc: 92920.0/95442.0=0.9736
+     Instance: 7500; Time: 8.28s; loss: 452.0933; acc: 99534.0/102227.0=0.9737
+     Instance: 8000; Time: 8.12s; loss: 427.9912; acc: 105701.0/108573.0=0.9735
+     Instance: 8500; Time: 8.56s; loss: 476.6328; acc: 112594.0/115660.0=0.9735
+     Instance: 9000; Time: 8.37s; loss: 458.3002; acc: 119127.0/122370.0=0.9735
+     Instance: 9500; Time: 8.24s; loss: 403.3291; acc: 125449.0/128857.0=0.9736
+     Instance: 10000; Time: 8.24s; loss: 453.7288; acc: 132269.0/135876.0=0.9735
+     Instance: 10500; Time: 8.96s; loss: 456.5157; acc: 139029.0/142816.0=0.9735
+     Instance: 11000; Time: 8.33s; loss: 386.7368; acc: 145771.0/149718.0=0.9736
+     Instance: 11500; Time: 8.26s; loss: 407.6157; acc: 152678.0/156801.0=0.9737
+     Instance: 12000; Time: 8.60s; loss: 437.2977; acc: 159457.0/163764.0=0.9737
+     Instance: 12500; Time: 8.20s; loss: 411.4907; acc: 166202.0/170670.0=0.9738
+     Instance: 13000; Time: 8.57s; loss: 504.5206; acc: 173105.0/177774.0=0.9737
+     Instance: 13500; Time: 8.78s; loss: 451.8007; acc: 180138.0/184997.0=0.9737
+     Instance: 14000; Time: 8.22s; loss: 399.0464; acc: 186700.0/191734.0=0.9737
+     Instance: 14500; Time: 8.13s; loss: 338.6691; acc: 192791.0/197976.0=0.9738
+     Instance: 14987; Time: 8.15s; loss: 427.2768; acc: 199221.0/204567.0=0.9739
+Epoch: 21 training finished. Time: 251.74s, speed: 59.53st/s,  total loss: 13200.0151062
+gold_num =  5943  pred_num =  5904  right_num =  5448
+Dev: time: 6.53s, speed: 534.46st/s; acc: 0.9824, p: 0.9228, r: 0.9167, f: 0.9197
+Exceed previous best f score: 0.918403510252
+gold_num =  5654  pred_num =  5665  right_num =  5026
+Test: time: 6.00s, speed:618.54st/s; acc: 0.9747, p: 0.8872, r: 0.8889, f: 0.8881
+Epoch: 22/100
+ Learning rate is setted as: 0.00485300317461
+     Instance: 500; Time: 8.30s; loss: 516.1378; acc: 6897.0/7114.0=0.9695
+     Instance: 1000; Time: 7.77s; loss: 391.0920; acc: 12943.0/13341.0=0.9702
+     Instance: 1500; Time: 8.22s; loss: 389.6863; acc: 19623.0/20174.0=0.9727
+     Instance: 2000; Time: 8.30s; loss: 437.0967; acc: 26398.0/27114.0=0.9736
+     Instance: 2500; Time: 8.31s; loss: 439.5430; acc: 32714.0/33621.0=0.9730
+     Instance: 3000; Time: 9.06s; loss: 429.4242; acc: 39476.0/40553.0=0.9734
+     Instance: 3500; Time: 8.31s; loss: 445.9513; acc: 46160.0/47428.0=0.9733
+     Instance: 4000; Time: 8.40s; loss: 462.8831; acc: 52855.0/54329.0=0.9729
+     Instance: 4500; Time: 8.63s; loss: 438.2092; acc: 59519.0/61170.0=0.9730
+     Instance: 5000; Time: 8.25s; loss: 409.2124; acc: 66293.0/68117.0=0.9732
+     Instance: 5500; Time: 8.59s; loss: 414.7327; acc: 73180.0/75199.0=0.9732
+     Instance: 6000; Time: 8.77s; loss: 459.3215; acc: 80340.0/82521.0=0.9736
+     Instance: 6500; Time: 8.57s; loss: 418.9595; acc: 86901.0/89269.0=0.9735
+     Instance: 7000; Time: 8.62s; loss: 479.8906; acc: 93937.0/96485.0=0.9736
+     Instance: 7500; Time: 8.32s; loss: 429.8694; acc: 100403.0/103121.0=0.9736
+     Instance: 8000; Time: 8.11s; loss: 401.5512; acc: 106776.0/109647.0=0.9738
+     Instance: 8500; Time: 7.66s; loss: 469.3917; acc: 112689.0/115753.0=0.9735
+     Instance: 9000; Time: 8.10s; loss: 367.1665; acc: 119181.0/122386.0=0.9738
+     Instance: 9500; Time: 8.58s; loss: 385.4814; acc: 126043.0/129409.0=0.9740
+     Instance: 10000; Time: 8.11s; loss: 438.6022; acc: 132395.0/135937.0=0.9739
+     Instance: 10500; Time: 8.59s; loss: 386.5796; acc: 138981.0/142678.0=0.9741
+     Instance: 11000; Time: 8.44s; loss: 480.8541; acc: 146064.0/149972.0=0.9739
+     Instance: 11500; Time: 8.51s; loss: 437.0772; acc: 153101.0/157174.0=0.9741
+     Instance: 12000; Time: 8.70s; loss: 470.3364; acc: 160039.0/164313.0=0.9740
+     Instance: 12500; Time: 8.03s; loss: 395.6191; acc: 166461.0/170905.0=0.9740
+     Instance: 13000; Time: 8.44s; loss: 484.5694; acc: 173120.0/177775.0=0.9738
+     Instance: 13500; Time: 8.27s; loss: 402.0034; acc: 179594.0/184438.0=0.9737
+     Instance: 14000; Time: 8.35s; loss: 437.2226; acc: 186074.0/191108.0=0.9737
+     Instance: 14500; Time: 8.83s; loss: 374.1779; acc: 192915.0/198109.0=0.9738
+     Instance: 14987; Time: 8.27s; loss: 355.1797; acc: 199224.0/204567.0=0.9739
+Epoch: 22 training finished. Time: 251.37s, speed: 59.62st/s,  total loss: 12847.822113
+gold_num =  5943  pred_num =  5903  right_num =  5444
+Dev: time: 6.37s, speed: 546.93st/s; acc: 0.9825, p: 0.9222, r: 0.9160, f: 0.9191
+gold_num =  5654  pred_num =  5644  right_num =  5025
+Test: time: 6.02s, speed:615.59st/s; acc: 0.9751, p: 0.8903, r: 0.8888, f: 0.8895
+Epoch: 23/100
+ Learning rate is setted as: 0.00461035301588
+     Instance: 500; Time: 8.25s; loss: 430.3295; acc: 6670.0/6839.0=0.9753
+     Instance: 1000; Time: 7.98s; loss: 434.1986; acc: 13242.0/13591.0=0.9743
+     Instance: 1500; Time: 8.30s; loss: 422.3977; acc: 20281.0/20806.0=0.9748
+     Instance: 2000; Time: 8.39s; loss: 335.6215; acc: 26988.0/27644.0=0.9763
+     Instance: 2500; Time: 7.95s; loss: 374.2872; acc: 33242.0/34064.0=0.9759
+     Instance: 3000; Time: 8.58s; loss: 398.6189; acc: 40065.0/41051.0=0.9760
+     Instance: 3500; Time: 8.51s; loss: 415.6422; acc: 46722.0/47879.0=0.9758
+     Instance: 4000; Time: 8.36s; loss: 319.8117; acc: 52984.0/54287.0=0.9760
+     Instance: 4500; Time: 8.78s; loss: 446.1456; acc: 59651.0/61137.0=0.9757
+     Instance: 5000; Time: 8.02s; loss: 358.8879; acc: 66471.0/68086.0=0.9763
+     Instance: 5500; Time: 8.24s; loss: 460.5446; acc: 73113.0/74913.0=0.9760
+     Instance: 6000; Time: 8.41s; loss: 386.4525; acc: 79709.0/81661.0=0.9761
+     Instance: 6500; Time: 8.58s; loss: 357.5804; acc: 86621.0/88728.0=0.9763
+     Instance: 7000; Time: 8.36s; loss: 452.0007; acc: 92896.0/95179.0=0.9760
+     Instance: 7500; Time: 8.50s; loss: 431.0125; acc: 99295.0/101733.0=0.9760
+     Instance: 8000; Time: 8.53s; loss: 413.2501; acc: 105811.0/108415.0=0.9760
+     Instance: 8500; Time: 8.69s; loss: 483.3024; acc: 112591.0/115372.0=0.9759
+     Instance: 9000; Time: 7.82s; loss: 527.4750; acc: 119055.0/122031.0=0.9756
+     Instance: 9500; Time: 8.03s; loss: 390.0926; acc: 125424.0/128558.0=0.9756
+     Instance: 10000; Time: 8.37s; loss: 488.3647; acc: 132431.0/135736.0=0.9757
+     Instance: 10500; Time: 8.24s; loss: 452.8423; acc: 138946.0/142434.0=0.9755
+     Instance: 11000; Time: 8.74s; loss: 473.1037; acc: 145802.0/149477.0=0.9754
+     Instance: 11500; Time: 7.76s; loss: 460.1479; acc: 152246.0/156103.0=0.9753
+     Instance: 12000; Time: 8.54s; loss: 407.4050; acc: 159057.0/163074.0=0.9754
+     Instance: 12500; Time: 8.47s; loss: 467.7102; acc: 165834.0/170035.0=0.9753
+     Instance: 13000; Time: 8.39s; loss: 396.9894; acc: 172651.0/177023.0=0.9753
+     Instance: 13500; Time: 8.42s; loss: 436.1976; acc: 179088.0/183635.0=0.9752
+     Instance: 14000; Time: 8.62s; loss: 356.2247; acc: 186223.0/190927.0=0.9754
+     Instance: 14500; Time: 8.31s; loss: 419.4607; acc: 193066.0/197935.0=0.9754
+     Instance: 14987; Time: 8.61s; loss: 424.5120; acc: 199515.0/204567.0=0.9753
+Epoch: 23 training finished. Time: 250.77s, speed: 59.76st/s,  total loss: 12620.6099548
+gold_num =  5943  pred_num =  5904  right_num =  5442
+Dev: time: 6.41s, speed: 543.67st/s; acc: 0.9823, p: 0.9217, r: 0.9157, f: 0.9187
+gold_num =  5654  pred_num =  5662  right_num =  5020
+Test: time: 6.06s, speed:611.62st/s; acc: 0.9744, p: 0.8866, r: 0.8879, f: 0.8872
+Epoch: 24/100
+ Learning rate is setted as: 0.00437983536508
+     Instance: 500; Time: 8.33s; loss: 412.4019; acc: 6772.0/6920.0=0.9786
+     Instance: 1000; Time: 8.17s; loss: 360.4855; acc: 13512.0/13808.0=0.9786
+     Instance: 1500; Time: 8.46s; loss: 395.9648; acc: 20493.0/20947.0=0.9783
+     Instance: 2000; Time: 8.03s; loss: 474.3369; acc: 27154.0/27814.0=0.9763
+     Instance: 2500; Time: 8.16s; loss: 430.5977; acc: 33383.0/34213.0=0.9757
+     Instance: 3000; Time: 8.57s; loss: 397.9587; acc: 40518.0/41508.0=0.9761
+     Instance: 3500; Time: 8.92s; loss: 481.9058; acc: 47433.0/48611.0=0.9758
+     Instance: 4000; Time: 8.50s; loss: 439.8411; acc: 53925.0/55285.0=0.9754
+     Instance: 4500; Time: 8.31s; loss: 455.2136; acc: 60812.0/62387.0=0.9748
+     Instance: 5000; Time: 8.80s; loss: 430.3209; acc: 67985.0/69743.0=0.9748
+     Instance: 5500; Time: 8.24s; loss: 448.8399; acc: 74517.0/76444.0=0.9748
+     Instance: 6000; Time: 7.99s; loss: 392.6688; acc: 80734.0/82830.0=0.9747
+     Instance: 6500; Time: 8.40s; loss: 381.0543; acc: 87913.0/90158.0=0.9751
+     Instance: 7000; Time: 7.77s; loss: 370.7368; acc: 94216.0/96611.0=0.9752
+     Instance: 7500; Time: 8.88s; loss: 498.9899; acc: 101281.0/103858.0=0.9752
+     Instance: 8000; Time: 8.61s; loss: 433.5035; acc: 108189.0/110942.0=0.9752
+     Instance: 8500; Time: 8.07s; loss: 413.0283; acc: 114574.0/117490.0=0.9752
+     Instance: 9000; Time: 8.82s; loss: 388.3135; acc: 121268.0/124335.0=0.9753
+     Instance: 9500; Time: 8.41s; loss: 370.1927; acc: 127796.0/131010.0=0.9755
+     Instance: 10000; Time: 8.56s; loss: 406.7396; acc: 134072.0/137452.0=0.9754
+     Instance: 10500; Time: 8.63s; loss: 401.5696; acc: 140779.0/144328.0=0.9754
+     Instance: 11000; Time: 8.06s; loss: 412.8755; acc: 147217.0/150939.0=0.9753
+     Instance: 11500; Time: 8.20s; loss: 427.4153; acc: 153450.0/157364.0=0.9751
+     Instance: 12000; Time: 8.80s; loss: 406.9335; acc: 160293.0/164362.0=0.9752
+     Instance: 12500; Time: 8.15s; loss: 385.9489; acc: 166755.0/170974.0=0.9753
+     Instance: 13000; Time: 8.50s; loss: 384.5823; acc: 173341.0/177716.0=0.9754
+     Instance: 13500; Time: 8.45s; loss: 439.8817; acc: 180198.0/184747.0=0.9754
+     Instance: 14000; Time: 8.28s; loss: 388.9299; acc: 186783.0/191491.0=0.9754
+     Instance: 14500; Time: 8.57s; loss: 418.9299; acc: 193321.0/198213.0=0.9753
+     Instance: 14987; Time: 8.02s; loss: 458.4014; acc: 199490.0/204567.0=0.9752
+Epoch: 24 training finished. Time: 251.65s, speed: 59.55st/s,  total loss: 12508.5623169
+gold_num =  5943  pred_num =  5898  right_num =  5449
+Dev: time: 6.27s, speed: 555.93st/s; acc: 0.9826, p: 0.9239, r: 0.9169, f: 0.9204
+Exceed previous best f score: 0.919726513041
+gold_num =  5654  pred_num =  5652  right_num =  5017
+Test: time: 6.67s, speed:557.03st/s; acc: 0.9746, p: 0.8877, r: 0.8873, f: 0.8875
+Epoch: 25/100
+ Learning rate is setted as: 0.00416084359683
+     Instance: 500; Time: 8.36s; loss: 492.1706; acc: 6580.0/6783.0=0.9701
+     Instance: 1000; Time: 8.28s; loss: 326.5006; acc: 13199.0/13529.0=0.9756
+     Instance: 1500; Time: 8.66s; loss: 375.3277; acc: 19792.0/20285.0=0.9757
+     Instance: 2000; Time: 8.03s; loss: 395.1937; acc: 25848.0/26491.0=0.9757
+     Instance: 2500; Time: 8.33s; loss: 371.7390; acc: 32306.0/33100.0=0.9760
+     Instance: 3000; Time: 8.56s; loss: 430.8148; acc: 39107.0/40088.0=0.9755
+     Instance: 3500; Time: 8.20s; loss: 447.9925; acc: 46168.0/47323.0=0.9756
+     Instance: 4000; Time: 8.63s; loss: 392.8021; acc: 52813.0/54125.0=0.9758
+     Instance: 4500; Time: 8.51s; loss: 413.9350; acc: 59840.0/61331.0=0.9757
+     Instance: 5000; Time: 8.72s; loss: 422.1621; acc: 66287.0/67955.0=0.9755
+     Instance: 5500; Time: 9.28s; loss: 381.0299; acc: 73603.0/75439.0=0.9757
+     Instance: 6000; Time: 8.11s; loss: 321.9578; acc: 80029.0/82004.0=0.9759
+     Instance: 6500; Time: 8.42s; loss: 479.8773; acc: 86720.0/88883.0=0.9757
+     Instance: 7000; Time: 8.33s; loss: 394.8311; acc: 93467.0/95809.0=0.9756
+     Instance: 7500; Time: 8.26s; loss: 331.6992; acc: 99809.0/102285.0=0.9758
+     Instance: 8000; Time: 7.80s; loss: 364.5229; acc: 106346.0/108977.0=0.9759
+     Instance: 8500; Time: 8.55s; loss: 379.9115; acc: 113228.0/115994.0=0.9762
+     Instance: 9000; Time: 8.30s; loss: 458.4813; acc: 119653.0/122602.0=0.9759
+     Instance: 9500; Time: 9.22s; loss: 428.6482; acc: 126911.0/130053.0=0.9758
+     Instance: 10000; Time: 8.09s; loss: 490.9865; acc: 133784.0/137132.0=0.9756
+     Instance: 10500; Time: 9.02s; loss: 505.4124; acc: 140696.0/144257.0=0.9753
+     Instance: 11000; Time: 8.86s; loss: 417.3617; acc: 147378.0/151115.0=0.9753
+     Instance: 11500; Time: 8.18s; loss: 424.6779; acc: 154047.0/157954.0=0.9753
+     Instance: 12000; Time: 7.92s; loss: 395.5502; acc: 160298.0/164401.0=0.9750
+     Instance: 12500; Time: 8.19s; loss: 452.4385; acc: 166624.0/170906.0=0.9749
+     Instance: 13000; Time: 8.19s; loss: 411.0580; acc: 173124.0/177600.0=0.9748
+     Instance: 13500; Time: 8.07s; loss: 460.9968; acc: 179622.0/184284.0=0.9747
+     Instance: 14000; Time: 8.82s; loss: 392.4341; acc: 185945.0/190771.0=0.9747
+     Instance: 14500; Time: 8.40s; loss: 471.4653; acc: 193018.0/198034.0=0.9747
+     Instance: 14987; Time: 8.23s; loss: 449.7089; acc: 199367.0/204567.0=0.9746
+Epoch: 25 training finished. Time: 252.49s, speed: 59.36st/s,  total loss: 12481.6877441
+gold_num =  5943  pred_num =  5907  right_num =  5462
+Dev: time: 6.41s, speed: 544.11st/s; acc: 0.9829, p: 0.9247, r: 0.9191, f: 0.9219
+Exceed previous best f score: 0.920361455958
+gold_num =  5654  pred_num =  5650  right_num =  5026
+Test: time: 5.97s, speed:622.21st/s; acc: 0.9750, p: 0.8896, r: 0.8889, f: 0.8892
+Epoch: 26/100
+ Learning rate is setted as: 0.00395280141699
+     Instance: 500; Time: 8.24s; loss: 370.1735; acc: 6831.0/6997.0=0.9763
+     Instance: 1000; Time: 8.00s; loss: 412.6880; acc: 13298.0/13642.0=0.9748
+     Instance: 1500; Time: 8.46s; loss: 532.4294; acc: 20197.0/20739.0=0.9739
+     Instance: 2000; Time: 8.53s; loss: 402.1796; acc: 27084.0/27799.0=0.9743
+     Instance: 2500; Time: 7.89s; loss: 351.8690; acc: 33412.0/34284.0=0.9746
+     Instance: 3000; Time: 8.65s; loss: 387.1372; acc: 40053.0/41083.0=0.9749
+     Instance: 3500; Time: 7.97s; loss: 367.9635; acc: 46805.0/47975.0=0.9756
+     Instance: 4000; Time: 8.36s; loss: 466.1959; acc: 53188.0/54526.0=0.9755
+     Instance: 4500; Time: 8.57s; loss: 406.7830; acc: 59547.0/61050.0=0.9754
+     Instance: 5000; Time: 8.05s; loss: 368.4018; acc: 65824.0/67479.0=0.9755
+     Instance: 5500; Time: 8.36s; loss: 572.7285; acc: 72433.0/74307.0=0.9748
+     Instance: 6000; Time: 8.18s; loss: 346.2153; acc: 79208.0/81231.0=0.9751
+     Instance: 6500; Time: 9.11s; loss: 388.8379; acc: 85846.0/88023.0=0.9753
+     Instance: 7000; Time: 8.32s; loss: 364.5763; acc: 92375.0/94690.0=0.9756
+     Instance: 7500; Time: 8.49s; loss: 445.2261; acc: 99038.0/101536.0=0.9754
+     Instance: 8000; Time: 8.57s; loss: 313.4822; acc: 105685.0/108327.0=0.9756
+     Instance: 8500; Time: 8.53s; loss: 492.1074; acc: 112694.0/115547.0=0.9753
+     Instance: 9000; Time: 8.67s; loss: 501.7337; acc: 119353.0/122410.0=0.9750
+     Instance: 9500; Time: 7.98s; loss: 390.3613; acc: 125678.0/128896.0=0.9750
+     Instance: 10000; Time: 8.83s; loss: 377.3773; acc: 132452.0/135834.0=0.9751
+     Instance: 10500; Time: 8.78s; loss: 401.3101; acc: 139348.0/142922.0=0.9750
+     Instance: 11000; Time: 8.40s; loss: 454.5420; acc: 146227.0/149983.0=0.9750
+     Instance: 11500; Time: 8.34s; loss: 413.1844; acc: 153311.0/157244.0=0.9750
+     Instance: 12000; Time: 8.32s; loss: 403.6149; acc: 159864.0/163963.0=0.9750
+     Instance: 12500; Time: 8.11s; loss: 417.9326; acc: 166184.0/170445.0=0.9750
+     Instance: 13000; Time: 8.82s; loss: 406.7443; acc: 172995.0/177434.0=0.9750
+     Instance: 13500; Time: 8.15s; loss: 393.1660; acc: 179476.0/184081.0=0.9750
+     Instance: 14000; Time: 8.45s; loss: 380.6031; acc: 186366.0/191136.0=0.9750
+     Instance: 14500; Time: 8.42s; loss: 410.0650; acc: 192972.0/197924.0=0.9750
+     Instance: 14987; Time: 8.14s; loss: 380.0338; acc: 199451.0/204567.0=0.9750
+Epoch: 26 training finished. Time: 251.68s, speed: 59.55st/s,  total loss: 12319.6629028
+gold_num =  5943  pred_num =  5905  right_num =  5470
+Dev: time: 6.33s, speed: 550.31st/s; acc: 0.9831, p: 0.9263, r: 0.9204, f: 0.9234
+Exceed previous best f score: 0.921856540084
+gold_num =  5654  pred_num =  5649  right_num =  5026
+Test: time: 6.04s, speed:614.14st/s; acc: 0.9750, p: 0.8897, r: 0.8889, f: 0.8893
+Epoch: 27/100
+ Learning rate is setted as: 0.00375516134614
+     Instance: 500; Time: 8.11s; loss: 438.5023; acc: 6494.0/6666.0=0.9742
+     Instance: 1000; Time: 8.02s; loss: 413.1473; acc: 13096.0/13416.0=0.9761
+     Instance: 1500; Time: 8.47s; loss: 383.3328; acc: 19698.0/20180.0=0.9761
+     Instance: 2000; Time: 8.34s; loss: 413.8977; acc: 26138.0/26776.0=0.9762
+     Instance: 2500; Time: 9.00s; loss: 423.5773; acc: 33418.0/34229.0=0.9763
+     Instance: 3000; Time: 8.29s; loss: 366.9122; acc: 40141.0/41114.0=0.9763
+     Instance: 3500; Time: 8.35s; loss: 534.2031; acc: 46795.0/47992.0=0.9751
+     Instance: 4000; Time: 7.93s; loss: 389.3568; acc: 53054.0/54402.0=0.9752
+     Instance: 4500; Time: 8.87s; loss: 441.1342; acc: 60311.0/61831.0=0.9754
+     Instance: 5000; Time: 8.21s; loss: 414.4000; acc: 66595.0/68295.0=0.9751
+     Instance: 5500; Time: 7.92s; loss: 355.1162; acc: 73030.0/74871.0=0.9754
+     Instance: 6000; Time: 8.54s; loss: 362.2681; acc: 79449.0/81435.0=0.9756
+     Instance: 6500; Time: 8.40s; loss: 363.7355; acc: 86116.0/88251.0=0.9758
+     Instance: 7000; Time: 8.11s; loss: 395.5870; acc: 92142.0/94447.0=0.9756
+     Instance: 7500; Time: 8.65s; loss: 411.0193; acc: 98894.0/101390.0=0.9754
+     Instance: 8000; Time: 7.95s; loss: 369.3413; acc: 105227.0/107872.0=0.9755
+     Instance: 8500; Time: 8.69s; loss: 416.6458; acc: 112156.0/114993.0=0.9753
+     Instance: 9000; Time: 8.08s; loss: 335.1731; acc: 118900.0/121880.0=0.9755
+     Instance: 9500; Time: 8.87s; loss: 428.1120; acc: 125998.0/129143.0=0.9756
+     Instance: 10000; Time: 8.91s; loss: 399.7331; acc: 132503.0/135802.0=0.9757
+     Instance: 10500; Time: 8.48s; loss: 392.5522; acc: 139432.0/142891.0=0.9758
+     Instance: 11000; Time: 8.02s; loss: 402.6473; acc: 146180.0/149815.0=0.9757
+     Instance: 11500; Time: 8.57s; loss: 448.6473; acc: 153216.0/157039.0=0.9757
+     Instance: 12000; Time: 8.17s; loss: 386.2717; acc: 159660.0/163643.0=0.9757
+     Instance: 12500; Time: 8.70s; loss: 429.2579; acc: 166300.0/170435.0=0.9757
+     Instance: 13000; Time: 8.31s; loss: 470.4524; acc: 173040.0/177380.0=0.9755
+     Instance: 13500; Time: 8.28s; loss: 358.4916; acc: 179685.0/184182.0=0.9756
+     Instance: 14000; Time: 8.80s; loss: 387.7593; acc: 186376.0/191046.0=0.9756
+     Instance: 14500; Time: 8.73s; loss: 502.8013; acc: 192936.0/197795.0=0.9754
+     Instance: 14987; Time: 8.47s; loss: 447.8012; acc: 199507.0/204567.0=0.9753
+Epoch: 27 training finished. Time: 252.25s, speed: 59.41st/s,  total loss: 12281.8773804
+gold_num =  5943  pred_num =  5891  right_num =  5457
+Dev: time: 6.42s, speed: 543.17st/s; acc: 0.9829, p: 0.9263, r: 0.9182, f: 0.9223
+gold_num =  5654  pred_num =  5634  right_num =  5029
+Test: time: 6.11s, speed:606.45st/s; acc: 0.9755, p: 0.8926, r: 0.8895, f: 0.8910
+Epoch: 28/100
+ Learning rate is setted as: 0.00356740327883
+     Instance: 500; Time: 8.07s; loss: 358.6439; acc: 6249.0/6390.0=0.9779
+     Instance: 1000; Time: 8.52s; loss: 427.9510; acc: 13066.0/13405.0=0.9747
+     Instance: 1500; Time: 8.42s; loss: 330.5366; acc: 19794.0/20270.0=0.9765
+     Instance: 2000; Time: 8.57s; loss: 409.8481; acc: 26716.0/27347.0=0.9769
+     Instance: 2500; Time: 8.23s; loss: 409.0005; acc: 33307.0/34112.0=0.9764
+     Instance: 3000; Time: 8.32s; loss: 385.1309; acc: 39970.0/40933.0=0.9765
+     Instance: 3500; Time: 8.17s; loss: 405.5060; acc: 46392.0/47521.0=0.9762
+     Instance: 4000; Time: 8.82s; loss: 438.6880; acc: 53461.0/54763.0=0.9762
+     Instance: 4500; Time: 8.95s; loss: 347.8884; acc: 59781.0/61236.0=0.9762
+     Instance: 5000; Time: 8.29s; loss: 435.9037; acc: 66383.0/68006.0=0.9761
+     Instance: 5500; Time: 8.54s; loss: 358.1646; acc: 73046.0/74807.0=0.9765
+     Instance: 6000; Time: 8.70s; loss: 479.3121; acc: 80187.0/82140.0=0.9762
+     Instance: 6500; Time: 8.86s; loss: 386.3774; acc: 86786.0/88914.0=0.9761
+     Instance: 7000; Time: 8.08s; loss: 441.8110; acc: 93172.0/95482.0=0.9758
+     Instance: 7500; Time: 9.14s; loss: 448.2521; acc: 100068.0/102576.0=0.9755
+     Instance: 8000; Time: 8.12s; loss: 365.9333; acc: 106575.0/109236.0=0.9756
+     Instance: 8500; Time: 8.21s; loss: 373.5519; acc: 113185.0/116009.0=0.9757
+     Instance: 9000; Time: 8.65s; loss: 431.9600; acc: 119882.0/122878.0=0.9756
+     Instance: 9500; Time: 8.11s; loss: 527.2106; acc: 126275.0/129496.0=0.9751
+     Instance: 10000; Time: 8.03s; loss: 438.8021; acc: 132782.0/136158.0=0.9752
+     Instance: 10500; Time: 8.15s; loss: 369.7406; acc: 139379.0/142886.0=0.9755
+     Instance: 11000; Time: 8.99s; loss: 359.9070; acc: 146346.0/150003.0=0.9756
+     Instance: 11500; Time: 8.28s; loss: 424.8539; acc: 152930.0/156778.0=0.9755
+     Instance: 12000; Time: 8.67s; loss: 452.1436; acc: 160059.0/164089.0=0.9754
+     Instance: 12500; Time: 7.73s; loss: 436.4760; acc: 166182.0/170394.0=0.9753
+     Instance: 13000; Time: 8.52s; loss: 360.1857; acc: 172649.0/177011.0=0.9754
+     Instance: 13500; Time: 8.18s; loss: 365.2165; acc: 179269.0/183776.0=0.9755
+     Instance: 14000; Time: 8.64s; loss: 392.6011; acc: 186096.0/190769.0=0.9755
+     Instance: 14500; Time: 8.14s; loss: 472.3151; acc: 192804.0/197671.0=0.9754
+     Instance: 14987; Time: 8.66s; loss: 402.8218; acc: 199537.0/204567.0=0.9754
+Epoch: 28 training finished. Time: 252.75s, speed: 59.30st/s,  total loss: 12236.7337646
+gold_num =  5943  pred_num =  5902  right_num =  5460
+Dev: time: 6.40s, speed: 544.60st/s; acc: 0.9827, p: 0.9251, r: 0.9187, f: 0.9219
+gold_num =  5654  pred_num =  5637  right_num =  5027
+Test: time: 6.05s, speed:612.51st/s; acc: 0.9752, p: 0.8918, r: 0.8891, f: 0.8904
+Epoch: 29/100
+ Learning rate is setted as: 0.00338903311489
+     Instance: 500; Time: 8.27s; loss: 406.5215; acc: 6596.0/6760.0=0.9757
+     Instance: 1000; Time: 8.39s; loss: 402.7991; acc: 13446.0/13776.0=0.9760
+     Instance: 1500; Time: 8.75s; loss: 455.8115; acc: 20482.0/20982.0=0.9762
+     Instance: 2000; Time: 8.27s; loss: 416.9821; acc: 27182.0/27824.0=0.9769
+     Instance: 2500; Time: 8.85s; loss: 391.5798; acc: 34353.0/35173.0=0.9767
+     Instance: 3000; Time: 8.48s; loss: 443.2010; acc: 40943.0/41950.0=0.9760
+     Instance: 3500; Time: 8.05s; loss: 342.8450; acc: 47710.0/48860.0=0.9765
+     Instance: 4000; Time: 8.19s; loss: 344.8954; acc: 53804.0/55095.0=0.9766
+     Instance: 4500; Time: 8.13s; loss: 379.3097; acc: 60435.0/61886.0=0.9766
+     Instance: 5000; Time: 9.01s; loss: 411.6599; acc: 67485.0/69109.0=0.9765
+     Instance: 5500; Time: 8.55s; loss: 466.2339; acc: 74690.0/76489.0=0.9765
+     Instance: 6000; Time: 7.89s; loss: 344.2871; acc: 81084.0/83025.0=0.9766
+     Instance: 6500; Time: 8.71s; loss: 401.2459; acc: 87839.0/89951.0=0.9765
+     Instance: 7000; Time: 8.75s; loss: 411.7192; acc: 94732.0/97027.0=0.9763
+     Instance: 7500; Time: 8.88s; loss: 403.3806; acc: 100995.0/103440.0=0.9764
+     Instance: 8000; Time: 8.45s; loss: 344.7977; acc: 108148.0/110749.0=0.9765
+     Instance: 8500; Time: 7.67s; loss: 367.6444; acc: 114359.0/117111.0=0.9765
+     Instance: 9000; Time: 8.39s; loss: 410.8697; acc: 121283.0/124242.0=0.9762
+     Instance: 9500; Time: 7.90s; loss: 375.9160; acc: 127320.0/130436.0=0.9761
+     Instance: 10000; Time: 8.01s; loss: 395.4506; acc: 133742.0/137034.0=0.9760
+     Instance: 10500; Time: 8.20s; loss: 288.6667; acc: 140254.0/143650.0=0.9764
+     Instance: 11000; Time: 8.33s; loss: 408.8845; acc: 146949.0/150512.0=0.9763
+     Instance: 11500; Time: 8.51s; loss: 330.3503; acc: 153709.0/157397.0=0.9766
+     Instance: 12000; Time: 8.19s; loss: 409.3723; acc: 160370.0/164215.0=0.9766
+     Instance: 12500; Time: 7.89s; loss: 454.6699; acc: 166660.0/170673.0=0.9765
+     Instance: 13000; Time: 8.82s; loss: 482.9670; acc: 173332.0/177534.0=0.9763
+     Instance: 13500; Time: 8.23s; loss: 413.1935; acc: 179837.0/184198.0=0.9763
+     Instance: 14000; Time: 8.32s; loss: 467.3563; acc: 186585.0/191140.0=0.9762
+     Instance: 14500; Time: 8.94s; loss: 447.3176; acc: 193572.0/198320.0=0.9761
+     Instance: 14987; Time: 8.13s; loss: 301.1313; acc: 199702.0/204567.0=0.9762
+Epoch: 29 training finished. Time: 251.14s, speed: 59.68st/s,  total loss: 11921.0593872
+gold_num =  5943  pred_num =  5904  right_num =  5453
+Dev: time: 6.40s, speed: 544.54st/s; acc: 0.9827, p: 0.9236, r: 0.9176, f: 0.9206
+gold_num =  5654  pred_num =  5649  right_num =  5022
+Test: time: 6.00s, speed:617.19st/s; acc: 0.9748, p: 0.8890, r: 0.8882, f: 0.8886
+Epoch: 30/100
+ Learning rate is setted as: 0.00321958145914
+     Instance: 500; Time: 8.11s; loss: 424.6046; acc: 6380.0/6561.0=0.9724
+     Instance: 1000; Time: 8.19s; loss: 325.4370; acc: 12859.0/13180.0=0.9756
+     Instance: 1500; Time: 8.53s; loss: 408.8478; acc: 19492.0/19978.0=0.9757
+     Instance: 2000; Time: 8.69s; loss: 316.6974; acc: 26232.0/26830.0=0.9777
+     Instance: 2500; Time: 7.98s; loss: 319.8409; acc: 32516.0/33266.0=0.9775
+     Instance: 3000; Time: 8.41s; loss: 314.3016; acc: 39158.0/40040.0=0.9780
+     Instance: 3500; Time: 8.06s; loss: 324.7682; acc: 45684.0/46703.0=0.9782
+     Instance: 4000; Time: 8.86s; loss: 404.2007; acc: 52712.0/53898.0=0.9780
+     Instance: 4500; Time: 8.56s; loss: 344.0624; acc: 59698.0/61031.0=0.9782
+     Instance: 5000; Time: 8.29s; loss: 442.9225; acc: 66220.0/67741.0=0.9775
+     Instance: 5500; Time: 8.44s; loss: 466.0069; acc: 72765.0/74481.0=0.9770
+     Instance: 6000; Time: 8.70s; loss: 425.4108; acc: 79415.0/81304.0=0.9768
+     Instance: 6500; Time: 8.43s; loss: 419.7857; acc: 85942.0/88003.0=0.9766
+     Instance: 7000; Time: 8.68s; loss: 382.2800; acc: 92735.0/94942.0=0.9768
+     Instance: 7500; Time: 8.52s; loss: 486.8458; acc: 99944.0/102346.0=0.9765
+     Instance: 8000; Time: 8.67s; loss: 442.7449; acc: 106569.0/109145.0=0.9764
+     Instance: 8500; Time: 8.63s; loss: 436.1745; acc: 113338.0/116094.0=0.9763
+     Instance: 9000; Time: 8.68s; loss: 370.5486; acc: 120297.0/123207.0=0.9764
+     Instance: 9500; Time: 8.33s; loss: 417.8773; acc: 126689.0/129789.0=0.9761
+     Instance: 10000; Time: 8.44s; loss: 409.3712; acc: 133509.0/136767.0=0.9762
+     Instance: 10500; Time: 8.17s; loss: 371.4073; acc: 139747.0/143151.0=0.9762
+     Instance: 11000; Time: 8.73s; loss: 369.7460; acc: 146541.0/150109.0=0.9762
+     Instance: 11500; Time: 8.48s; loss: 476.5444; acc: 153047.0/156811.0=0.9760
+     Instance: 12000; Time: 8.45s; loss: 412.7823; acc: 159956.0/163885.0=0.9760
+     Instance: 12500; Time: 8.39s; loss: 404.9126; acc: 166737.0/170816.0=0.9761
+     Instance: 13000; Time: 7.98s; loss: 392.4697; acc: 173152.0/177411.0=0.9760
+     Instance: 13500; Time: 8.24s; loss: 343.9735; acc: 179683.0/184073.0=0.9762
+     Instance: 14000; Time: 8.54s; loss: 389.6438; acc: 186718.0/191251.0=0.9763
+     Instance: 14500; Time: 8.60s; loss: 416.6287; acc: 193461.0/198164.0=0.9763
+     Instance: 14987; Time: 8.16s; loss: 427.4766; acc: 199691.0/204567.0=0.9762
+Epoch: 30 training finished. Time: 252.93s, speed: 59.25st/s,  total loss: 11888.3136902
+gold_num =  5943  pred_num =  5911  right_num =  5471
+Dev: time: 6.50s, speed: 536.14st/s; acc: 0.9832, p: 0.9256, r: 0.9206, f: 0.9231
+gold_num =  5654  pred_num =  5659  right_num =  5043
+Test: time: 6.22s, speed:595.27st/s; acc: 0.9757, p: 0.8911, r: 0.8919, f: 0.8915
+Epoch: 31/100
+ Learning rate is setted as: 0.00305860238619
+     Instance: 500; Time: 8.44s; loss: 466.8157; acc: 7008.0/7212.0=0.9717
+     Instance: 1000; Time: 8.17s; loss: 365.2776; acc: 13384.0/13735.0=0.9744
+     Instance: 1500; Time: 8.70s; loss: 368.6365; acc: 20270.0/20788.0=0.9751
+     Instance: 2000; Time: 8.35s; loss: 405.4912; acc: 26631.0/27297.0=0.9756
+     Instance: 2500; Time: 8.52s; loss: 394.9373; acc: 33364.0/34196.0=0.9757
+     Instance: 3000; Time: 8.32s; loss: 421.4893; acc: 40269.0/41289.0=0.9753
+     Instance: 3500; Time: 8.66s; loss: 408.0654; acc: 47128.0/48314.0=0.9755
+     Instance: 4000; Time: 8.85s; loss: 342.6328; acc: 54034.0/55366.0=0.9759
+     Instance: 4500; Time: 9.08s; loss: 415.0142; acc: 60722.0/62213.0=0.9760
+     Instance: 5000; Time: 8.61s; loss: 402.8420; acc: 67133.0/68786.0=0.9760
+     Instance: 5500; Time: 8.63s; loss: 359.8856; acc: 74168.0/75970.0=0.9763
+     Instance: 6000; Time: 7.97s; loss: 420.7003; acc: 80750.0/82706.0=0.9763
+     Instance: 6500; Time: 8.25s; loss: 430.1364; acc: 87302.0/89427.0=0.9762
+     Instance: 7000; Time: 8.72s; loss: 410.7636; acc: 93737.0/96032.0=0.9761
+     Instance: 7500; Time: 8.26s; loss: 343.1225; acc: 100336.0/102761.0=0.9764
+     Instance: 8000; Time: 8.48s; loss: 376.7157; acc: 107041.0/109615.0=0.9765
+     Instance: 8500; Time: 8.21s; loss: 489.9411; acc: 113769.0/116550.0=0.9761
+     Instance: 9000; Time: 8.61s; loss: 359.2463; acc: 120268.0/123217.0=0.9761
+     Instance: 9500; Time: 8.39s; loss: 430.8436; acc: 127176.0/130305.0=0.9760
+     Instance: 10000; Time: 8.09s; loss: 391.8210; acc: 133685.0/137003.0=0.9758
+     Instance: 10500; Time: 8.38s; loss: 384.4808; acc: 140375.0/143856.0=0.9758
+     Instance: 11000; Time: 8.47s; loss: 408.1096; acc: 147240.0/150885.0=0.9758
+     Instance: 11500; Time: 8.73s; loss: 380.5598; acc: 154036.0/157836.0=0.9759
+     Instance: 12000; Time: 8.37s; loss: 370.9468; acc: 160679.0/164631.0=0.9760
+     Instance: 12500; Time: 8.15s; loss: 317.6489; acc: 167098.0/171187.0=0.9761
+     Instance: 13000; Time: 7.91s; loss: 357.0129; acc: 173182.0/177417.0=0.9761
+     Instance: 13500; Time: 8.45s; loss: 358.0371; acc: 179920.0/184338.0=0.9760
+     Instance: 14000; Time: 8.69s; loss: 394.9787; acc: 187173.0/191754.0=0.9761
+     Instance: 14500; Time: 8.04s; loss: 385.8809; acc: 193541.0/198284.0=0.9761
+     Instance: 14987; Time: 7.88s; loss: 394.1760; acc: 199655.0/204567.0=0.9760
+Epoch: 31 training finished. Time: 252.38s, speed: 59.38st/s,  total loss: 11756.2092896
+gold_num =  5943  pred_num =  5910  right_num =  5466
+Dev: time: 6.38s, speed: 546.33st/s; acc: 0.9831, p: 0.9249, r: 0.9197, f: 0.9223
+gold_num =  5654  pred_num =  5655  right_num =  5037
+Test: time: 6.04s, speed:613.84st/s; acc: 0.9754, p: 0.8907, r: 0.8909, f: 0.8908
+Epoch: 32/100
+ Learning rate is setted as: 0.00290567226688
+     Instance: 500; Time: 8.08s; loss: 469.1283; acc: 6693.0/6886.0=0.9720
+     Instance: 1000; Time: 8.43s; loss: 355.2268; acc: 13353.0/13712.0=0.9738
+     Instance: 1500; Time: 8.55s; loss: 430.1665; acc: 19856.0/20378.0=0.9744
+     Instance: 2000; Time: 8.51s; loss: 351.1371; acc: 26622.0/27314.0=0.9747
+     Instance: 2500; Time: 8.49s; loss: 422.6389; acc: 33013.0/33878.0=0.9745
+     Instance: 3000; Time: 8.40s; loss: 408.7764; acc: 39341.0/40376.0=0.9744
+     Instance: 3500; Time: 8.62s; loss: 408.4841; acc: 46151.0/47346.0=0.9748
+     Instance: 4000; Time: 8.91s; loss: 433.7007; acc: 53228.0/54598.0=0.9749
+     Instance: 4500; Time: 8.45s; loss: 455.3832; acc: 60067.0/61627.0=0.9747
+     Instance: 5000; Time: 8.40s; loss: 402.4664; acc: 66568.0/68284.0=0.9749
+     Instance: 5500; Time: 8.57s; loss: 412.8557; acc: 73231.0/75104.0=0.9751
+     Instance: 6000; Time: 7.97s; loss: 353.2304; acc: 79595.0/81617.0=0.9752
+     Instance: 6500; Time: 8.35s; loss: 405.8163; acc: 86522.0/88712.0=0.9753
+     Instance: 7000; Time: 8.00s; loss: 391.5848; acc: 93045.0/95396.0=0.9754
+     Instance: 7500; Time: 8.35s; loss: 418.6633; acc: 99396.0/101919.0=0.9752
+     Instance: 8000; Time: 7.57s; loss: 380.1511; acc: 105748.0/108426.0=0.9753
+     Instance: 8500; Time: 8.29s; loss: 318.1130; acc: 112460.0/115267.0=0.9756
+     Instance: 9000; Time: 8.17s; loss: 373.6515; acc: 118589.0/121563.0=0.9755
+     Instance: 9500; Time: 8.82s; loss: 332.4202; acc: 125796.0/128915.0=0.9758
+     Instance: 10000; Time: 8.54s; loss: 372.0330; acc: 132201.0/135490.0=0.9757
+     Instance: 10500; Time: 8.50s; loss: 413.5137; acc: 139261.0/142728.0=0.9757
+     Instance: 11000; Time: 8.11s; loss: 429.5496; acc: 146013.0/149653.0=0.9757
+     Instance: 11500; Time: 8.58s; loss: 433.0480; acc: 152666.0/156480.0=0.9756
+     Instance: 12000; Time: 7.96s; loss: 343.4683; acc: 159183.0/163137.0=0.9758
+     Instance: 12500; Time: 8.71s; loss: 381.0806; acc: 165972.0/170086.0=0.9758
+     Instance: 13000; Time: 9.05s; loss: 404.7505; acc: 173080.0/177359.0=0.9759
+     Instance: 13500; Time: 7.81s; loss: 369.1342; acc: 179574.0/183987.0=0.9760
+     Instance: 14000; Time: 8.53s; loss: 356.7497; acc: 186399.0/190985.0=0.9760
+     Instance: 14500; Time: 8.24s; loss: 335.0159; acc: 192867.0/197585.0=0.9761
+     Instance: 14987; Time: 8.92s; loss: 408.5567; acc: 199679.0/204567.0=0.9761
+Epoch: 32 training finished. Time: 251.89s, speed: 59.50st/s,  total loss: 11770.4949341
+gold_num =  5943  pred_num =  5895  right_num =  5474
+Dev: time: 6.40s, speed: 544.70st/s; acc: 0.9835, p: 0.9286, r: 0.9211, f: 0.9248
+Exceed previous best f score: 0.923362592843
+gold_num =  5654  pred_num =  5631  right_num =  5032
+Test: time: 6.11s, speed:607.45st/s; acc: 0.9755, p: 0.8936, r: 0.8900, f: 0.8918
+Epoch: 33/100
+ Learning rate is setted as: 0.00276038865353
+     Instance: 500; Time: 8.26s; loss: 369.2285; acc: 6833.0/6983.0=0.9785
+     Instance: 1000; Time: 8.38s; loss: 419.6332; acc: 13516.0/13852.0=0.9757
+     Instance: 1500; Time: 8.96s; loss: 403.9980; acc: 20616.0/21116.0=0.9763
+     Instance: 2000; Time: 8.53s; loss: 452.3737; acc: 27343.0/28041.0=0.9751
+     Instance: 2500; Time: 8.47s; loss: 432.9194; acc: 34103.0/34995.0=0.9745
+     Instance: 3000; Time: 8.12s; loss: 343.6678; acc: 40799.0/41839.0=0.9751
+     Instance: 3500; Time: 7.82s; loss: 320.5691; acc: 47185.0/48366.0=0.9756
+     Instance: 4000; Time: 8.27s; loss: 378.2983; acc: 53821.0/55155.0=0.9758
+     Instance: 4500; Time: 8.49s; loss: 325.7418; acc: 60433.0/61905.0=0.9762
+     Instance: 5000; Time: 8.91s; loss: 458.9114; acc: 68033.0/69692.0=0.9762
+     Instance: 5500; Time: 8.35s; loss: 393.0776; acc: 74510.0/76320.0=0.9763
+     Instance: 6000; Time: 8.30s; loss: 492.0187; acc: 81298.0/83298.0=0.9760
+     Instance: 6500; Time: 9.36s; loss: 349.6934; acc: 88425.0/90569.0=0.9763
+     Instance: 7000; Time: 7.85s; loss: 326.2967; acc: 94622.0/96896.0=0.9765
+     Instance: 7500; Time: 8.74s; loss: 471.3033; acc: 101424.0/103887.0=0.9763
+     Instance: 8000; Time: 7.97s; loss: 333.1101; acc: 107879.0/110480.0=0.9765
+     Instance: 8500; Time: 8.02s; loss: 336.2955; acc: 113969.0/116726.0=0.9764
+     Instance: 9000; Time: 8.52s; loss: 408.5657; acc: 120629.0/123551.0=0.9763
+     Instance: 9500; Time: 8.19s; loss: 354.8305; acc: 127226.0/130304.0=0.9764
+     Instance: 10000; Time: 8.52s; loss: 343.6656; acc: 133602.0/136832.0=0.9764
+     Instance: 10500; Time: 8.59s; loss: 347.5890; acc: 140298.0/143680.0=0.9765
+     Instance: 11000; Time: 8.64s; loss: 449.4460; acc: 147086.0/150654.0=0.9763
+     Instance: 11500; Time: 8.24s; loss: 353.6772; acc: 153279.0/156997.0=0.9763
+     Instance: 12000; Time: 8.18s; loss: 362.1567; acc: 159945.0/163809.0=0.9764
+     Instance: 12500; Time: 8.42s; loss: 423.3431; acc: 166647.0/170689.0=0.9763
+     Instance: 13000; Time: 8.14s; loss: 365.3380; acc: 173314.0/177515.0=0.9763
+     Instance: 13500; Time: 8.08s; loss: 380.5662; acc: 179594.0/183950.0=0.9763
+     Instance: 14000; Time: 8.62s; loss: 478.3145; acc: 186491.0/191037.0=0.9762
+     Instance: 14500; Time: 8.75s; loss: 411.1432; acc: 193572.0/198280.0=0.9763
+     Instance: 14987; Time: 8.06s; loss: 299.5174; acc: 199730.0/204567.0=0.9764
+Epoch: 33 training finished. Time: 251.73s, speed: 59.54st/s,  total loss: 11585.2894897
+gold_num =  5943  pred_num =  5926  right_num =  5478
+Dev: time: 6.34s, speed: 550.50st/s; acc: 0.9833, p: 0.9244, r: 0.9218, f: 0.9231
+gold_num =  5654  pred_num =  5661  right_num =  5046
+Test: time: 6.01s, speed:616.88st/s; acc: 0.9755, p: 0.8914, r: 0.8925, f: 0.8919
+Epoch: 34/100
+ Learning rate is setted as: 0.00262236922086
+     Instance: 500; Time: 8.75s; loss: 391.1322; acc: 7027.0/7199.0=0.9761
+     Instance: 1000; Time: 8.25s; loss: 376.1603; acc: 13716.0/14060.0=0.9755
+     Instance: 1500; Time: 8.39s; loss: 331.8047; acc: 20200.0/20700.0=0.9758
+     Instance: 2000; Time: 8.76s; loss: 398.7774; acc: 27301.0/27987.0=0.9755
+     Instance: 2500; Time: 8.61s; loss: 419.5062; acc: 34219.0/35098.0=0.9750
+     Instance: 3000; Time: 8.28s; loss: 330.4432; acc: 40387.0/41422.0=0.9750
+     Instance: 3500; Time: 8.10s; loss: 362.0013; acc: 47003.0/48171.0=0.9758
+     Instance: 4000; Time: 8.52s; loss: 448.5634; acc: 53897.0/55250.0=0.9755
+     Instance: 4500; Time: 7.87s; loss: 361.6920; acc: 60055.0/61559.0=0.9756
+     Instance: 5000; Time: 7.88s; loss: 421.2789; acc: 66425.0/68103.0=0.9754
+     Instance: 5500; Time: 8.56s; loss: 384.4960; acc: 72993.0/74841.0=0.9753
+     Instance: 6000; Time: 9.37s; loss: 397.2950; acc: 80652.0/82663.0=0.9757
+     Instance: 6500; Time: 8.26s; loss: 432.4264; acc: 87314.0/89494.0=0.9756
+     Instance: 7000; Time: 8.17s; loss: 331.7749; acc: 93804.0/96125.0=0.9759
+     Instance: 7500; Time: 8.49s; loss: 382.0961; acc: 100342.0/102817.0=0.9759
+     Instance: 8000; Time: 8.54s; loss: 386.8416; acc: 107350.0/109993.0=0.9760
+     Instance: 8500; Time: 8.37s; loss: 415.6631; acc: 113875.0/116683.0=0.9759
+     Instance: 9000; Time: 8.14s; loss: 380.4237; acc: 120253.0/123227.0=0.9759
+     Instance: 9500; Time: 8.76s; loss: 404.7801; acc: 127055.0/130213.0=0.9757
+     Instance: 10000; Time: 8.51s; loss: 383.5427; acc: 133854.0/137183.0=0.9757
+     Instance: 10500; Time: 8.29s; loss: 345.5493; acc: 140103.0/143556.0=0.9759
+     Instance: 11000; Time: 8.91s; loss: 368.0338; acc: 147193.0/150800.0=0.9761
+     Instance: 11500; Time: 8.21s; loss: 330.7084; acc: 153450.0/157200.0=0.9761
+     Instance: 12000; Time: 8.11s; loss: 490.2145; acc: 160244.0/164211.0=0.9758
+     Instance: 12500; Time: 8.78s; loss: 458.8783; acc: 167196.0/171325.0=0.9759
+     Instance: 13000; Time: 8.02s; loss: 326.9005; acc: 173311.0/177595.0=0.9759
+     Instance: 13500; Time: 7.76s; loss: 393.0770; acc: 179631.0/184070.0=0.9759
+     Instance: 14000; Time: 8.62s; loss: 437.6382; acc: 186724.0/191335.0=0.9759
+     Instance: 14500; Time: 7.83s; loss: 367.1129; acc: 193121.0/197882.0=0.9759
+     Instance: 14987; Time: 8.35s; loss: 385.1585; acc: 199624.0/204567.0=0.9758
+Epoch: 34 training finished. Time: 251.49s, speed: 59.59st/s,  total loss: 11643.9704895
+gold_num =  5943  pred_num =  5914  right_num =  5473
+Dev: time: 6.38s, speed: 546.70st/s; acc: 0.9833, p: 0.9254, r: 0.9209, f: 0.9232
+gold_num =  5654  pred_num =  5651  right_num =  5041
+Test: time: 6.05s, speed:612.32st/s; acc: 0.9755, p: 0.8921, r: 0.8916, f: 0.8918
+Epoch: 35/100
+ Learning rate is setted as: 0.00249125075981
+     Instance: 500; Time: 8.49s; loss: 415.8992; acc: 6936.0/7119.0=0.9743
+     Instance: 1000; Time: 8.35s; loss: 323.5602; acc: 13127.0/13430.0=0.9774
+     Instance: 1500; Time: 8.35s; loss: 395.5097; acc: 19862.0/20329.0=0.9770
+     Instance: 2000; Time: 8.74s; loss: 383.2085; acc: 26281.0/26914.0=0.9765
+     Instance: 2500; Time: 8.02s; loss: 380.5380; acc: 32494.0/33274.0=0.9766
+     Instance: 3000; Time: 8.25s; loss: 353.3024; acc: 39085.0/40010.0=0.9769
+     Instance: 3500; Time: 8.69s; loss: 447.0897; acc: 45839.0/46936.0=0.9766
+     Instance: 4000; Time: 8.60s; loss: 434.4236; acc: 52794.0/54093.0=0.9760
+     Instance: 4500; Time: 8.35s; loss: 322.8346; acc: 59522.0/60955.0=0.9765
+     Instance: 5000; Time: 8.60s; loss: 376.4205; acc: 66138.0/67724.0=0.9766
+     Instance: 5500; Time: 8.83s; loss: 365.3604; acc: 73166.0/74904.0=0.9768
+     Instance: 6000; Time: 8.20s; loss: 326.4313; acc: 80078.0/81951.0=0.9771
+     Instance: 6500; Time: 7.96s; loss: 359.8296; acc: 86187.0/88210.0=0.9771
+     Instance: 7000; Time: 8.74s; loss: 407.9971; acc: 93183.0/95388.0=0.9769
+     Instance: 7500; Time: 8.44s; loss: 431.0615; acc: 99582.0/101980.0=0.9765
+     Instance: 8000; Time: 8.06s; loss: 397.7271; acc: 106213.0/108766.0=0.9765
+     Instance: 8500; Time: 8.59s; loss: 318.2433; acc: 113215.0/115898.0=0.9769
+     Instance: 9000; Time: 8.75s; loss: 435.3036; acc: 120044.0/122901.0=0.9768
+     Instance: 9500; Time: 7.80s; loss: 378.5527; acc: 126006.0/129028.0=0.9766
+     Instance: 10000; Time: 8.48s; loss: 349.4877; acc: 132844.0/136011.0=0.9767
+     Instance: 10500; Time: 8.80s; loss: 426.8886; acc: 140063.0/143412.0=0.9766
+     Instance: 11000; Time: 8.28s; loss: 366.9265; acc: 146526.0/150038.0=0.9766
+     Instance: 11500; Time: 8.65s; loss: 448.8898; acc: 153008.0/156697.0=0.9765
+     Instance: 12000; Time: 8.29s; loss: 329.7585; acc: 159473.0/163310.0=0.9765
+     Instance: 12500; Time: 8.44s; loss: 361.8077; acc: 166051.0/170026.0=0.9766
+     Instance: 13000; Time: 8.46s; loss: 410.6608; acc: 173030.0/177182.0=0.9766
+     Instance: 13500; Time: 8.16s; loss: 389.3419; acc: 179551.0/183899.0=0.9764
+     Instance: 14000; Time: 8.29s; loss: 453.5673; acc: 186533.0/191066.0=0.9763
+     Instance: 14500; Time: 8.25s; loss: 344.3445; acc: 193038.0/197725.0=0.9763
+     Instance: 14987; Time: 8.30s; loss: 398.9161; acc: 199710.0/204567.0=0.9763
+Epoch: 35 training finished. Time: 252.22s, speed: 59.42st/s,  total loss: 11533.8826294
+gold_num =  5943  pred_num =  5916  right_num =  5486
+Dev: time: 6.39s, speed: 545.42st/s; acc: 0.9834, p: 0.9273, r: 0.9231, f: 0.9252
+Exceed previous best f score: 0.924818381483
+gold_num =  5654  pred_num =  5651  right_num =  5042
+Test: time: 6.08s, speed:610.04st/s; acc: 0.9755, p: 0.8922, r: 0.8918, f: 0.8920
+Epoch: 36/100
+ Learning rate is setted as: 0.00236668822182
+     Instance: 500; Time: 8.34s; loss: 414.0056; acc: 6620.0/6795.0=0.9742
+     Instance: 1000; Time: 8.02s; loss: 370.6202; acc: 12957.0/13302.0=0.9741
+     Instance: 1500; Time: 8.87s; loss: 379.1807; acc: 19717.0/20217.0=0.9753
+     Instance: 2000; Time: 8.42s; loss: 421.8565; acc: 26662.0/27325.0=0.9757
+     Instance: 2500; Time: 8.50s; loss: 331.6420; acc: 33513.0/34301.0=0.9770
+     Instance: 3000; Time: 8.12s; loss: 356.1457; acc: 40027.0/40956.0=0.9773
+     Instance: 3500; Time: 8.21s; loss: 396.1979; acc: 46711.0/47811.0=0.9770
+     Instance: 4000; Time: 8.66s; loss: 295.0995; acc: 53346.0/54584.0=0.9773
+     Instance: 4500; Time: 8.61s; loss: 436.4407; acc: 60240.0/61642.0=0.9773
+     Instance: 5000; Time: 8.20s; loss: 461.4459; acc: 67035.0/68648.0=0.9765
+     Instance: 5500; Time: 8.89s; loss: 363.1180; acc: 73707.0/75487.0=0.9764
+     Instance: 6000; Time: 8.13s; loss: 398.4012; acc: 80461.0/82419.0=0.9762
+     Instance: 6500; Time: 8.77s; loss: 311.1506; acc: 87477.0/89566.0=0.9767
+     Instance: 7000; Time: 8.19s; loss: 368.0225; acc: 94053.0/96290.0=0.9768
+     Instance: 7500; Time: 8.59s; loss: 337.0416; acc: 100531.0/102907.0=0.9769
+     Instance: 8000; Time: 8.46s; loss: 395.7596; acc: 107170.0/109725.0=0.9767
+     Instance: 8500; Time: 7.53s; loss: 379.4753; acc: 113381.0/116083.0=0.9767
+     Instance: 9000; Time: 8.32s; loss: 380.5902; acc: 120444.0/123315.0=0.9767
+     Instance: 9500; Time: 8.74s; loss: 405.1748; acc: 127171.0/130203.0=0.9767
+     Instance: 10000; Time: 8.48s; loss: 470.3668; acc: 133880.0/137087.0=0.9766
+     Instance: 10500; Time: 8.68s; loss: 297.2270; acc: 140732.0/144076.0=0.9768
+     Instance: 11000; Time: 8.63s; loss: 366.7568; acc: 147307.0/150798.0=0.9768
+     Instance: 11500; Time: 8.31s; loss: 340.9534; acc: 153815.0/157460.0=0.9769
+     Instance: 12000; Time: 8.76s; loss: 405.0074; acc: 160585.0/164406.0=0.9768
+     Instance: 12500; Time: 8.31s; loss: 342.3181; acc: 167025.0/170991.0=0.9768
+     Instance: 13000; Time: 8.46s; loss: 401.3278; acc: 173449.0/177571.0=0.9768
+     Instance: 13500; Time: 8.61s; loss: 416.5402; acc: 180394.0/184686.0=0.9768
+     Instance: 14000; Time: 8.07s; loss: 366.1022; acc: 186786.0/191214.0=0.9768
+     Instance: 14500; Time: 6.01s; loss: 300.6624; acc: 193041.0/197604.0=0.9769
+Killed
