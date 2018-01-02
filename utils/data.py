@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-19 22:53:39
+# @Last Modified time: 2018-01-02 20:00:52
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -53,7 +53,7 @@ class Data:
         ### hyperparameters
         self.HP_iteration = 100
         self.HP_batch_size = 10
-        self.HP_average_batch_loss = True
+        self.HP_average_batch_loss = False
         self.HP_char_hidden_dim = 50
         self.HP_hidden_dim = 200
         self.HP_dropout = 0.5
