@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-02 19:10:34
+# @Last Modified time: 2018-01-02 19:14:38
 
 import time
 import sys
@@ -405,11 +405,11 @@ if __name__ == '__main__':
             emb_file = "../data/joint4.all.b10c1.2h.iter17.mchar" 
         else:
             emb_file = None
-        char_emb = args.charemb.lower()
-        print "Char Embedding:", char_emb
-        if char_emb == "rich":
+        char_emb_file = args.charemb.lower()
+        print "Char Embedding:", char_emb_file
+        if char_emb_file == "rich":
             char_emb_file = "../data/joint4.all.b10c1.2h.iter17.mchar"
-        elif char_emb == "normal":
+        elif char_emb_file == "normal":
             char_emb_file = "../data/gigaword_chn.all.a2b.uni.ite50.vec"
 
         data = data_initialization(train_file, dev_file, test_file)
@@ -419,7 +419,7 @@ if __name__ == '__main__':
         if emb_file:
             print "load word emb file... norm:", data.norm_word_emb
             data.build_word_pretrain_emb(emb_file)
-        if char_emb_file:
+        if char_emb_file != "none":
             print "load char emb file... norm:", data.norm_char_emb
             data.build_char_pretrain_emb(char_emb_file)
         train(data, save_model_dir, gpu, seg)
