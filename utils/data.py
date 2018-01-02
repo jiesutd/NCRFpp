@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-02 20:00:52
+# @Last Modified time: 2018-01-02 21:11:02
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -19,8 +19,8 @@ class Data:
         self.MAX_SENTENCE_LENGTH = 250
         self.MAX_WORD_LENGTH = -1
         self.number_normalized = True
-        self.norm_word_emb = True
-        self.norm_char_emb = True
+        self.norm_word_emb = False
+        self.norm_char_emb = False
         self.word_alphabet = Alphabet('word')
         self.char_alphabet = Alphabet('character')
         self.word_alphabet.add(START)
