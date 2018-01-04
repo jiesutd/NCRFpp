@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-02 22:06:45
+# @Last Modified time: 2018-01-04 10:18:54
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -63,7 +63,7 @@ class Data:
         self.HP_gpu = False
         self.HP_lr = 0.015
         self.HP_lr_decay = 0.05
-        self.HP_clip = 5.0
+        self.HP_clip = None
         self.HP_momentum = 0.9
 
         
