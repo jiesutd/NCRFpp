@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-02 22:04:52
+# @Last Modified time: 2018-01-04 09:50:26
 
 import time
 import sys
@@ -21,9 +21,10 @@ from utils.metric import get_ner_fmeasure
 from model.bilstmcrf import BiLSTM_CRF as SeqModel
 from utils.data import Data
 
-random.seed(100)
-torch.manual_seed(100)
-np.random.seed(100)
+seed_num = 100
+random.seed(seed_num)
+torch.manual_seed(seed_num)
+np.random.seed(seed_num)
 
 
 def data_initialization(train_file, dev_file, test_file):
@@ -377,6 +378,7 @@ if __name__ == '__main__':
     # gpu = False
     ## disable cudnn to avoid memory leak
     # torch.backends.cudnn.enabled = True
+    print "Seed num:",seed_num
     print "CuDNN:", torch.backends.cudnn.enabled
     # gpu = False
     print "GPU available:", gpu
