@@ -18,7 +18,7 @@ Performance
 Results on CONLL 2003 English NER task are better or comparable with SOTA results with same structures.    
 In default, `LSTM` means bidirectional lstm structure.    
 |ID| Model | Dev | Test |Note   
-|---|--------- | --- | --- | ------ |   
+|---|--------- | --- | --- | ------ 
 |1| LSTM | 93.12 | 88.74 |   
 |2| CharLSTM+LSTM | 94.31 | 90.52 |   
 |3| CharCNN+LSTM |  94.41| 90.37 |   
