@@ -1,6 +1,7 @@
 Neural Sequence labeling model implemented using PyTorch
 ======
-requirement:
+Requirement:
+======
 	Python: 2.7   
 	Pytorch: 0.3
 
@@ -16,16 +17,16 @@ Performance
 =========
 Results on CONLL 2003 English NER task are better or comparable with SOTA results with same structures.    
 In default, `LSTM` means bidirectional lstm structure.    
-ID| Model | Dev | Test |Note
----|--------- | --- | --- | ------ |
-1| LSTM | 93.12 | 88.74 |
-2| CharLSTM+LSTM | 94.31 | 90.52 |
-3| CharCNN+LSTM |  94.41| 90.37 |
-4| LSTMCRF |  93.34 | 89.48 |
-5| CharLSTM+LSTMCRF | 94.77 | 91.33 | 
-6| CharCNN+LSTMCRF | 94.83 | 91.22 | 
-7| Lample .etc, NAACL16 | 	| 90.94 | same structure with 5
-8| Xuezhe Ma .etc, ACL2016 | 	| 91.21 | same structure with 6
+ID| Model | Dev | Test |Note   
+---|--------- | --- | --- | ------ |   
+1| LSTM | 93.12 | 88.74 |   
+2| CharLSTM+LSTM | 94.31 | 90.52 |   
+3| CharCNN+LSTM |  94.41| 90.37 |   
+4| LSTMCRF |  93.34 | 89.48 |   
+5| CharLSTM+LSTMCRF | 94.77 | 91.33 |    
+6| CharCNN+LSTMCRF | 94.83 | 91.22 |    
+7| Lample .etc, NAACL16 | 	| 90.94 | same structure with 5   
+8| Xuezhe Ma .etc, ACL2016 | 	| 91.21 | same structure with 6   
 
 
 Updating...
