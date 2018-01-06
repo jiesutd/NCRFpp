@@ -3,7 +3,7 @@ Neural Sequence labeling model implemented using PyTorch
 Requirement:
 ======
 	Python: 2.7   
-	Pytorch: 0.3
+	PyTorch: 0.3
 
 Functions
 ========
@@ -11,7 +11,7 @@ Functions
 * Batch training/decoding supported, with fast running speed. Most model cost less than 1 minitus for each epoch, finish the whole training process with in 2 hours (with the help of GPU).
 * Character feature can be selected within LSTM, CNN or None (through `data.char_features="CNN"/"LSTM"` or `data.HP_use_char = False` in file `main.py`).
 * Output structure can be choosed in CRF or softmax (by using `from model.bilstmcrf import BiLSTM_CRF as SeqModel` or `from model.bilstm import BiLSTM as SeqModel` in file `main.py`).
-* Bidirectional LSTM-CRF with character features give the best result. 
+* Bidirectional LSTM-CRF with character features give the best result on Named Entity Recognition (NER) task. 
 
 Performance
 =========
@@ -24,10 +24,10 @@ In default, `LSTM` means bidirectional lstm structure.
 |2| CharLSTM+LSTM | 94.31 | 90.52 |   
 |3| CharCNN+LSTM |  94.41| 90.37 |   
 |4| LSTMCRF |  93.34 | 89.48 |   
-|5| CharLSTM+LSTMCRF | 94.77 | 91.33 |    
-|6| CharCNN+LSTMCRF | 94.83 | 91.22 |    
+|5| CharLSTM+LSTMCRF | 94.77 | **91.33** |    
+|6| CharCNN+LSTMCRF | 94.83 | **91.22** |    
 |7| Lample .etc, NAACL16 | 	| 90.94 | same structure with 5   
-|8| Xuezhe Ma .etc, ACL2016 | 	| 91.21 | same structure with 6   
+|8| Xuezhe Ma .etc, ACL16 | 	| 91.21 | same structure with 6   
 
 
 
