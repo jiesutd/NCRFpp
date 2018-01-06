@@ -6,7 +6,7 @@ python main.py --status train \
 		--savemodel ../data/$1/saved_model \
 
 
-# python train_batch.py --status decode \
+# python main.py --status decode \
 # 		--raw data/$1/dev.bmes \
 # 		--savedset data/$1/saved_model.lstmcrf.dset \
 # 		--loadmodel data/$1/saved_model.lstmcrf.13.model \
