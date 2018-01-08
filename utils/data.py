@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-04 10:18:54
+# @Last Modified time: 2018-01-07 21:47:23
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -30,7 +30,7 @@ class Data:
         self.char_alphabet.add(PADDING)
         self.label_alphabet = Alphabet('label')
         self.tagScheme = "NoSeg"
-        self.char_features = "LSTM" 
+        self.char_features = "LSTM" ## "LSTM"/"CNN"
 
         self.train_texts = []
         self.dev_texts = []

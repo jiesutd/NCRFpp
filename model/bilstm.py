@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-14 12:03:59
+# @Last Modified time: 2018-01-07 17:09:34
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -96,6 +96,7 @@ class BiLSTM(nn.Module):
         lstm_out, hidden = self.lstm(packed_words, hidden)
         lstm_out, _ = pad_packed_sequence(lstm_out)
         lstm_out = self.droplstm(lstm_out.transpose(1,0))
+        ## lstm_out (batch_size, seq_len, hidden_size)
         return lstm_out
 
 

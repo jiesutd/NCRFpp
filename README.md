@@ -4,6 +4,8 @@ State-of-the-art sequence labeling models mostly utilize the CRF structure with 
 
 This repository provide a PyTorch based framework with flexiable choices of input features and output structures, inculde BiLSTM-CRF with character LSTM features ([Lample .etc, NAACL16](http://www.aclweb.org/anthology/N/N16/N16-1030.pdf)) and character CNN features ([Ma .etc, ACL16](http://www.aclweb.org/anthology/P/P16/P16-1101.pdf)). You can build your own structure in different input/output combination with minimum code work.
 
+Welcome to star this repository!
+
 Requirement:
 ======
 	Python: 2.7   
@@ -29,7 +31,7 @@ In default, `LSTM` means bidirectional lstm structure.
 |3| CharCNN+LSTM |  94.41| 90.37 |   
 |4| LSTMCRF |  93.34 | 89.48 |   
 |5| CharLSTM+LSTMCRF | 94.77 | **91.33** |    
-|6| CharCNN+LSTMCRF | 94.83 | **91.22** |    
+|6| CharCNN+LSTMCRF | **94.83** | 91.22 |    
 |7| [Lample .etc, NAACL16](http://www.aclweb.org/anthology/N/N16/N16-1030.pdf) | 	| 90.94 | same structure with 5   
 |8| [Ma .etc, ACL16](http://www.aclweb.org/anthology/P/P16/P16-1101.pdf) | 	| 91.21 | same structure with 6   
 
