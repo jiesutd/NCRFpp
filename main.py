@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-08 15:00:49
+# @Last Modified time: 2018-01-09 21:39:34
 
 import time
 import sys
@@ -27,14 +27,11 @@ torch.manual_seed(seed_num)
 np.random.seed(seed_num)
 
 
-def data_initialization(train_file, dev_file, test_file):
-    data = Data()
-    data.number_normalized = True
+def data_initialization(data, train_file, dev_file, test_file):
     data.build_alphabet(train_file)
     data.build_alphabet(dev_file)
     data.build_alphabet(test_file)
     data.fix_alphabet()
-    return data
 
 
 def predict_check(pred_variable, gold_variable, mask_variable):
@@ -220,12 +217,9 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     return word_seq_tensor, word_seq_lengths, word_seq_recover, char_seq_tensor, char_seq_lengths, char_seq_recover, label_seq_tensor, mask
 
 
-def train(data, save_model_dir, gpu, seg=True):
+def train(data, save_model_dir, seg=True):
     print "Training model..."
-    data.HP_gpu = gpu
-    data.HP_use_char = True
-    data.HP_batch_size = 10
-    # data.char_features = "CNN"
+    
     data.show_data_summary()
     save_data_name = save_model_dir +".dset"
     save_data_setting(data, save_data_name)
@@ -414,7 +408,14 @@ if __name__ == '__main__':
         elif char_emb_file == "normal":
             char_emb_file = "../data/gigaword_chn.all.a2b.uni.ite50.vec"
 
-        data = data_initialization(train_file, dev_file, test_file)
+        data = Data()
+        data.number_normalized = True
+        data_initialization(data, train_file, dev_file, test_file)
+        data.HP_gpu = gpu
+        data.HP_use_char = True
+        data.HP_batch_size = 10
+        # data.char_features = "CNN"
+
         data.generate_instance(train_file,'train')
         data.generate_instance(dev_file,'dev')
         data.generate_instance(test_file,'test')
@@ -424,7 +425,7 @@ if __name__ == '__main__':
         if char_emb_file != "none":
             print "load char emb file... norm:", data.norm_char_emb
             data.build_char_pretrain_emb(char_emb_file)
-        train(data, save_model_dir, gpu, seg)
+        train(data, save_model_dir, seg)
     elif status == 'test':      
         data = load_data_setting(dset_dir)
         data.generate_instance(dev_file,'dev')
