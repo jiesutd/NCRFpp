@@ -1,4 +1,9 @@
-__author__ = 'max'
+# -*- coding: utf-8 -*-
+# @Author: Max
+# @Date:   2018-01-19 11:33:37
+# @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
+# @Last Modified time: 2018-01-19 11:33:56
+
 
 """
 Alphabet maps objects to integer ids. It provides two way mapping from the index to the objects.
@@ -8,9 +13,10 @@ import os
 
 
 class Alphabet:
-    def __init__(self, name, keep_growing=True):
+    def __init__(self, name, label=False, keep_growing=True):
         self.__name = name
-
+        self.UNKNOWN = "</unk>"
+        self.label = label
         self.instance2index = {}
         self.instances = []
         self.keep_growing = keep_growing
@@ -18,6 +24,8 @@ class Alphabet:
         # Index 0 is occupied by default, all else following.
         self.default_index = 0
         self.next_index = 1
+        if not self.label:
+            self.add(self.UNKNOWN)
 
     def clear(self, keep_growing=True):
         self.instance2index = {}
@@ -43,7 +51,7 @@ class Alphabet:
                 self.add(instance)
                 return index
             else:
-                return self.default_index
+                return self.instance2index[self.UNKNOWN]
 
     def get_instance(self, index):
         if index == 0:
@@ -56,6 +64,9 @@ class Alphabet:
             return self.instances[0]
 
     def size(self):
+        # if self.label:
+        #     return len(self.instances)
+        # else:
         return len(self.instances) + 1
 
     def iteritems(self):

@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-09 21:39:34
+# @Last Modified time: 2018-01-19 11:36:53
 
 import time
 import sys
@@ -219,7 +219,6 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
 
 def train(data, save_model_dir, seg=True):
     print "Training model..."
-    
     data.show_data_summary()
     save_data_name = save_model_dir +".dset"
     save_data_setting(data, save_data_name)
@@ -414,8 +413,8 @@ if __name__ == '__main__':
         data.HP_gpu = gpu
         data.HP_use_char = True
         data.HP_batch_size = 10
+        data.HP_lr = 0.015
         # data.char_features = "CNN"
-
         data.generate_instance(train_file,'train')
         data.generate_instance(dev_file,'dev')
         data.generate_instance(test_file,'test')

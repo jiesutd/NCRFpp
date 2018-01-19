@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-07 21:47:23
+# @Last Modified time: 2018-01-19 11:34:34
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -23,12 +23,12 @@ class Data:
         self.norm_char_emb = False
         self.word_alphabet = Alphabet('word')
         self.char_alphabet = Alphabet('character')
-        self.word_alphabet.add(START)
-        self.word_alphabet.add(UNKNOWN)
-        self.char_alphabet.add(START)
-        self.char_alphabet.add(UNKNOWN)
-        self.char_alphabet.add(PADDING)
-        self.label_alphabet = Alphabet('label')
+        # self.word_alphabet.add(START)
+        # self.word_alphabet.add(UNKNOWN)
+        # self.char_alphabet.add(START)
+        # self.char_alphabet.add(UNKNOWN)
+        # self.char_alphabet.add(PADDING)
+        self.label_alphabet = Alphabet('label',True)
         self.tagScheme = "NoSeg"
         self.char_features = "LSTM" ## "LSTM"/"CNN"
 
@@ -64,7 +64,7 @@ class Data:
         self.HP_lr = 0.015
         self.HP_lr_decay = 0.05
         self.HP_clip = None
-        self.HP_momentum = 0.9
+        self.HP_momentum = 0
 
         
     def show_data_summary(self):

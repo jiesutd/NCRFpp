@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-12-04 23:19:38
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-07 22:09:39
+# @Last Modified time: 2018-01-15 21:18:16
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -38,9 +38,8 @@ class CRF(nn.Module):
         # # We add 2 here, because of START_TAG and STOP_TAG
         # # transitions (f_tag_size, t_tag_size), transition value from f_tag to t_tag
         init_transitions = torch.zeros(self.tagset_size+2, self.tagset_size+2)
-        # init_transitions = torch.zeros(self.tagset_size+2, self.tagset_size+2)
-        # init_transitions[:,START_TAG] = -1000.0
-        # init_transitions[STOP_TAG,:] = -1000.0
+        init_transitions[:,START_TAG] = -1000.0
+        init_transitions[STOP_TAG,:] = -1000.0
         # init_transitions[:,0] = -1000.0
         # init_transitions[0,:] = -1000.0
         if self.gpu:

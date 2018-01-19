@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-07 17:09:34
+# @Last Modified time: 2018-01-10 17:51:07
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -82,7 +82,6 @@ class BiLSTM(nn.Module):
         batch_size = word_inputs.size(0)
         sent_len = word_inputs.size(1)
         word_embs =  self.word_embeddings(word_inputs)
-
         if self.use_char:
             ## calculate char lstm last hidden
             char_features = self.char_feature.get_last_hiddens(char_inputs, char_seq_lengths.cpu().numpy())
@@ -91,10 +90,12 @@ class BiLSTM(nn.Module):
             ## concat word and char together
             word_embs = torch.cat([word_embs, char_features], 2)
         word_embs = self.drop(word_embs)
+        ## word_embs (batch_size, seq_len, embed_size)
         packed_words = pack_padded_sequence(word_embs, word_seq_lengths.cpu().numpy(), True)
         hidden = None
         lstm_out, hidden = self.lstm(packed_words, hidden)
         lstm_out, _ = pad_packed_sequence(lstm_out)
+        ## lstm_out (seq_len, seq_len, hidden_size)
         lstm_out = self.droplstm(lstm_out.transpose(1,0))
         ## lstm_out (batch_size, seq_len, hidden_size)
         return lstm_out
