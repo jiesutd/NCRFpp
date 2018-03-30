@@ -51,13 +51,13 @@ N best decoding performance:
 =========
 When the nbest=10, NCRF++ can give 97.47% oracle F1-value on CoNLL 2003 NER task.
 
-![alt text](readme/nbest.pdf "N best decoding oracle result")
+![alt text](readme/nbest.png "N best decoding oracle result")
 
 Speed
 =========
 With the help of GPU (Nvidia GTX 1080) and large batch size, NCRF++ can reach 1000 sents/s and 2000sents/s on training and decoding status, respectively.
 
-![alt text](readme/speed.pdf "System speed on NER data")
+![alt text](readme/speed.png "System speed on NER data")
 
 Usage
 =========
