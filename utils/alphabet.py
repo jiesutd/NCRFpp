@@ -2,7 +2,7 @@
 # @Author: Max
 # @Date:   2018-01-19 11:33:37
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-01-19 11:33:56
+# @Last Modified time: 2018-03-23 19:09:36
 
 
 """
@@ -14,7 +14,7 @@ import os
 
 class Alphabet:
     def __init__(self, name, label=False, keep_growing=True):
-        self.__name = name
+        self.name = name
         self.UNKNOWN = "</unk>"
         self.label = label
         self.instance2index = {}

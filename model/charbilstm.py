@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-06 16:21:33
+# @Last Modified time: 2018-03-30 16:18:37
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -13,7 +13,7 @@ import numpy as np
 class CharBiLSTM(nn.Module):
     def __init__(self, alphabet_size, embedding_dim, hidden_dim, dropout, gpu, bidirect_flag = True):
         super(CharBiLSTM, self).__init__()
-        print "build batched char bilstm..."
+        print "build char sequence feature extractor: LSTM ..."
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         if bidirect_flag:

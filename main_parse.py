@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 14:19:10
+# @Last Modified time: 2018-03-30 13:37:37
 
 import time
 import sys
@@ -97,7 +97,7 @@ def recover_nbest_label(pred_variable, mask_variable, label_alphabet, word_recov
     mask_variable = mask_variable[word_recover]
     batch_size = pred_variable.size(0)
     seq_len = pred_variable.size(1)
-    # print pred_variable.size()
+    print pred_variable.size()
     nbest = pred_variable.size(2)
     mask = mask_variable.cpu().data.numpy()
     pred_tag = pred_variable.cpu().data.numpy()
@@ -409,19 +409,41 @@ def load_model_decode(data, name):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Tuning with NCRF++')
+    parser.add_argument('--wordemb',  help='Embedding for words', default='None')
+    parser.add_argument('--charemb',  help='Embedding for chars', default='None')
     parser.add_argument('--status', choices=['train', 'decode'], help='update algorithm', default='train')
-    parser.add_argument('--config',  help='Embedding for chars' )
-    
+    parser.add_argument('--savemodel', default="data/model/saved_model.lstmcrf.")
+    parser.add_argument('--savedset', help='Dir of saved data setting')
+    parser.add_argument('--train', default="data/conll03/train.bmes") 
+    parser.add_argument('--dev', default="data/conll03/dev.bmes" )  
+    parser.add_argument('--test', default="data/conll03/test.bmes") 
+    parser.add_argument('--seg', default="True") 
+    parser.add_argument('--raw') 
+    parser.add_argument('--loadmodel')
+    parser.add_argument('--output') 
     args = parser.parse_args()
     data = Data()
-    data.read_config(args.config)
+    
+    data.train_dir = args.train 
+    data.dev_dir = args.dev 
+    data.test_dir = args.test
+    data.model_dir = args.savemodel
+    data.dset_dir = args.savedset
+    print "aaa",data.dset_dir
     status = args.status.lower()
+    save_model_dir = args.savemodel
     data.HP_gpu = torch.cuda.is_available()
     print "Seed num:",seed_num
+    data.number_normalized = True
+    data.word_emb_dir = "../data/glove.6B.100d.txt"
     
     if status == 'train':
         print("MODEL: train")
         data_initialization(data)
+        data.use_char = True
+        data.HP_batch_size = 10
+        data.HP_lr = 0.015
+        data.char_seq_feature = "CNN"
         data.generate_instance('train')
         data.generate_instance('dev')
         data.generate_instance('test')
@@ -429,10 +451,10 @@ if __name__ == '__main__':
         train(data)
     elif status == 'decode':   
         print("MODEL: decode")
-        data.load(data.dset_dir)  
-        data.read_config(args.config) 
-        print data.raw_dir
-        # exit(0) 
+        data.load(data.dset_dir)    
+        data.raw_dir = args.raw
+        data.decode_dir = args.output
+        data.load_model_dir = args.loadmodel
         data.show_data_summary()
         data.generate_instance('raw')
         print("nbest: %s"%(data.nbest))

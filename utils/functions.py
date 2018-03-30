@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-14 13:43:42
+# @Last Modified time: 2018-03-29 14:48:04
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -17,14 +17,17 @@ def normalize_word(word):
     return new_word
 
 
-def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, number_normalized, max_sent_length, char_padding_size=-1, char_padding_symbol = '</pad>'):
+def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, label_alphabet, number_normalized, max_sent_length, char_padding_size=-1, char_padding_symbol = '</pad>'):
+    feature_num = len(feature_alphabets)
     in_lines = open(input_file,'r').readlines()
     instence_texts = []
     instence_Ids = []
     words = []
+    features = []
     chars = []
     labels = []
     word_Ids = []
+    feature_Ids = []
     char_Ids = []
     label_Ids = []
     for line in in_lines:
@@ -38,6 +41,16 @@ def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, numb
             labels.append(label)
             word_Ids.append(word_alphabet.get_index(word))
             label_Ids.append(label_alphabet.get_index(label))
+            ## get features
+            feat_list = []
+            feat_Id = []
+            for idx in range(feature_num):
+                feat_idx = pairs[idx+1].split(']',1)[-1]
+                feat_list.append(feat_idx)
+                feat_Id.append(feature_alphabets[idx].get_index(feat_idx))
+            features.append(feat_list)
+            feature_Ids.append(feat_Id)
+            ## get char
             char_list = []
             char_Id = []
             for char in word:
@@ -56,12 +69,14 @@ def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, numb
             char_Ids.append(char_Id)
         else:
             if (max_sent_length < 0) or (len(words) < max_sent_length):
-                instence_texts.append([words, chars, labels])
-                instence_Ids.append([word_Ids, char_Ids,label_Ids])
+                instence_texts.append([words, features, chars, labels])
+                instence_Ids.append([word_Ids, feature_Ids, char_Ids,label_Ids])
             words = []
+            features = []
             chars = []
             labels = []
             word_Ids = []
+            feature_Ids = []
             char_Ids = []
             label_Ids = []
     return instence_texts, instence_Ids
