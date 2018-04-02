@@ -28,7 +28,7 @@ Advantages
 * 5.N best output: NCRF++ support nbest decoding. 
 
 
-1.Usage(through configuration file)
+1.Usage
 =========
 NCRF++ supports designing the neural network structure through configuration file. The program can run in two status; training and decoding. (sample configuration and data have been included in this repository)  
 
@@ -38,10 +38,9 @@ In training status:
 In decoding status:
 `python main.py --config demo.decode.config`
 
-The configuration file controls the network structure, I/O, training setting and hyperparameters. Details are list here: 
+The configuration file controls the network structure, I/O, training setting and hyperparameters. Details configurations are list [here](readme/Configuration.md). 
 
-(to be filled)
-
+NCRF++ is designed in three layers: character sequence layer; word sequence layer and inference layer. By using the configuration file, most of the state-of-the-art models can be easily replicated without coding. On the other hand, users can extend each layer by designing their own modules (for example, they may want to design their own neural structures other than CNN/LSTM/GRU). Our layer-wised design makes the module extension convenient, the instruction of module extension can be found [here](readme/Extension.md).
 
 2.Performance
 =========
@@ -66,9 +65,10 @@ In default, `LSTM` means bidirectional lstm structure.
 NCRF++ has integrated several SOTA neural characrter sequence feature extractors: CNN ([Ma .etc, ACL16](http://www.aclweb.org/anthology/P/P16/P16-1101.pdf)), LSTM ([Lample .etc, NAACL16](http://www.aclweb.org/anthology/N/N16/N16-1030.pdf)) and GRU ([Yang .etc, ICLR17](https://arxiv.org/pdf/1703.06345.pdf)). In addition, handcrafted features have been proven important in sequence labeling tasks. NCRF++ allows users designing their own features such as Capitalization, POS tag or any other features. Users can configure the self-defined features through configuration file (feature embedding size, pretrained feature embeddings .etc). The sample input data format is given at [train.cappos.bmes](sample_data/train.cappos.bmes), which includes two human-defined features `[POS]` and `[Cap]`.
 User can configure each feature in configuration file by using 
 
-`feature=[POS] emb_size=20 emb_dir=%your_pretrained_POS_embedding`
-
-`feature=[Cap] emb_size=20 emb_dir=%your_pretrained_Cap_embedding`.
+```Python
+feature=[POS] emb_size=20 emb_dir=%your_pretrained_POS_embedding
+feature=[Cap] emb_size=20 emb_dir=%your_pretrained_Cap_embedding
+```
 
 Feature without pretrained embedding will be randomly initialized.
 
