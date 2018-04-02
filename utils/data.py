@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-04-02 12:08:48
+# @Last Modified time: 2018-04-02 14:37:39
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -84,7 +84,7 @@ class Data:
         ## Training
         self.average_batch_loss = False
         self.optimizer = "SGD" ## "SGD"/"AdaGrad"/"AdaDelta"/"RMSProp"/"Adam"
-
+        self.status = "train"
         ### Hyperparameters
         self.HP_cnn_layer = 4
         self.HP_iteration = 100
@@ -437,6 +437,9 @@ class Data:
         the_item = 'ave_batch_loss'
         if the_item in config:
             self.average_batch_loss = str2bool(config[the_item])
+        the_item = 'status'
+        if the_item in config:
+            self.status = config[the_item]
 
         ## read Hyperparameters:
         the_item = 'cnn_layer'

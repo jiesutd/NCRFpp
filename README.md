@@ -33,10 +33,10 @@ Advantages
 NCRF++ supports designing the neural network structure through configuration file. The program can run in two status; training and decoding. (sample configuration and data have been included in this repository)  
 
 In training status:
-`python main.py --status train --config demo.train.config`
+`python main.py --config demo.train.config`
 
 In decoding status:
-`python main.py --status decode --config demo.decode.config`
+`python main.py --config demo.decode.config`
 
 The configuration file controls the network structure, I/O, training setting and hyperparameters. Details are list here: 
 

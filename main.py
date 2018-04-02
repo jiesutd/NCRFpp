@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 14:19:10
+# @Last Modified time: 2018-04-02 14:37:51
 
 import time
 import sys
@@ -409,13 +409,13 @@ def load_model_decode(data, name):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Tuning with NCRF++')
-    parser.add_argument('--status', choices=['train', 'decode'], help='update algorithm', default='train')
-    parser.add_argument('--config',  help='Embedding for chars' )
+    # parser.add_argument('--status', choices=['train', 'decode'], help='update algorithm', default='train')
+    parser.add_argument('--config',  help='Configuration File' )
     
     args = parser.parse_args()
     data = Data()
     data.read_config(args.config)
-    status = args.status.lower()
+    status = data.status.lower()
     data.HP_gpu = torch.cuda.is_available()
     print "Seed num:",seed_num
     
