@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-12-04 23:19:38
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 16:17:27
+# @Last Modified time: 2018-04-02 11:53:59
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -136,7 +136,8 @@ class CRF(nn.Module):
         mask =  (1 - mask.long()).byte()
         _, inivalues = seq_iter.next()  # bat_size * from_target_size * to_target_size
         # only need start from start_tag
-        partition = inivalues[:, START_TAG, :].clone().view(batch_size, tag_size, 1)  # bat_size * to_target_size
+        partition = inivalues[:, START_TAG, :].clone().view(batch_size, tag_size)  # bat_size * to_target_size
+        # print "init part:",partition.size()
         partition_history.append(partition)
         # iter over last scores
         for idx, cur_values in seq_iter:

@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 16:02:49
+# @Last Modified time: 2018-04-02 12:08:48
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -148,12 +148,13 @@ class Data:
         print(" "+"++"*20)
         print(" Training:")
         print("     Optimizer: %s"%(self.optimizer))
+        print("     Iteration: %s"%(self.HP_iteration))
+        print("     BatchSize: %s"%(self.HP_batch_size))
         print("     Average  batch   loss: %s"%(self.average_batch_loss))
 
         print(" "+"++"*20)
         print(" Hyperparameters:")
-        print("     Hyper       iteration: %s"%(self.HP_iteration))
-        print("     Hyper      batch size: %s"%(self.HP_batch_size))
+        
         print("     Hyper              lr: %s"%(self.HP_lr))
         print("     Hyper        lr_decay: %s"%(self.HP_lr_decay))
         print("     Hyper         HP_clip: %s"%(self.HP_clip))
@@ -336,7 +337,7 @@ class Data:
                 fout.write(label_string)
             fout.write('\n')
         fout.close()
-        print("Predict %s nbest result has been written into file. %s"%(name, self.decode_dir))
+        print("Predict %s %s-best result has been written into file. %s"%(name,nbest, self.decode_dir))
 
 
     def read_config(self,config_file):
