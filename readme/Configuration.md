@@ -26,8 +26,8 @@ use_crf=True    #boolen (necessary in training). Flag of if using CRF layer. If 
 use_char=True    #boolen (necessary in training). Flag of if using character sequence layer. 
 word_seq_feature=XX    #boolen (necessary in training): CNN/LSTM/GRU. Neural structure selection for word sequence. 
 char_seq_feature=CNN    #boolen (necessary in training): CNN/LSTM/GRU. Neural structure selection for character sequence, it only be used when use_char=True.
-feature=[POS] emb_size=20    #feature configuration. I
-feature=[Cap] emb_size=20
+feature=[POS] emb_size=20 emb_dir=xx   #feature configuration. It includes the feature prefix [POS], pretrained feature embedding file and the embedding size. 
+feature=[Cap] emb_size=20 emb_dir=xx    #feature configuration. Another feature [Cap].
 nbest=1    #int (necessary in decoding). Set the nbest size during decoding.
 ```
 
