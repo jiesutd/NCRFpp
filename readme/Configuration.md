@@ -1,5 +1,3 @@
-### use # to comment out the configure item
-
 ### I/O ###
 ```Python
 train_dir=xx    #string (necessary in training). Set training file directory.
