@@ -30,12 +30,12 @@ Advantages
 
 1.Usage
 =========
-NCRF++ supports designing the neural network structure through configuration file. The program can run in two status; training and decoding. (sample configuration and data have been included in this repository)  
+NCRF++ supports designing the neural network structure through a configuration file. The program can run in two status; ***training*** and ***decoding***. (sample configuration and data have been included in this repository)  
 
-In training status:
+In ***training*** status:
 `python main.py --config demo.train.config`
 
-In decoding status:
+In ***decoding*** status:
 `python main.py --config demo.decode.config`
 
 The configuration file controls the network structure, I/O, training setting and hyperparameters. Details configurations are list [here](readme/Configuration.md). 
@@ -44,13 +44,13 @@ NCRF++ is designed in three layers: character sequence layer; word sequence laye
 
 2.Performance
 =========
-Results on CONLL 2003 English NER task are better or comparable with SOTA results with same structures. 
+Results on CONLL 2003 English NER task are better or comparable with SOTA results with the same structures. 
 
 CharLSTM+WordLSTM+CRF: 91.20 vs 90.94 of [Lample .etc, NAACL16](http://www.aclweb.org/anthology/N/N16/N16-1030.pdf);
 
 CharCNN+WordLSTM+CRF:  91.26 vs 91.21 of [Ma .etc, ACL16](http://www.aclweb.org/anthology/P/P16/P16-1101.pdf).   
 
-In default, `LSTM` means bidirectional lstm structure.    
+In default, `LSTM` is bidirectional LSTM.    
 
 |ID| Model | Nochar | CharLSTM |CharCNN   
 |---|--------- | --- | --- | ------    
