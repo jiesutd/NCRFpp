@@ -25,7 +25,7 @@ Advantages
 * 2.State-of-the-art system performance: models build on NCRF++ can give comparable or better results compared with state-of-the-art models.
 * 3.Flexible with features: user can define their own features and pretrained feature embeddings.
 * 4.Fast running speed: NCRF++ utilizes fully batched operations, making the system efficient with the help of GPU (>1000sent/s for training and >2000sents/s for decoding).
-* 5.N best output: NCRF++ support nbest decoding. 
+* 5.N best output: NCRF++ support `nbest` decoding (with their probabilities).
 
 
 1.Usage
