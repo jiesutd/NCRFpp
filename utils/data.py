@@ -476,7 +476,7 @@ class Data:
             self.HP_lr = float(config[the_item])
         the_item = 'lr_decay'
         if the_item in config:
-            self.HP_lr_decay = flaot(config[the_item])
+            self.HP_lr_decay = float(config[the_item])
         the_item = 'clip'
         if the_item in config:
             self.HP_clip = float(config[the_item])
