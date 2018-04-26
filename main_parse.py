@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 13:37:37
+# @Last Modified time: 2018-04-26 12:59:38
 
 import time
 import sys
@@ -294,7 +294,7 @@ def train(data):
         print("Optimizer illegal: %s"%(data.optimizer))
         exit(0)
     best_dev = -10
-    data.HP_iteration = 1
+    # data.HP_iteration = 1
     ## start training
     for idx in range(data.HP_iteration):
         epoch_start = time.time()
