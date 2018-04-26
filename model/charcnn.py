@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 16:18:23
+# @Last Modified time: 2018-04-26 13:21:40
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -10,14 +10,17 @@ import torch.nn.functional as F
 import numpy as np
 
 class CharCNN(nn.Module):
-    def __init__(self, alphabet_size, embedding_dim, hidden_dim, dropout, gpu):
+    def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, gpu):
         super(CharCNN, self).__init__()
         print "build char sequence feature extractor: CNN ..."
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         self.char_drop = nn.Dropout(dropout)
         self.char_embeddings = nn.Embedding(alphabet_size, embedding_dim)
-        self.char_embeddings.weight.data.copy_(torch.from_numpy(self.random_embedding(alphabet_size, embedding_dim)))
+        if pretrain_char_embedding is not None:
+            self.char_embeddings.weight.data.copy_(torch.from_numpy(pretrain_char_embedding))
+        else:
+            self.char_embeddings.weight.data.copy_(torch.from_numpy(self.random_embedding(alphabet_size, embedding_dim)))
         self.char_cnn = nn.Conv1d(embedding_dim, self.hidden_dim, kernel_size=3, padding=1)
         if self.gpu:
             self.char_drop = self.char_drop.cuda()

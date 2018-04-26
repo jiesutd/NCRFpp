@@ -2,7 +2,7 @@
 # @Author: Max
 # @Date:   2018-01-19 11:33:37
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-23 19:09:36
+# @Last Modified time: 2018-04-26 13:56:03
 
 
 """
@@ -55,6 +55,8 @@ class Alphabet:
 
     def get_instance(self, index):
         if index == 0:
+            if self.label:
+                return self.instances[0]
             # First index is occupied by the wildcard element.
             return None
         try:

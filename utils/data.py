@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-04-02 14:37:39
+# @Last Modified time: 2018-04-26 13:58:10
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -77,7 +77,7 @@ class Data:
         ###Networks
         self.word_feature_extractor = "LSTM" ## "LSTM"/"CNN"/"GRU"/
         self.use_char = True
-        self.char_seq_feature = "CNN" ## "LSTM"/"CNN"/"GRU"/None
+        self.char_feature_extractor = "CNN" ## "LSTM"/"CNN"/"GRU"/None
         self.use_crf = True
         self.nbest = None
         
@@ -143,7 +143,7 @@ class Data:
         print("     Model word extractor: %s"%(self.word_feature_extractor))
         print("     Model       use_char: %s"%(self.use_char))
         if self.use_char:
-            print("     Model char_seq_feature: %s"%(self.char_seq_feature))
+            print("     Model char extractor: %s"%(self.char_feature_extractor))
             print("     Model char_hidden_dim: %s"%(self.HP_char_hidden_dim))
         print(" "+"++"*20)
         print(" Training:")

@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 16:18:46
+# @Last Modified time: 2018-04-26 13:22:51
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -11,7 +11,7 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import numpy as np
 
 class CharBiGRU(nn.Module):
-    def __init__(self, alphabet_size, embedding_dim, hidden_dim, dropout, gpu, bidirect_flag = True):
+    def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, gpu, bidirect_flag = True):
         super(CharBiGRU, self).__init__()
         print "build char sequence feature extractor: GRU ..."
         self.gpu = gpu
@@ -20,7 +20,10 @@ class CharBiGRU(nn.Module):
             self.hidden_dim = hidden_dim // 2
         self.char_drop = nn.Dropout(dropout)
         self.char_embeddings = nn.Embedding(alphabet_size, embedding_dim)
-        self.char_embeddings.weight.data.copy_(torch.from_numpy(self.random_embedding(alphabet_size, embedding_dim)))
+        if pretrain_char_embedding is not None:
+            self.char_embeddings.weight.data.copy_(torch.from_numpy(pretrain_char_embedding))
+        else:
+            self.char_embeddings.weight.data.copy_(torch.from_numpy(self.random_embedding(alphabet_size, embedding_dim)))
         self.char_lstm = nn.GRU(embedding_dim, self.hidden_dim, num_layers=1, batch_first=True, bidirectional=bidirect_flag)
         if self.gpu:
             self.char_drop = self.char_drop.cuda()

@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 12:19:52
+# @Last Modified time: 2018-04-26 13:41:07
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -25,18 +25,18 @@ class WordRep(nn.Module):
         if self.use_char:
             self.char_hidden_dim = data.HP_char_hidden_dim
             self.char_embedding_dim = data.char_emb_dim
-            if data.char_seq_feature == "CNN":
-                self.char_feature = CharCNN(data.char_alphabet.size(), self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
-            elif data.char_seq_feature == "LSTM":
-                self.char_feature = CharBiLSTM(data.char_alphabet.size(), self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
-            elif data.char_seq_feature == "GRU":
-                self.char_feature = CharBiGRU(data.char_alphabet.size(), self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
-            elif data.char_seq_feature == "ALL":
+            if data.char_feature_extractor == "CNN":
+                self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+            elif data.char_feature_extractor == "LSTM":
+                self.char_feature = CharBiLSTM(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+            elif data.char_feature_extractor == "GRU":
+                self.char_feature = CharBiGRU(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+            elif data.char_feature_extractor == "ALL":
                 self.char_all_feature = True
-                self.char_feature = CharCNN(data.char_alphabet.size(), self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
-                self.char_feature_extra = CharBiLSTM(data.char_alphabet.size(), self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+                self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+                self.char_feature_extra = CharBiLSTM(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
             else:
-                print "Error char feature selection, please check parameter data.char_seq_feature (CNN/LSTM/GRU/ALL)."
+                print "Error char feature selection, please check parameter data.char_feature_extractor (CNN/LSTM/GRU/ALL)."
                 exit(0)
         self.embedding_dim = data.word_emb_dim
         self.drop = nn.Dropout(data.HP_dropout)
