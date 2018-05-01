@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-04-26 13:42:04
+# @Last Modified time: 2018-04-26 14:50:58
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -23,7 +23,6 @@ class WordSequence(nn.Module):
         self.bilstm_flag = data.HP_bilstm
         self.lstm_layer = data.HP_lstm_layer
         self.wordrep = WordRep(data)
-
         self.input_size = data.word_emb_dim
         if self.use_char:
             self.input_size += data.HP_char_hidden_dim
