@@ -16,7 +16,7 @@ Welcome to star this repository!
 Requirement:
 ======
 	Python: 2.7   
-	PyTorch: >= 0.3
+	PyTorch: 0.3 (currently not support 0.4, will update soon)
 
 
 Advantages
@@ -93,7 +93,7 @@ In our implementation, when the nbest=10, CharCNN+WordLSTM+CRF model built in NC
 
 Cite: 
 ========
-If you use NCRF++ for research, please cite the following paper:
+If you use NCRF++ for research, please cite our ACL paper:
 
     @article{yang2017ncrf,  
      title={NCRF++: An Open-source Neural Sequence Labeling Toolkit},  
@@ -105,6 +105,7 @@ If you use NCRF++ for research, please cite the following paper:
 
 Updating...
 ====
+* 2018-May-01, `NCRF++: An Open-source Neural Sequence Labeling Toolkit` was accepted by ACL 2018 as demonstration paper.
 * 2018-Mar-30, NCRF++ v0.1, initial version
 * 2018-Jan-06, add result comparison.
 * 2018-Jan-02, support character feature selection. 
