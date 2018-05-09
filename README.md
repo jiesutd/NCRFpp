@@ -105,7 +105,7 @@ If you use NCRF++ for research, please cite our ACL paper:
 
 Updating...
 ====
-* 2018-May-01, `NCRF++: An Open-source Neural Sequence Labeling Toolkit` was accepted by ACL 2018 as demonstration paper.
+* 2018-May-01, paper "NCRF++: An Open-source Neural Sequence Labeling Toolkit" was accepted by ACL 2018 as demonstration paper.
 * 2018-Mar-30, NCRF++ v0.1, initial version
 * 2018-Jan-06, add result comparison.
 * 2018-Jan-02, support character feature selection. 
