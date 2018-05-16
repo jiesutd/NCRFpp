@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-12-04 23:19:38
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-04-02 11:53:59
+# @Last Modified time: 2018-05-16 16:57:39
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -116,7 +116,7 @@ class CRF(nn.Module):
         tag_size = feats.size(2)
         assert(tag_size == self.tagset_size+2)
         ## calculate sentence length for each sentence
-        length_mask = torch.sum(mask, dim = 1).view(batch_size,1).long()
+        length_mask = torch.sum(mask.long(), dim = 1).view(batch_size,1).long()
         ## mask to (seq_len, batch_size)
         mask = mask.transpose(1,0).contiguous()
         ins_num = seq_len * batch_size
@@ -231,7 +231,7 @@ class CRF(nn.Module):
         ## transition for label to STOP_TAG
         end_transition = self.transitions[:,STOP_TAG].contiguous().view(1, tag_size).expand(batch_size, tag_size)
         ## length for batch,  last word position = length - 1
-        length_mask = torch.sum(mask, dim = 1).view(batch_size,1).long()
+        length_mask = torch.sum(mask.long(), dim = 1).view(batch_size,1).long()
         ## index the label id of last word
         end_ids = torch.gather(tags, 1, length_mask - 1)
 
@@ -280,7 +280,7 @@ class CRF(nn.Module):
         tag_size = feats.size(2)
         assert(tag_size == self.tagset_size+2)
         ## calculate sentence length for each sentence
-        length_mask = torch.sum(mask, dim = 1).view(batch_size,1).long()
+        length_mask = torch.sum(mask.long(), dim = 1).view(batch_size,1).long()
         ## mask to (seq_len, batch_size)
         mask = mask.transpose(1,0).contiguous()
         ins_num = seq_len * batch_size
