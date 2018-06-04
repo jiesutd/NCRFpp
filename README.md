@@ -40,7 +40,7 @@ In ***decoding*** status:
 
 The configuration file controls the network structure, I/O, training setting and hyperparameters. 
 
-***Details configurations and explanations are listed [here](readme/Configuration.md).***
+***Detail configurations and explanations are listed [here](readme/Configuration.md).***
 
 NCRF++ is designed in three layers (shown below): character sequence layer; word sequence layer and inference layer. By using the configuration file, most of the state-of-the-art models can be easily replicated ***without coding***. On the other hand, users can extend each layer by designing their own modules (for example, they may want to design their own neural structures other than CNN/LSTM/GRU). Our layer-wised design makes the module extension convenient, the instruction of module extension can be found [here](readme/Extension.md).
 
