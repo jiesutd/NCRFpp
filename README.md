@@ -63,6 +63,8 @@ In default, `LSTM` is bidirectional LSTM.
 |3| WordCNN |  88.56| 90.46 | 90.30  
 |4| WordCNN+CRF |  88.90 | 90.70 | 90.43  
 
+We have compared twelve neural sequence labeling models (`{charLSTM, charCNN, None} x {wordLSTM, wordCNN} x {softmax, CRF}`) on three benchmarks (POS, Chunking, NER) under statistical experiments, detail results and comparisons can be found in our COLING 2018 paper (coming soon).
+ 
 
 3.External feature defining
 =========
