@@ -99,7 +99,7 @@ Cite:
 ========
 If you use experiments results of NCRF++, please cite our COLING paper:
 
-    @article{yang2018design,  
+    @inproceedings{yang2018design,  
      title={Design Challenges and Misconceptions in Neural Sequence Labeling},  
      author={Jie Yang, Shuailong Liang and Yue Zhang},  
      booktitle={Proceedings of the 27th International Conference on Computational Linguistics (COLING)},
