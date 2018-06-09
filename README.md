@@ -101,7 +101,7 @@ If you use experiments results of NCRF++, please cite our COLING paper:
 
     @inproceedings{yang2018design,  
      title={Design Challenges and Misconceptions in Neural Sequence Labeling},  
-     author={Jie Yang, Shuailong Liang and Yue Zhang},  
+     author={Yang, Jie and Liang, Shuailong and Zhang, Yue},  
      booktitle={Proceedings of the 27th International Conference on Computational Linguistics (COLING)},
      year={2018}  
     }
