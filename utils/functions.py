@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-29 14:48:04
+# @Last Modified time: 2018-06-10 17:49:50
 import sys
 import numpy as np
 from alphabet import Alphabet
@@ -68,7 +68,7 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
             chars.append(char_list)
             char_Ids.append(char_Id)
         else:
-            if (max_sent_length < 0) or (len(words) < max_sent_length):
+            if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
                 instence_texts.append([words, features, chars, labels])
                 instence_Ids.append([word_Ids, feature_Ids, char_Ids,label_Ids])
             words = []
