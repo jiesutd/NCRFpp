@@ -46,7 +46,16 @@ NCRF++ is designed in three layers (shown below): character sequence layer; word
 
 ![alt text](readme/architecture.png "Layer-size design")
 
-2.Performance
+
+2.Data format
+=========
+* You can refer the data format in [sample_data](sample_data). 
+* NCRF++ supports both BIO and BIOES(BMES) tag scheme.  
+* Notice that IOB format (***different*** from BIO) is currently not supported, because this tag scheme is old and works worse than other schemes [Reimers and Gurevych, 2017](https://arxiv.org/pdf/1707.06799.pdf). 
+* The difference among these three tag schemes is explained in this [paper](https://arxiv.org/pdf/1707.06799.pdf).
+
+
+3.Performance
 =========
 Results on CONLL 2003 English NER task are better or comparable with SOTA results with the same structures. 
 
@@ -66,7 +75,7 @@ In default, `LSTM` is bidirectional LSTM.
 We have compared twelve neural sequence labeling models (`{charLSTM, charCNN, None} x {wordLSTM, wordCNN} x {softmax, CRF}`) on three benchmarks (POS, Chunking, NER) under statistical experiments, detail results and comparisons can be found in our COLING 2018 paper (coming soon).
  
 
-3.External feature defining
+4.External feature defining
 =========
 NCRF++ has integrated several SOTA neural characrter sequence feature extractors: CNN ([Ma .etc, ACL16](http://www.aclweb.org/anthology/P/P16/P16-1101.pdf)), LSTM ([Lample .etc, NAACL16](http://www.aclweb.org/anthology/N/N16/N16-1030.pdf)) and GRU ([Yang .etc, ICLR17](https://arxiv.org/pdf/1703.06345.pdf)). In addition, handcrafted features have been proven important in sequence labeling tasks. NCRF++ allows users designing their own features such as Capitalization, POS tag or any other features (grey circles in above figure). Users can configure the self-defined features through configuration file (feature embedding size, pretrained feature embeddings .etc). The sample input data format is given at [train.cappos.bmes](sample_data/train.cappos.bmes), which includes two human-defined features `[POS]` and `[Cap]`. (`[POS]` and `[Cap]` are two examples, you can give your feature any name you want, just follow the format `[xx]` and configure the feature with the same name in configuration file.)
 User can configure each feature in configuration file by using 
@@ -79,14 +88,14 @@ feature=[Cap] emb_size=20 emb_dir=%your_pretrained_Cap_embedding
 Feature without pretrained embedding will be randomly initialized.
 
 
-4.Speed
+5.Speed
 =========
 NCRF++ is implemented using fully batched calculation, making it quite effcient on both model training and decoding. With the help of GPU (Nvidia GTX 1080) and large batch size, LSTMCRF model built with NCRF++ can reach 1000 sents/s and 2000sents/s on training and decoding status, respectively.
 
 ![alt text](readme/speed.png "System speed on NER data")
 
 
-5.N best decoding performance:
+6.N best decoding performance:
 =========
 Traditional CRF structure decodes only one label sequence with largest probabolities (i.e. 1-best output). While NCRF++ can give a large choice, it can decode `n` label sequences with the top `n` probabilities (i.e. n-best output). The nbest decodeing has been supported by several popular **statistical** CRF framework. However to the best of our knowledge, NCRF++ is the only and the first toolkit which support nbest decoding in **neural** CRF models. 
 
