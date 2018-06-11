@@ -15,7 +15,7 @@ char_emb_dir=xx    #string (optional). Set pretrained character embedding file d
 norm_word_emb=False    #boolen. If normalize the pretrained word embedding.
 norm_char_emb=False    #boolen. If normalize the pretrained character embedding.
 number_normalized=True    #boolen. If normalize the digit into `0` for input files.
-seg=True    #boolen. If task is segmentation like, tasks with token accuracy evaluation (i.e. POS, CCG) is False; tasks with F-value evaluation(i.e. Word Segmentation, NER, Chunking) is True .
+seg=True    #boolen. If task is segmentation like, tasks with token accuracy evaluation (e.g. POS, CCG) is False; tasks with F-value evaluation(e.g. Word Segmentation, NER, Chunking) is True .
 word_emb_dim=50    #int. Word embedding dimension, if model use pretrained word embedding, word_emb_dim will be reset as the same dimension as pretrained embedidng.
 char_emb_dim=30    #int. Character embedding dimension, if model use pretrained character embedding, char_emb_dim will be reset as the same dimension as pretrained embedidng.
 ```
