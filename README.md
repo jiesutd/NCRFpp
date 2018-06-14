@@ -109,7 +109,7 @@ Cite:
 
 If you use NCRF++ in your paper, please cite our ACL demo paper:
 
-    @inproceedings{yang2018design,  
+    @inproceedings{yang2018ncrf,  
      title={NCRF++: An Open-source Neural Sequence Labeling Toolkit},  
      author={Yang, Jie and Zhang, Yue},  
      booktitle={Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics},
