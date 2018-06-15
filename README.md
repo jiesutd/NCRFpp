@@ -109,7 +109,7 @@ In our implementation, when the nbest=10, CharCNN+WordLSTM+CRF model built in NC
 Cite: 
 ========
 
-If you use NCRF++ in your paper, please cite our ACL demo paper:
+If you use NCRF++ in your paper, please cite our [ACL demo paper](https://arxiv.org/abs/1806.05626):
 
     @inproceedings{yang2018ncrf,  
      title={NCRF++: An Open-source Neural Sequence Labeling Toolkit},  
@@ -120,7 +120,7 @@ If you use NCRF++ in your paper, please cite our ACL demo paper:
     }
 
 
-If you use experiments results and analysis of NCRF++, please cite our COLING paper:
+If you use experiments results and analysis of NCRF++, please cite our [COLING paper](https://arxiv.org/abs/1806.04470):
 
     @inproceedings{yang2018design,  
      title={Design Challenges and Misconceptions in Neural Sequence Labeling},  
