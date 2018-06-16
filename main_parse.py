@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-04-26 12:59:38
+# @Last Modified time: 2018-06-16 16:52:14
 
 from __future__ import print_function
 import time
@@ -75,8 +75,8 @@ def recover_label(pred_variable, gold_variable, mask_variable, label_alphabet, w
     for idx in range(batch_size):
         pred = [label_alphabet.get_instance(pred_tag[idx][idy]) for idy in range(seq_len) if mask[idx][idy] != 0]
         gold = [label_alphabet.get_instance(gold_tag[idx][idy]) for idy in range(seq_len) if mask[idx][idy] != 0]
-        # print "p:",pred, pred_tag.tolist()
-        # print "g:", gold, gold_tag.tolist()
+        # print("p:",pred, pred_tag.tolist())
+        # print("g:", gold, gold_tag.tolist())
         assert(len(pred)==len(gold))
         pred_label.append(pred)
         gold_label.append(gold)
@@ -92,7 +92,7 @@ def recover_nbest_label(pred_variable, mask_variable, label_alphabet, word_recov
         output:
             nbest_pred_label list: [batch_size, nbest, each_seq_len]
     """
-    # print "word recover:", word_recover.size()
+    # print("word recover:", word_recover.size())
     # exit(0)
     pred_variable = pred_variable[word_recover]
     mask_variable = mask_variable[word_recover]
@@ -129,13 +129,13 @@ def recover_nbest_label(pred_variable, mask_variable, label_alphabet, word_recov
 #     ## save data settings
 #     with open(save_file, 'w') as fp:
 #         pickle.dump(new_data, fp)
-#     print "Data setting saved to file: ", save_file
+#     print("Data setting saved to file: ", save_file)
 
 
 # def load_data_setting(save_file):
 #     with open(save_file, 'r') as fp:
 #         data = pickle.load(fp)
-#     print "Data setting loaded from file: ", save_file
+#     print("Data setting loaded from file: ", save_file)
 #     data.show_data_summary()
 #     return data
 
@@ -189,7 +189,7 @@ def evaluate(data, model, name, nbest=None):
             tag_seq = nbest_tag_seq[:,:,0]
         else:
             tag_seq = model(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask)
-        # print "tag:",tag_seq
+        # print("tag:",tag_seq)
         pred_label, gold_label = recover_label(tag_seq, batch_label, mask, data.label_alphabet, batch_wordrecover)
         pred_results += pred_label
         gold_results += gold_label

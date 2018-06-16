@@ -17,7 +17,7 @@ Welcome to star this repository!
 
 Requirement:
 ======
-	Python: 2.7   
+	Python: 2 or 3  
 	PyTorch: 0.3 (currently not support 0.4, will update soon)
 
 
