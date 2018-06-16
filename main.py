@@ -4,6 +4,7 @@
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-04-26 14:10:30
 
+from __future__ import print_function
 import time
 import sys
 import argparse
@@ -139,7 +140,7 @@ def recover_nbest_label(pred_variable, mask_variable, label_alphabet, word_recov
 
 def lr_decay(optimizer, epoch, decay_rate, init_lr):
     lr = init_lr/(1+decay_rate*epoch)
-    print " Learning rate is setted as:", lr
+    print(" Learning rate is setted as:", lr)
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
     return optimizer
@@ -156,7 +157,7 @@ def evaluate(data, model, name, nbest=None):
     elif name == 'raw':
         instances = data.raw_Ids
     else:
-        print "Error: wrong evaluate name,", name
+        print("Error: wrong evaluate name,", name)
     right_token = 0
     whole_token = 0
     nbest_pred_results = []
@@ -273,7 +274,7 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
 
 
 def train(data):
-    print "Training model..."
+    print("Training model...")
     data.show_data_summary()
     save_data_name = data.model_dir +".dset"
     data.save(save_data_name)
@@ -337,7 +338,7 @@ def train(data):
                 temp_start = temp_time
                 print("     Instance: %s; Time: %.2fs; loss: %.4f; acc: %s/%s=%.4f"%(end, temp_cost, sample_loss, right_token, whole_token,(right_token+0.)/whole_token))
                 if sample_loss > 1e8 or str(sample_loss) == "nan":
-                    print "ERROR: LOSS EXPLOSION (>1e8) ! PLEASE SET PROPER PARAMETERS AND STRUCTURE! EXIT...."
+                    print("ERROR: LOSS EXPLOSION (>1e8) ! PLEASE SET PROPER PARAMETERS AND STRUCTURE! EXIT....")
                     exit(0)
                 sys.stdout.flush()
                 sample_loss = 0
@@ -351,9 +352,9 @@ def train(data):
         epoch_finish = time.time()
         epoch_cost = epoch_finish - epoch_start
         print("Epoch: %s training finished. Time: %.2fs, speed: %.2fst/s,  total loss: %s"%(idx, epoch_cost, train_num/epoch_cost, total_loss))
-        print "totalloss:", total_loss
+        print("totalloss:", total_loss)
         if total_loss > 1e8 or str(total_loss) == "nan":
-            print "ERROR: LOSS EXPLOSION (>1e8) ! PLEASE SET PROPER PARAMETERS AND STRUCTURE! EXIT...."
+            print("ERROR: LOSS EXPLOSION (>1e8) ! PLEASE SET PROPER PARAMETERS AND STRUCTURE! EXIT....")
             exit(0)
         # continue
         speed, acc, p, r, f, _,_ = evaluate(data, model, "dev")
@@ -369,11 +370,11 @@ def train(data):
 
         if current_score > best_dev:
             if data.seg:
-                print "Exceed previous best f score:", best_dev
+                print("Exceed previous best f score:", best_dev)
             else:
-                print "Exceed previous best acc score:", best_dev
+                print("Exceed previous best acc score:", best_dev)
             model_name = data.model_dir +'.'+ str(idx) + ".model"
-            print "Save current best model in file:", model_name
+            print("Save current best model in file:", model_name)
             torch.save(model.state_dict(), model_name)
             best_dev = current_score 
         # ## decode test
@@ -388,7 +389,7 @@ def train(data):
 
 
 def load_model_decode(data, name):
-    print "Load Model from file: ", data.model_dir
+    print("Load Model from file: ", data.model_dir)
     model = SeqModel(data)
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     # if not gpu:
@@ -424,7 +425,7 @@ if __name__ == '__main__':
     data.read_config(args.config)
     status = data.status.lower()
     data.HP_gpu = torch.cuda.is_available()
-    print "Seed num:",seed_num
+    print("Seed num:",seed_num)
     
     if status == 'train':
         print("MODEL: train")
@@ -438,7 +439,7 @@ if __name__ == '__main__':
         print("MODEL: decode")
         data.load(data.dset_dir)  
         data.read_config(args.config) 
-        print data.raw_dir
+        print(data.raw_dir)
         # exit(0) 
         data.show_data_summary()
         data.generate_instance('raw')
@@ -449,7 +450,7 @@ if __name__ == '__main__':
         else:
             data.write_decoded_results(decode_results, 'raw')
     else:
-        print "Invalid argument! Please use valid arguments! (train/test/decode)"
+        print("Invalid argument! Please use valid arguments! (train/test/decode)")
 
 
 

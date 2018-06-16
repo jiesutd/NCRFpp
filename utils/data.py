@@ -3,10 +3,12 @@
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-04-26 13:58:10
+from __future__ import print_function
+from __future__ import absolute_import
 import sys
 import numpy as np
-from alphabet import Alphabet
-from functions import *
+from .alphabet import Alphabet
+from .functions import *
 import cPickle as pickle
 
 
@@ -178,7 +180,7 @@ class Data:
                 feature_prefix = items[idx].split(']',1)[0]+"]"
                 self.feature_alphabets.append(Alphabet(feature_prefix))
                 self.feature_name.append(feature_prefix)
-                print "Find feature: ", feature_prefix 
+                print("Find feature: ", feature_prefix) 
         self.feature_num = len(self.feature_alphabets)
         self.pretrain_feature_embeddings = [None]*self.feature_num
         self.feature_emb_dims = [20]*self.feature_num

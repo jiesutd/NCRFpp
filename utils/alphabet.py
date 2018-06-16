@@ -8,6 +8,7 @@
 """
 Alphabet maps objects to integer ids. It provides two way mapping from the index to the objects.
 """
+from __future__ import print_function
 import json
 import os
 
