@@ -4,6 +4,7 @@
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-04-26 12:59:38
 
+from __future__ import print_function
 import time
 import sys
 import argparse
@@ -97,7 +98,7 @@ def recover_nbest_label(pred_variable, mask_variable, label_alphabet, word_recov
     mask_variable = mask_variable[word_recover]
     batch_size = pred_variable.size(0)
     seq_len = pred_variable.size(1)
-    print pred_variable.size()
+    print(pred_variable.size())
     nbest = pred_variable.size(2)
     mask = mask_variable.cpu().data.numpy()
     pred_tag = pred_variable.cpu().data.numpy()
@@ -140,7 +141,7 @@ def recover_nbest_label(pred_variable, mask_variable, label_alphabet, word_recov
 
 def lr_decay(optimizer, epoch, decay_rate, init_lr):
     lr = init_lr/(1+decay_rate*epoch)
-    print " Learning rate is setted as:", lr
+    print(" Learning rate is setted as:", lr)
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
     return optimizer
@@ -157,7 +158,7 @@ def evaluate(data, model, name, nbest=None):
     elif name == 'raw':
         instances = data.raw_Ids
     else:
-        print "Error: wrong evaluate name,", name
+        print("Error: wrong evaluate name,", name)
     right_token = 0
     whole_token = 0
     nbest_pred_results = []
@@ -274,7 +275,7 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
 
 
 def train(data):
-    print "Training model..."
+    print("Training model...")
     data.show_data_summary()
     save_data_name = data.model_dir +".dset"
     data.save(save_data_name)
@@ -362,11 +363,11 @@ def train(data):
 
         if current_score > best_dev:
             if data.seg:
-                print "Exceed previous best f score:", best_dev
+                print("Exceed previous best f score:", best_dev)
             else:
-                print "Exceed previous best acc score:", best_dev
+                print("Exceed previous best acc score:", best_dev)
             model_name = data.model_dir +'.'+ str(idx) + ".model"
-            print "Save current best model in file:", model_name
+            print("Save current best model in file:", model_name)
             torch.save(model.state_dict(), model_name)
             best_dev = current_score 
         # ## decode test
@@ -381,7 +382,7 @@ def train(data):
 
 
 def load_model_decode(data, name):
-    print "Load Model from file: ", data.model_dir
+    print("Load Model from file: ", data.model_dir)
     model = SeqModel(data)
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     # if not gpu:
@@ -429,11 +430,11 @@ if __name__ == '__main__':
     data.test_dir = args.test
     data.model_dir = args.savemodel
     data.dset_dir = args.savedset
-    print "aaa",data.dset_dir
+    print("aaa",data.dset_dir)
     status = args.status.lower()
     save_model_dir = args.savemodel
     data.HP_gpu = torch.cuda.is_available()
-    print "Seed num:",seed_num
+    print("Seed num:",seed_num)
     data.number_normalized = True
     data.word_emb_dir = "../data/glove.6B.100d.txt"
     
@@ -464,7 +465,7 @@ if __name__ == '__main__':
         else:
             data.write_decoded_results(decode_results, 'raw')
     else:
-        print "Invalid argument! Please use valid arguments! (train/test/decode)"
+        print("Invalid argument! Please use valid arguments! (train/test/decode)")
 
 
 

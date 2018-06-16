@@ -3,20 +3,22 @@
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-04-26 13:41:07
+from __future__ import print_function
+from __future__ import absolute_import
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
-from charbilstm import CharBiLSTM
-from charbigru import CharBiGRU
-from charcnn import CharCNN
+from .charbilstm import CharBiLSTM
+from .charbigru import CharBiGRU
+from .charcnn import CharCNN
 
 class WordRep(nn.Module):
     def __init__(self, data):
         super(WordRep, self).__init__()
-        print "build word representation..."
+        print("build word representation...")
         self.gpu = data.HP_gpu
         self.use_char = data.use_char
         self.batch_size = data.HP_batch_size
@@ -36,7 +38,7 @@ class WordRep(nn.Module):
                 self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
                 self.char_feature_extra = CharBiLSTM(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
             else:
-                print "Error char feature selection, please check parameter data.char_feature_extractor (CNN/LSTM/GRU/ALL)."
+                print("Error char feature selection, please check parameter data.char_feature_extractor (CNN/LSTM/GRU/ALL).")
                 exit(0)
         self.embedding_dim = data.word_emb_dim
         self.drop = nn.Dropout(data.HP_dropout)

@@ -3,6 +3,7 @@
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-04-26 13:22:51
+from __future__ import print_function
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -13,7 +14,7 @@ import numpy as np
 class CharBiGRU(nn.Module):
     def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, gpu, bidirect_flag = True):
         super(CharBiGRU, self).__init__()
-        print "build char sequence feature extractor: GRU ..."
+        print("build char sequence feature extractor: GRU ...")
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         if bidirect_flag:

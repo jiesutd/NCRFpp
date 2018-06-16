@@ -3,6 +3,7 @@
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-04-26 13:21:40
+from __future__ import print_function
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -12,7 +13,7 @@ import numpy as np
 class CharCNN(nn.Module):
     def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, gpu):
         super(CharCNN, self).__init__()
-        print "build char sequence feature extractor: CNN ..."
+        print("build char sequence feature extractor: CNN ...")
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         self.char_drop = nn.Dropout(dropout)

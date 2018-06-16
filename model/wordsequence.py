@@ -3,13 +3,15 @@
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-04-26 14:50:58
+from __future__ import print_function
+from __future__ import absolute_import
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
-from wordrep import WordRep
+from .wordrep import WordRep
 
 class WordSequence(nn.Module):
     def __init__(self, data):
@@ -46,7 +48,7 @@ class WordSequence(nn.Module):
             # cnn_hidden = data.HP_hidden_dim
             self.word2cnn = nn.Linear(self.input_size, data.HP_hidden_dim)
             self.cnn_layer = data.HP_cnn_layer
-            print "CNN layer: ", self.cnn_layer
+            print("CNN layer: ", self.cnn_layer)
             self.cnn_list = nn.ModuleList()
             self.cnn_drop_list = nn.ModuleList()
             self.cnn_batchnorm_list = nn.ModuleList()
