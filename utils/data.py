@@ -9,8 +9,7 @@ import sys
 import numpy as np
 from .alphabet import Alphabet
 from .functions import *
-import cPickle as pickle
-
+import pickle
 
 START = "</s>"
 UNKNOWN = "</unk>"
@@ -34,13 +33,13 @@ class Data:
 
         self.label_alphabet = Alphabet('label',True)
         self.tagScheme = "NoSeg" ## BMES/BIO
-        
+
         self.seg = True
 
         ### I/O
-        self.train_dir = None 
-        self.dev_dir = None 
-        self.test_dir = None 
+        self.train_dir = None
+        self.dev_dir = None
+        self.test_dir = None
         self.raw_dir = None
 
         self.decode_dir = None
@@ -48,7 +47,7 @@ class Data:
         self.model_dir = None ## model save  file
         self.load_model_dir = None ## model load file
 
-        self.word_emb_dir = None 
+        self.word_emb_dir = None
         self.char_emb_dir = None
         self.feature_emb_dirs = []
 
@@ -82,7 +81,7 @@ class Data:
         self.char_feature_extractor = "CNN" ## "LSTM"/"CNN"/"GRU"/None
         self.use_crf = True
         self.nbest = None
-        
+
         ## Training
         self.average_batch_loss = False
         self.optimizer = "SGD" ## "SGD"/"AdaGrad"/"AdaDelta"/"RMSProp"/"Adam"
@@ -96,14 +95,14 @@ class Data:
         self.HP_dropout = 0.5
         self.HP_lstm_layer = 1
         self.HP_bilstm = True
-        
+
         self.HP_gpu = False
         self.HP_lr = 0.015
         self.HP_lr_decay = 0.05
         self.HP_clip = None
         self.HP_momentum = 0
         self.HP_l2 = 1e-8
-        
+
     def show_data_summary(self):
         print("++"*50)
         print("DATA SUMMARY START:")
@@ -156,7 +155,7 @@ class Data:
 
         print(" "+"++"*20)
         print(" Hyperparameters:")
-        
+
         print("     Hyper              lr: %s"%(self.HP_lr))
         print("     Hyper        lr_decay: %s"%(self.HP_lr_decay))
         print("     Hyper         HP_clip: %s"%(self.HP_clip))
@@ -166,7 +165,7 @@ class Data:
         print("     Hyper         dropout: %s"%(self.HP_dropout))
         print("     Hyper      lstm_layer: %s"%(self.HP_lstm_layer))
         print("     Hyper          bilstm: %s"%(self.HP_bilstm))
-        print("     Hyper             GPU: %s"%(self.HP_gpu))   
+        print("     Hyper             GPU: %s"%(self.HP_gpu))
         print("DATA SUMMARY END.")
         print("++"*50)
         sys.stdout.flush()
@@ -180,11 +179,11 @@ class Data:
                 feature_prefix = items[idx].split(']',1)[0]+"]"
                 self.feature_alphabets.append(Alphabet(feature_prefix))
                 self.feature_name.append(feature_prefix)
-                print("Find feature: ", feature_prefix) 
+                print("Find feature: ", feature_prefix)
         self.feature_num = len(self.feature_alphabets)
         self.pretrain_feature_embeddings = [None]*self.feature_num
         self.feature_emb_dims = [20]*self.feature_num
-        self.feature_emb_dirs = [None]*self.feature_num 
+        self.feature_emb_dirs = [None]*self.feature_num
         self.norm_feature_embs = [False]*self.feature_num
         self.feature_alphabet_sizes = [0]*self.feature_num
         if self.feat_config:
@@ -201,13 +200,16 @@ class Data:
         for line in in_lines:
             if len(line) > 2:
                 pairs = line.strip().split()
-                word = pairs[0].decode('utf-8')
+                try:  # If python 2.7, decode
+                    word = pairs[0].decode('utf-8')
+                except:  # If python 3+, no need to decode
+                    word = pairs[0]
                 if self.number_normalized:
                     word = normalize_word(word)
                 label = pairs[-1]
                 self.label_alphabet.add(label)
                 self.word_alphabet.add(word)
-                ## build feature alphabet 
+                ## build feature alphabet
                 for idx in range(self.feature_num):
                     feat_idx = pairs[idx+1].split(']',1)[-1]
                     self.feature_alphabets[idx].add(feat_idx)
@@ -235,9 +237,9 @@ class Data:
     def fix_alphabet(self):
         self.word_alphabet.close()
         self.char_alphabet.close()
-        self.label_alphabet.close() 
+        self.label_alphabet.close()
         for idx in range(self.feature_num):
-            self.feature_alphabets[idx].close()      
+            self.feature_alphabets[idx].close()
 
 
     def build_pretrain_emb(self):
@@ -425,7 +427,7 @@ class Data:
 
         the_item = 'feature'
         if the_item in config:
-            self.feat_config = config[the_item] ## feat_config is a dict 
+            self.feat_config = config[the_item] ## feat_config is a dict
 
 
 
@@ -503,7 +505,7 @@ def config_file_to_dict(input_file):
             if item=="feature":
                 if item not in config:
                     feat_dict = {}
-                    config[item]= feat_dict 
+                    config[item]= feat_dict
                 feat_dict = config[item]
                 new_pair = pair[-1].split()
                 feat_name = new_pair[0]
@@ -525,12 +527,12 @@ def config_file_to_dict(input_file):
             else:
                 if item in config:
                     print("Warning: duplicated config item found: %s, updated."%(pair[0]))
-                config[item] = pair[-1]                
+                config[item] = pair[-1]
     return config
 
 
 def str2bool(string):
     if string == "True" or string == "true" or string == "TRUE":
-        return True 
+        return True
     else:
         return False

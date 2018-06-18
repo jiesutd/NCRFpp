@@ -11,6 +11,7 @@ Alphabet maps objects to integer ids. It provides two way mapping from the index
 from __future__ import print_function
 import json
 import os
+import sys
 
 
 class Alphabet:
@@ -36,7 +37,7 @@ class Alphabet:
         # Index 0 is occupied by default, all else following.
         self.default_index = 0
         self.next_index = 1
-        
+
     def add(self, instance):
         if instance not in self.instance2index:
             self.instances.append(instance)
@@ -73,7 +74,10 @@ class Alphabet:
         return len(self.instances) + 1
 
     def iteritems(self):
-        return self.instance2index.iteritems()
+        if sys.version_info[0] < 3:  # If using python3, dict item access uses different syntax
+            return self.instance2index.iteritems()
+        else:
+            return self.instance2index.items()
 
     def enumerate_items(self, start=1):
         if start < 1 or start >= self.size():
