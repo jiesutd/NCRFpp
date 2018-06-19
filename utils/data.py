@@ -9,7 +9,12 @@ import sys
 import numpy as np
 from .alphabet import Alphabet
 from .functions import *
-import pickle
+
+try:
+    import cPickle as pickle
+except ModuleNotFoundError:
+    import pickle as pickle
+
 
 START = "</s>"
 UNKNOWN = "</unk>"
@@ -200,10 +205,7 @@ class Data:
         for line in in_lines:
             if len(line) > 2:
                 pairs = line.strip().split()
-                try:  # If python 2.7, decode
-                    word = pairs[0].decode('utf-8')
-                except:  # If python 3+, no need to decode
-                    word = pairs[0]
+                word = pairs[0]
                 if self.number_normalized:
                     word = normalize_word(word)
                 label = pairs[-1]
@@ -334,7 +336,10 @@ class Data:
             fout.write(score_string.strip() + "\n")
 
             for idy in range(sent_length):
-                label_string = content_list[idx][0][idy].encode('utf-8') + " "
+                try:  # Will fail with python3
+                    label_string = content_list[idx][0][idy].encode('utf-8') + " "
+                except:
+                    label_string = content_list[idx][0][idy] + " "
                 for idz in range(nbest):
                     label_string += predict_results[idx][idz][idy]+" "
                 label_string = label_string.strip() + "\n"

@@ -20,7 +20,12 @@ import numpy as np
 from utils.metric import get_ner_fmeasure
 from model.seqmodel import SeqModel
 from utils.data import Data
-import pickle
+
+try:
+    import cPickle as pickle
+except ModuleNotFoundError:
+    import pickle as pickle
+
 
 seed_num = 42
 random.seed(seed_num)
@@ -218,8 +223,7 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     feature_num = len(features[0][0])
     chars = [sent[2] for sent in input_batch_list]
     labels = [sent[3] for sent in input_batch_list]
-    wordlength_list = torch.LongTensor(list(map(len, words)))
-    word_seq_lengths = torch.LongTensor(wordlength_list)
+    word_seq_lengths = torch.LongTensor(list(map(len, words)))
     max_seq_len = word_seq_lengths.max()
     word_seq_tensor = autograd.Variable(torch.zeros((batch_size, max_seq_len)), volatile =  volatile_flag).long()
     label_seq_tensor = autograd.Variable(torch.zeros((batch_size, max_seq_len)),volatile =  volatile_flag).long()
@@ -230,7 +234,7 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     for idx, (seq, label, seqlen) in enumerate(zip(words, labels, word_seq_lengths)):
         word_seq_tensor[idx, :seqlen] = torch.LongTensor(seq)
         label_seq_tensor[idx, :seqlen] = torch.LongTensor(label)
-        mask[idx, :seqlen] = torch.LongTensor([1] * seqlen)
+        mask[idx, :seqlen] = torch.Tensor([1]*seqlen)
         for idy in range(feature_num):
             feature_seq_tensors[idy][idx,:seqlen] = torch.LongTensor(features[idx][:,idy])
     word_seq_lengths, word_perm_idx = word_seq_lengths.sort(0, descending=True)
@@ -243,8 +247,8 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     ### deal with char
     # pad_chars (batch_size, max_seq_len)
     pad_chars = [chars[idx] + [[0]] * (max_seq_len-len(chars[idx])) for idx in range(len(chars))]
-    length_list = [[len(x) for x in pad_char] for pad_char in pad_chars]
-    max_word_len = max(max(x) for x in length_list)
+    length_list = [list(map(len, pad_char)) for pad_char in pad_chars]
+    max_word_len = max(map(max, length_list))
     char_seq_tensor = autograd.Variable(torch.zeros((batch_size, max_seq_len, max_word_len)), volatile =  volatile_flag).long()
     char_seq_lengths = torch.LongTensor(length_list)
     for idx, (seq, seqlen) in enumerate(zip(pad_chars, char_seq_lengths)):
@@ -449,7 +453,4 @@ if __name__ == '__main__':
             data.write_decoded_results(decode_results, 'raw')
     else:
         print("Invalid argument! Please use valid arguments! (train/test/decode)")
-
-
-
 
