@@ -7,7 +7,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 import sys
 import numpy as np
-from .alphabet import Alphabet
 
 def normalize_word(word):
     new_word = ""

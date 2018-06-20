@@ -5,11 +5,8 @@
 # @Last Modified time: 2018-04-26 14:50:58
 from __future__ import print_function
 from __future__ import absolute_import
-import torch
-import torch.autograd as autograd
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from .wordrep import WordRep
 
@@ -82,7 +79,7 @@ class WordSequence(nn.Module):
                 char_inputs: (batch_size*sent_len, word_length)
                 char_seq_lengths: list of whole batch_size for char, (batch_size*sent_len, 1)
                 char_seq_recover: variable which records the char order information, used to recover char order
-            output: 
+            output:
                 Variable(batch_size, sent_len, hidden_dim)
         """
         word_represent = self.wordrep(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover)

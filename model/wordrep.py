@@ -6,11 +6,8 @@
 from __future__ import print_function
 from __future__ import absolute_import
 import torch
-import torch.autograd as autograd
 import torch.nn as nn
-import torch.nn.functional as F
 import numpy as np
-from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from .charbilstm import CharBiLSTM
 from .charbigru import CharBiGRU
 from .charcnn import CharCNN
@@ -47,7 +44,7 @@ class WordRep(nn.Module):
             self.word_embedding.weight.data.copy_(torch.from_numpy(data.pretrain_word_embedding))
         else:
             self.word_embedding.weight.data.copy_(torch.from_numpy(self.random_embedding(data.word_alphabet.size(), self.embedding_dim)))
-        
+
         self.feature_num = data.feature_num
         self.feature_embedding_dims = data.feature_emb_dims
         self.feature_embeddings = nn.ModuleList()
@@ -86,7 +83,7 @@ class WordRep(nn.Module):
                 char_inputs: (batch_size*sent_len, word_length)
                 char_seq_lengths: list of whole batch_size for char, (batch_size*sent_len, 1)
                 char_seq_recover: variable which records the char order information, used to recover char order
-            output: 
+            output:
                 Variable(batch_size, sent_len, hidden_dim)
         """
         batch_size = word_inputs.size(0)
@@ -113,4 +110,3 @@ class WordRep(nn.Module):
         word_embs = torch.cat(word_list, 2)
         word_represent = self.drop(word_embs)
         return word_represent
-        
