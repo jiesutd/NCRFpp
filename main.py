@@ -9,12 +9,10 @@ import time
 import sys
 import argparse
 import random
-import copy
 import torch
 import gc
 import torch.autograd as autograd
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
 from utils.metric import get_ner_fmeasure
@@ -24,7 +22,7 @@ from utils.data import Data
 try:
     import cPickle as pickle
 except ModuleNotFoundError:
-    import pickle as pickle
+    import pickle
 
 
 seed_num = 42
@@ -160,6 +158,7 @@ def evaluate(data, model, name, nbest=None):
         instances = data.raw_Ids
     else:
         print("Error: wrong evaluate name,", name)
+        exit(1)
     right_token = 0
     whole_token = 0
     nbest_pred_results = []
@@ -294,7 +293,7 @@ def train(data):
         optimizer = optim.Adam(model.parameters(), lr=data.HP_lr, weight_decay=data.HP_l2)
     else:
         print("Optimizer illegal: %s"%(data.optimizer))
-        exit(0)
+        exit(1)
     best_dev = -10
     # data.HP_iteration = 1
     ## start training
@@ -341,7 +340,7 @@ def train(data):
                 print("     Instance: %s; Time: %.2fs; loss: %.4f; acc: %s/%s=%.4f"%(end, temp_cost, sample_loss, right_token, whole_token,(right_token+0.)/whole_token))
                 if sample_loss > 1e8 or str(sample_loss) == "nan":
                     print("ERROR: LOSS EXPLOSION (>1e8) ! PLEASE SET PROPER PARAMETERS AND STRUCTURE! EXIT....")
-                    exit(0)
+                    exit(1)
                 sys.stdout.flush()
                 sample_loss = 0
             loss.backward()
@@ -357,7 +356,7 @@ def train(data):
         print("totalloss:", total_loss)
         if total_loss > 1e8 or str(total_loss) == "nan":
             print("ERROR: LOSS EXPLOSION (>1e8) ! PLEASE SET PROPER PARAMETERS AND STRUCTURE! EXIT....")
-            exit(0)
+            exit(1)
         # continue
         speed, acc, p, r, f, _,_ = evaluate(data, model, "dev")
         dev_finish = time.time()

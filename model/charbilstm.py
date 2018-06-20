@@ -5,9 +5,7 @@
 # @Last Modified time: 2018-04-26 13:22:34
 from __future__ import print_function
 import torch
-import torch.autograd as autograd
 import torch.nn as nn
-import torch.nn.functional as F
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import numpy as np
 
@@ -42,10 +40,10 @@ class CharBiLSTM(nn.Module):
 
     def get_last_hiddens(self, input, seq_lengths):
         """
-            input:  
+            input:
                 input: Variable(batch_size, word_length)
                 seq_lengths: numpy array (batch_size,  1)
-            output: 
+            output:
                 Variable(batch_size, char_hidden_dim)
             Note it only accepts ordered (length) variable, length size is recorded in seq_lengths
         """
@@ -59,10 +57,10 @@ class CharBiLSTM(nn.Module):
 
     def get_all_hiddens(self, input, seq_lengths):
         """
-            input:  
+            input:
                 input: Variable(batch_size,  word_length)
                 seq_lengths: numpy array (batch_size,  1)
-            output: 
+            output:
                 Variable(batch_size, word_length, char_hidden_dim)
             Note it only accepts ordered (length) variable, length size is recorded in seq_lengths
         """
@@ -77,4 +75,3 @@ class CharBiLSTM(nn.Module):
 
     def forward(self, input, seq_lengths):
         return self.get_all_hiddens(input, seq_lengths)
-        

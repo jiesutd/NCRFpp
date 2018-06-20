@@ -7,10 +7,8 @@
 from __future__ import print_function
 from __future__ import absolute_import
 import torch
-import torch.autograd as autograd
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
 from .wordsequence import WordSequence
 from .crf import CRF
 
@@ -19,7 +17,7 @@ class SeqModel(nn.Module):
         super(SeqModel, self).__init__()
         self.use_crf = data.use_crf
         print("build network...")
-        print("use_char: ", data.use_char) 
+        print("use_char: ", data.use_char)
         if data.use_char:
             print("char feature extractor: ", data.char_feature_extractor)
         print("word feature extractor: ", data.word_feature_extractor)
@@ -30,7 +28,7 @@ class SeqModel(nn.Module):
         ## add two more label for downlayer lstm, use original label size for CRF
         label_size = data.label_alphabet_size
         data.label_alphabet_size += 2
-        self.word_hidden = WordSequence(data)        
+        self.word_hidden = WordSequence(data)
         if self.use_crf:
             self.crf = CRF(label_size, self.gpu)
 
@@ -83,4 +81,3 @@ class SeqModel(nn.Module):
         scores, tag_seq = self.crf._viterbi_decode_nbest(outs, mask, nbest)
         return scores, tag_seq
 
-        
