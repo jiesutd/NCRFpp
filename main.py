@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-06-16 16:51:28
+# @Last Modified time: 2018-06-22 00:01:23
 
 from __future__ import print_function
 import time
@@ -21,7 +21,7 @@ from utils.data import Data
 
 try:
     import cPickle as pickle
-except ModuleNotFoundError:
+except ImportError:
     import pickle
 
 
