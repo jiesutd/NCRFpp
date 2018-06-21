@@ -6841,8 +6841,8 @@ in [Cap]0 [POS]IN O
 four-day [Cap]0 [POS]JJ O
 
 English [Cap]1 [POS]NNP S-MISC
-County [Cap]1 [POS]NNP S-MISC
-Championship [Cap]1 [POS]NNP S-MISC
+County [Cap]1 [POS]NNP B-MISC
+Championship [Cap]1 [POS]NNP E-MISC
 cricket [Cap]0 [POS]NN O
 matches [Cap]0 [POS]NNS O
 on [Cap]0 [POS]IN O
