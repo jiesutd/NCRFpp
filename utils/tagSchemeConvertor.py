@@ -2,11 +2,11 @@
 # @Author: Jie Yang
 # @Date:   2017-11-27 16:53:36
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-06-21 22:27:06
+# @Last Modified time: 2018-06-21 22:52:25
 
 
 """
-    convert tag schemes, i.e. BIO->BMES, BMES->BIO, Word based -> Character based
+    convert NER/Chunking tag schemes, i.e. BIO->BIOES, BIOES->BIO, IOB->BIO, IOB->BIOES
 """
 import sys
 
