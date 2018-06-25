@@ -55,7 +55,7 @@ NCRF++ is designed in three layers (shown below): character sequence layer; word
 * NCRF++ supports both BIO and BIOES(BMES) tag scheme.  
 * Notice that IOB format (***different*** from BIO) is currently not supported, because this tag scheme is old and works worse than other schemes [Reimers and Gurevych, 2017](https://arxiv.org/pdf/1707.06799.pdf). 
 * The difference among these three tag schemes is explained in this [paper](https://arxiv.org/pdf/1707.06799.pdf).
-* I have written a [script](utils/tagSchemeConvertor.py) which converts the tag scheme among IOB/BIO/BIOES. Welcome to have a try. 
+* I have written a [script](utils/tagSchemeConverter.py) which converts the tag scheme among IOB/BIO/BIOES. Welcome to have a try. 
 
 
 3.Performance
