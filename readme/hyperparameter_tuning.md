@@ -6,3 +6,4 @@
 4. `lr` needs to be carefully tuned for different structures:
     * If you run LSTM-LSTM-CRF on CONLL-2003 dataset, a good `lr` is 0.015
     * If you run LSTM-CNN-CRF on CONLL-2003 dataset,, a good `lr` is 0.005
+    * If you run CNN-CNN-CRF on CONLL-2003 dataset, a good `lr` is 0.0015
