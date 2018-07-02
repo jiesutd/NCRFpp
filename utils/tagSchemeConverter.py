@@ -8,11 +8,15 @@
 """
     convert NER/Chunking tag schemes, i.e. BIO->BIOES, BIOES->BIO, IOB->BIO, IOB->BIOES
 """
+from __future__ import print_function
+
 import sys
 
+
 def BIO2BIOES(input_file, output_file):
-    print "Convert BIO -> BIOES for file:", input_file
-    fins = open(input_file,'r').readlines()
+    print("Convert BIO -> BIOES for file:", input_file)
+    with open(input_file,'r') as in_file:
+        fins = infile.readlines()
     fout = open(output_file,'w')
     words = []
     labels = []
@@ -42,13 +46,14 @@ def BIO2BIOES(input_file, output_file):
             words.append(pair[0])
             labels.append(pair[-1].upper())
     fout.close()
-    print "BIOES file generated:", output_file
+    print("BIOES file generated:", output_file)
 
 
 
 def BIOES2BIO(input_file, output_file):
-    print "Convert BIOES -> BIO for file:", input_file
-    fins = open(input_file,'r').readlines()
+    print("Convert BIOES -> BIO for file:", input_file)
+    with open(input_file,'r') as in_file:
+        fins = infile.readlines()
     fout = open(output_file,'w')
     words = []
     labels = []
@@ -74,12 +79,13 @@ def BIOES2BIO(input_file, output_file):
             words.append(pair[0])
             labels.append(pair[-1].upper())
     fout.close()
-    print "BIO file generated:", output_file
+    print("BIO file generated:", output_file)
 
 
 def IOB2BIO(input_file, output_file):
-    print "Convert IOB -> BIO for file:", input_file
-    fins = open(input_file,'r').readlines()
+    print("Convert IOB -> BIO for file:", input_file)
+    with open(input_file,'r') as in_file:
+        fins = infile.readlines()
     fout = open(output_file,'w')
     words = []
     labels = []
@@ -103,20 +109,19 @@ def IOB2BIO(input_file, output_file):
             words.append(pair[0])
             labels.append(pair[-1].upper())
     fout.close()
-    print "BIO file generated:", output_file
+    print("BIO file generated:", output_file)
+
 
 def choose_label(input_file, output_file):
-    fins = open(input_file,'r').readlines()
-    fout = open(output_file,'w')
-    for line in fins:
-        if len(line) < 3:
-            fout.write(line)
-        else:
-            pairs = line.strip('\n').split(' ')
-            fout.write(pairs[0]+" "+ pairs[-1]+"\n")
-
-
-
+    with open(input_file,'r') as in_file:
+        fins = infile.readlines()
+    with open(output_file,'w') as fout:
+        for line in fins:
+            if len(line) < 3:
+                fout.write(line)
+            else:
+                pairs = line.strip('\n').split(' ')
+                fout.write(pairs[0]+" "+ pairs[-1]+"\n")
 
 
 if __name__ == '__main__':
@@ -135,7 +140,4 @@ if __name__ == '__main__':
         IOB2BIO(sys.argv[2],"temp")
         BIO2BIOES("temp",sys.argv[3])
     else:
-        print "Argument error: sys.argv[1] should belongs to \"IOB2BIO/BIO2BIOES/BIOES2BIO/IOB2BIOES\""
-        
-        
-
+        print("Argument error: sys.argv[1] should belongs to \"IOB2BIO/BIO2BIOES/BIOES2BIO/IOB2BIOES\"")
