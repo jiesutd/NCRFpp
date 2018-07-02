@@ -16,7 +16,7 @@ import sys
 def BIO2BIOES(input_file, output_file):
     print("Convert BIO -> BIOES for file:", input_file)
     with open(input_file,'r') as in_file:
-        fins = infile.readlines()
+        fins = in_file.readlines()
     fout = open(output_file,'w')
     words = []
     labels = []
@@ -53,7 +53,7 @@ def BIO2BIOES(input_file, output_file):
 def BIOES2BIO(input_file, output_file):
     print("Convert BIOES -> BIO for file:", input_file)
     with open(input_file,'r') as in_file:
-        fins = infile.readlines()
+        fins = in_file.readlines()
     fout = open(output_file,'w')
     words = []
     labels = []
@@ -85,7 +85,7 @@ def BIOES2BIO(input_file, output_file):
 def IOB2BIO(input_file, output_file):
     print("Convert IOB -> BIO for file:", input_file)
     with open(input_file,'r') as in_file:
-        fins = infile.readlines()
+        fins = in_file.readlines()
     fout = open(output_file,'w')
     words = []
     labels = []
@@ -114,7 +114,7 @@ def IOB2BIO(input_file, output_file):
 
 def choose_label(input_file, output_file):
     with open(input_file,'r') as in_file:
-        fins = infile.readlines()
+        fins = in_file.readlines()
     with open(output_file,'w') as fout:
         for line in fins:
             if len(line) < 3:
