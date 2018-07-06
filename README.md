@@ -107,6 +107,11 @@ In our implementation, when the nbest=10, CharCNN+WordLSTM+CRF model built in NC
 ![alt text](readme/nbest.png  "N best decoding oracle result")
 
 
+7.Hyperparameter tuning:
+========================
+You can get some tips [here](readme/hyperparameter_tuning.md). Share your experience on your configuration and your dataset now!
+
+
 Cite: 
 ========
 
