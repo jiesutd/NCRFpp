@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-06-22 00:01:23
+# @Last Modified time: 2018-07-15 20:24:24
 
 from __future__ import print_function
 import time
@@ -423,9 +423,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     data = Data()
+    data.HP_gpu = torch.cuda.is_available()
     data.read_config(args.config)
     status = data.status.lower()
-    data.HP_gpu = torch.cuda.is_available()
     print("Seed num:",seed_num)
 
     if status == 'train':
