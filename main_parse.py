@@ -12,7 +12,6 @@ import random
 import copy
 import torch
 import gc
-import cPickle as pickle
 import torch.autograd as autograd
 import torch.nn as nn
 import torch.nn.functional as F
@@ -21,6 +20,11 @@ import numpy as np
 from utils.metric import get_ner_fmeasure
 from model.seqmodel import SeqModel
 from utils.data import Data
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle as pickle
 
 seed_num = 42
 random.seed(seed_num)
