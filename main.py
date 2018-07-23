@@ -147,7 +147,7 @@ def lr_decay(optimizer, epoch, decay_rate, init_lr):
 
 
 
-def evaluate(data, model, name, nbest=None):
+def evaluate(data, model, name, nbest=None, printCategoricalScore=False):
     if name == "train":
         instances = data.train_Ids
     elif name == "dev":
@@ -195,7 +195,7 @@ def evaluate(data, model, name, nbest=None):
         gold_results += gold_label
     decode_time = time.time() - start_time
     speed = len(instances)/decode_time
-    acc, p, r, f = get_ner_fmeasure(gold_results, pred_results, data.tagScheme)
+    acc, p, r, f = get_ner_fmeasure(gold_results, pred_results, data.tagScheme, printCategoricalScore=printCategoricalScore)
     if nbest:
         return speed, acc, p, r, f, nbest_pred_results, pred_scores
     return speed, acc, p, r, f, pred_results, pred_scores
@@ -379,7 +379,7 @@ def train(data):
             torch.save(model.state_dict(), model_name)
             best_dev = current_score
         # ## decode test
-        speed, acc, p, r, f, _,_ = evaluate(data, model, "test")
+        speed, acc, p, r, f, _,_ = evaluate(data, model, "test", printCategoricalScore=True)
         test_finish = time.time()
         test_cost = test_finish - dev_finish
         if data.seg:
