@@ -8,18 +8,26 @@
 #
 from __future__ import print_function
 import sys
-
+from pprint import pprint
 
 
 ## input as sentence level labels
-def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES"):
+def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES", printCategoricalScore=False):
+    categories = ["PER", "LOC", "ORG", "MISC", "ALL"]
+    scores = {}
+    predict_num = {}
+    right_num = {}
+    gold_num = {}
+    for c in categories:
+        scores[c] = {}
+        predict_num[c] = 0
+        right_num[c] = 0
+        gold_num[c] = 0
+
     sent_num = len(golden_lists)
-    golden_full = []
-    predict_full = []
-    right_full = []
     right_tag = 0
     all_tag = 0
-    for idx in range(0,sent_num):
+    for idx in range(0, sent_num):
         # word_list = sentence_lists[idx]
         golden_list = golden_lists[idx]
         predict_list = predict_lists[idx]
@@ -33,31 +41,50 @@ def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES"):
         else:
             gold_matrix = get_ner_BIO(golden_list)
             pred_matrix = get_ner_BIO(predict_list)
-        # print "gold", gold_matrix
-        # print "pred", pred_matrix
         right_ner = list(set(gold_matrix).intersection(set(pred_matrix)))
-        golden_full += gold_matrix
-        predict_full += pred_matrix
-        right_full += right_ner
-    right_num = len(right_full)
-    golden_num = len(golden_full)
-    predict_num = len(predict_full)
-    if predict_num == 0:
-        precision = -1
-    else:
-        precision =  (right_num+0.0)/predict_num
-    if golden_num == 0:
-        recall = -1
-    else:
-        recall = (right_num+0.0)/golden_num
-    if (precision == -1) or (recall == -1) or (precision+recall) <= 0.:
-        f_measure = -1
-    else:
-        f_measure = 2*precision*recall/(precision+recall)
+        for r in right_ner:
+            right_num["ALL"] += 1
+            if r.endswith("LOC"):
+                right_num["LOC"] += 1
+            if r.endswith("PER"):
+                right_num["PER"] += 1
+            if r.endswith("ORG"):
+                right_num["ORG"] += 1
+            if r.endswith("MISC"):
+                right_num["MISC"] += 1
+        for g in gold_matrix:
+            gold_num["ALL"] += 1
+            if g.endswith("LOC"):
+                gold_num["LOC"] += 1
+            if g.endswith("PER"):
+                gold_num["PER"] += 1
+            if g.endswith("ORG"):
+                gold_num["ORG"] += 1
+            if g.endswith("MISC"):
+                gold_num["MISC"] += 1
+        for p in pred_matrix:
+            predict_num["ALL"] += 1
+            if p.endswith("LOC"):
+                predict_num["LOC"] += 1
+            if p.endswith("PER"):
+                predict_num["PER"] += 1
+            if p.endswith("ORG"):
+                predict_num["ORG"] += 1
+            if p.endswith("MISC"):
+                predict_num["MISC"] += 1
+
+    for c in categories:
+        scores[c]["pre"] = (right_num[c] + 0.0) / predict_num[c] if predict_num[c] > 0 else -1
+        scores[c]["rec"] = (right_num[c] + 0.0) / gold_num[c] if gold_num[c] > 0 else -1
+        scores[c]["f1"] = 2 * scores[c]["pre"] * scores[c]["rec"] / (scores[c]["pre"] + scores[c]["rec"])\
+                            if scores[c]["pre"] > 0 and scores[c]["rec"] > 0 else -1
+
     accuracy = (right_tag+0.0)/all_tag
     # print "Accuracy: ", right_tag,"/",all_tag,"=",accuracy
-    print("gold_num = ", golden_num, " pred_num = ", predict_num, " right_num = ", right_num)
-    return accuracy, precision, recall, f_measure
+    print("gold_num = ", gold_num, "\npredict_num = ", predict_num, "\nright_num = ", right_num)
+    if printCategoricalScore:
+        pprint(scores)
+    return accuracy, scores["ALL"]["pre"], scores["ALL"]["rec"], scores["ALL"]["f1"]
 
 
 def reverse_style(input_string):
