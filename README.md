@@ -121,7 +121,7 @@ If you use NCRF++ in your paper, please cite our [ACL demo paper](https://arxiv.
      title={NCRF++: An Open-source Neural Sequence Labeling Toolkit},  
      author={Yang, Jie and Zhang, Yue},  
      booktitle={Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics},
-     Url = {https://arxiv.org/pdf/1806.05626.pdf},
+     Url = {http://aclweb.org/anthology/P18-4013},
      year={2018}  
     }
 
