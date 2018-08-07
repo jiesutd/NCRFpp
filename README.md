@@ -107,9 +107,11 @@ In our implementation, when the nbest=10, CharCNN+WordLSTM+CRF model built in NC
 ![alt text](readme/nbest.png  "N best decoding oracle result")
 
 
-7.Hyperparameter tuning:
+7.Reproduce paper results and Hyperparameter tuning:
 ========================
-Here are some tuning [tips](readme/hyperparameter_tuning.md) by @Victor0118.
+To reproduce the results in our COLING 2018 paper, you only need to set the `iteration=1` as `iteration=100` in configuration file `demo.train.config` and configure your file directory in this configuration file. The default configuration file describes the `Char CNN + Word LSTM + CRF` model, you can build your own model by modifing the configuration accordingly. The parameters in this demo configuration file are the same in our paper. (Notice the `Word CNN` related models need slightly different parameters, details can be found in our COLING paper.)
+
+If you want to use this framework in new tasks or datasets, here are some tuning [tips](readme/hyperparameter_tuning.md) by @Victor0118.
 
 
 Cite: 
