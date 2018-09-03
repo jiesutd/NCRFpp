@@ -18,7 +18,7 @@ Welcome to star this repository!
 Requirement:
 ======
 	Python: 2 or 3  
-	PyTorch: 0.3 (currently not support 0.4, will update soon)
+	PyTorch: 0.3 (currently not support 0.4, waiting the release of PyTorch 1.0)
 
 
 Advantages
@@ -134,7 +134,7 @@ If you use experiments results and analysis of NCRF++, please cite our [COLING p
      title={Design Challenges and Misconceptions in Neural Sequence Labeling},  
      author={Yang, Jie and Liang, Shuailong and Zhang, Yue},  
      booktitle={Proceedings of the 27th International Conference on Computational Linguistics (COLING)},
-     Url = {https://arxiv.org/pdf/1806.04470.pdf},
+     Url = {http://aclweb.org/anthology/C18-1327},
      year={2018}  
     }
 
