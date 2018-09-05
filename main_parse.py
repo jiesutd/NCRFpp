@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-06-16 16:52:14
+# @Last Modified time: 2018-09-05 23:05:37
 
 from __future__ import print_function
 import time
@@ -145,7 +145,7 @@ def recover_nbest_label(pred_variable, mask_variable, label_alphabet, word_recov
 
 def lr_decay(optimizer, epoch, decay_rate, init_lr):
     lr = init_lr/(1+decay_rate*epoch)
-    print(" Learning rate is setted as:", lr)
+    print(" Learning rate is set as:", lr)
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
     return optimizer

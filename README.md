@@ -23,7 +23,7 @@ Requirement:
 
 Advantages
 ========
-* 1.Fully configurable: all the neural model structures can be setted with a configuration file.
+* 1.Fully configurable: all the neural model structures can be set with a configuration file.
 * 2.State-of-the-art system performance: models build on NCRF++ can give comparable or better results compared with state-of-the-art models.
 * 3.Flexible with features: user can define their own features and pretrained feature embeddings.
 * 4.Fast running speed: NCRF++ utilizes fully batched operations, making the system efficient with the help of GPU (>1000sent/s for training and >2000sents/s for decoding).
