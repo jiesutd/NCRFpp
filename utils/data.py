@@ -205,6 +205,8 @@ class Data:
             if len(line) > 2:
                 pairs = line.strip().split()
                 word = pairs[0]
+                if sys.version_info[0] < 3:
+                    word = word.decode('utf-8')
                 if self.number_normalized:
                     word = normalize_word(word)
                 label = pairs[-1]
