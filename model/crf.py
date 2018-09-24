@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-12-04 23:19:38
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-05-16 16:57:39
+# @Last Modified time: 2018-09-24 23:15:31
 from __future__ import print_function
 import torch
 import torch.autograd as autograd
@@ -32,7 +32,7 @@ class CRF(nn.Module):
         super(CRF, self).__init__()
         print("build CRF...")
         self.gpu = gpu
-        # Matrix of transition parameters.  Entry i,j is the score of transitioning *to* i *from* j.
+        # Matrix of transition parameters.  Entry i,j is the score of transitioning from i to j.
         self.tagset_size = tagset_size
         # # We add 2 here, because of START_TAG and STOP_TAG
         # # transitions (f_tag_size, t_tag_size), transition value from f_tag to t_tag
