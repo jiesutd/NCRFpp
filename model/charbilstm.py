@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-04-26 13:22:34
+# @Last Modified time: 2018-10-18 11:19:37
 from __future__ import print_function
 import torch
 import torch.nn as nn
@@ -52,7 +52,9 @@ class CharBiLSTM(nn.Module):
         char_hidden = None
         pack_input = pack_padded_sequence(char_embeds, seq_lengths, True)
         char_rnn_out, char_hidden = self.char_lstm(pack_input, char_hidden)
-        char_rnn_out, _ = pad_packed_sequence(char_rnn_out)
+        ## char_hidden = (h_t, c_t)
+        #  char_hidden[0] = h_t = (2, batch_size, lstm_dimension)
+        # char_rnn_out, _ = pad_packed_sequence(char_rnn_out)
         return char_hidden[0].transpose(1,0).contiguous().view(batch_size,-1)
 
     def get_all_hiddens(self, input, seq_lengths):

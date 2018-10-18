@@ -18,7 +18,7 @@ Welcome to star this repository!
 Requirement:
 ======
 	Python: 2 or 3  
-	PyTorch: 0.3 (currently not support 0.4, waiting the release of PyTorch 1.0)
+	PyTorch: 0.3 (currently not support 0.4, waiting for the release of PyTorch 1.0)
 
 
 Advantages
