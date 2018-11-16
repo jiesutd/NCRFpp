@@ -69,7 +69,7 @@ CharLSTM+WordLSTM+CRF: 91.20 vs 90.94 of [Lample .etc, NAACL16](http://www.aclwe
 
 CharCNN+WordLSTM+CRF:  91.35 vs 91.21 of [Ma .etc, ACL16](http://www.aclweb.org/anthology/P/P16/P16-1101.pdf).   
 
-In default, `LSTM` is bidirectional LSTM.    
+By default, `LSTM` is bidirectional LSTM.    
 
 |ID| Model | Nochar | CharLSTM |CharCNN   
 |---|--------- | --- | --- | ------    
