@@ -21,7 +21,7 @@ Welcome to star this repository!
 Requirement:
 ======
 	Python: 2 or 3  
-	PyTorch: 0.3
+	PyTorch: 1.0 ([PyTorch 0.3 version is here](https://github.com/jiesutd/NCRFpp/tree/PyTorch0.3))
 
 
 Advantages
@@ -144,6 +144,7 @@ If you use experiments results and analysis of NCRF++, please cite our [COLING p
 
 Updating...
 ====
+* 2018-Dec-17, NCRF++ v0.2, support PyTorch 1.0
 * 2018-Mar-30, NCRF++ v0.1, initial version
 * 2018-Jan-06, add result comparison.
 * 2018-Jan-02, support character feature selection. 

@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-12-04 23:19:38
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-09-24 23:15:31
+# @Last Modified time: 2018-12-16 22:15:56
 from __future__ import print_function
 import torch
 import torch.autograd as autograd
@@ -188,10 +188,10 @@ class CRF(nn.Module):
         decode_idx = autograd.Variable(torch.LongTensor(seq_len, batch_size))
         if self.gpu:
             decode_idx = decode_idx.cuda()
-        decode_idx[-1] = pointer.data
+        decode_idx[-1] = pointer.detach()
         for idx in range(len(back_points)-2, -1, -1):
             pointer = torch.gather(back_points[idx], 1, pointer.contiguous().view(batch_size, 1))
-            decode_idx[idx] = pointer.data
+            decode_idx[idx] = pointer.detach().view(batch_size)
         path_score = None
         decode_idx = decode_idx.transpose(1,0)
         return path_score, decode_idx

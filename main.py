@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-09-05 23:05:26
+# @Last Modified time: 2018-12-16 22:35:00
 
 from __future__ import print_function
 import time
@@ -11,7 +11,6 @@ import argparse
 import random
 import torch
 import gc
-import torch.autograd as autograd
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
@@ -179,7 +178,7 @@ def evaluate(data, model, name, nbest=None):
         instance = instances[start:end]
         if not instance:
             continue
-        batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask  = batchify_with_label(instance, data.HP_gpu, True)
+        batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask  = batchify_with_label(instance, data.HP_gpu, False)
         if nbest:
             scores, nbest_tag_seq = model.decode_nbest(batch_word,batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask, nbest)
             nbest_pred_result = recover_nbest_label(nbest_tag_seq, mask, data.label_alphabet, batch_wordrecover)
@@ -201,7 +200,7 @@ def evaluate(data, model, name, nbest=None):
     return speed, acc, p, r, f, pred_results, pred_scores
 
 
-def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
+def batchify_with_label(input_batch_list, gpu, if_train=True):
     """
         input: list of words, chars and labels, various length. [[words,chars, labels],[words,chars,labels],...]
             words: word ids for one sentence. (batch_size, sent_len)
@@ -223,14 +222,15 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     chars = [sent[2] for sent in input_batch_list]
     labels = [sent[3] for sent in input_batch_list]
     word_seq_lengths = torch.LongTensor(list(map(len, words)))
-    max_seq_len = word_seq_lengths.max()
-    word_seq_tensor = autograd.Variable(torch.zeros((batch_size, max_seq_len)), volatile =  volatile_flag).long()
-    label_seq_tensor = autograd.Variable(torch.zeros((batch_size, max_seq_len)),volatile =  volatile_flag).long()
+    max_seq_len = word_seq_lengths.max().item()
+    word_seq_tensor = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).long()
+    label_seq_tensor = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).long()
     feature_seq_tensors = []
     for idx in range(feature_num):
-        feature_seq_tensors.append(autograd.Variable(torch.zeros((batch_size, max_seq_len)),volatile =  volatile_flag).long())
-    mask = autograd.Variable(torch.zeros((batch_size, max_seq_len)),volatile =  volatile_flag).byte()
+        feature_seq_tensors.append(torch.zeros((batch_size, max_seq_len),requires_grad =  if_train).long())
+    mask = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).byte()
     for idx, (seq, label, seqlen) in enumerate(zip(words, labels, word_seq_lengths)):
+        seqlen = seqlen.item()
         word_seq_tensor[idx, :seqlen] = torch.LongTensor(seq)
         label_seq_tensor[idx, :seqlen] = torch.LongTensor(label)
         mask[idx, :seqlen] = torch.Tensor([1]*seqlen)
@@ -248,7 +248,7 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     pad_chars = [chars[idx] + [[0]] * (max_seq_len-len(chars[idx])) for idx in range(len(chars))]
     length_list = [list(map(len, pad_char)) for pad_char in pad_chars]
     max_word_len = max(map(max, length_list))
-    char_seq_tensor = autograd.Variable(torch.zeros((batch_size, max_seq_len, max_word_len)), volatile =  volatile_flag).long()
+    char_seq_tensor = torch.zeros((batch_size, max_seq_len, max_word_len), requires_grad =  if_train).long()
     char_seq_lengths = torch.LongTensor(length_list)
     for idx, (seq, seqlen) in enumerate(zip(pad_chars, char_seq_lengths)):
         for idy, (word, wordlen) in enumerate(zip(seq, seqlen)):
@@ -331,8 +331,9 @@ def train(data):
             right, whole = predict_check(tag_seq, batch_label, mask)
             right_token += right
             whole_token += whole
-            sample_loss += loss.data[0]
-            total_loss += loss.data[0]
+            # print("loss:",loss.item())
+            sample_loss += loss.item()
+            total_loss += loss.item()
             if end%500 == 0:
                 temp_time = time.time()
                 temp_cost = temp_time - temp_start
