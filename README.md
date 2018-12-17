@@ -21,7 +21,9 @@ Welcome to star this repository!
 Requirement:
 ======
 	Python: 2 or 3  
-	PyTorch: 1.0 ([PyTorch 0.3 version is here](https://github.com/jiesutd/NCRFpp/tree/PyTorch0.3))
+	PyTorch: 1.0 
+
+[PyTorch 0.3 compatible version is here.](https://github.com/jiesutd/NCRFpp/tree/PyTorch0.3)
 
 
 Advantages
