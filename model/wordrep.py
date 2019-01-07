@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-04-26 13:41:07
+# @Last Modified time: 2019-01-01 23:18:36
 from __future__ import print_function
 from __future__ import absolute_import
 import torch
@@ -21,6 +21,7 @@ class WordRep(nn.Module):
         self.batch_size = data.HP_batch_size
         self.char_hidden_dim = 0
         self.char_all_feature = False
+        self.sentence_classification = data.sentence_classification
         if self.use_char:
             self.char_hidden_dim = data.HP_char_hidden_dim
             self.char_embedding_dim = data.char_emb_dim
@@ -90,8 +91,9 @@ class WordRep(nn.Module):
         sent_len = word_inputs.size(1)
         word_embs =  self.word_embedding(word_inputs)
         word_list = [word_embs]
-        for idx in range(self.feature_num):
-            word_list.append(self.feature_embeddings[idx](feature_inputs[idx]))
+        if not self.sentence_classification:
+            for idx in range(self.feature_num):
+                word_list.append(self.feature_embeddings[idx](feature_inputs[idx]))
 
         if self.use_char:
             ## calculate char lstm last hidden

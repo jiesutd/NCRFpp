@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-06-22 00:01:47
+# @Last Modified time: 2019-01-01 23:50:34
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -21,6 +21,7 @@ PADDING = "</pad>"
 
 class Data:
     def __init__(self):
+        self.sentence_classification = False
         self.MAX_SENTENCE_LENGTH = 250
         self.MAX_WORD_LENGTH = -1
         self.number_normalized = True
@@ -111,6 +112,10 @@ class Data:
         print("++"*50)
         print("DATA SUMMARY START:")
         print(" I/O:")
+        if self.sentence_classification:
+            print("     Start Sentence Classification task...")
+        else:
+            print("     Start   Sequence   Laebling   task...")
         print("     Tag          scheme: %s"%(self.tagScheme))
         print("     MAX SENTENCE LENGTH: %s"%(self.MAX_SENTENCE_LENGTH))
         print("     MAX   WORD   LENGTH: %s"%(self.MAX_WORD_LENGTH))
@@ -176,7 +181,12 @@ class Data:
 
 
     def initial_feature_alphabets(self):
-        items = open(self.train_dir,'r').readline().strip('\n').split()
+        if self.sentence_classification:
+            ## if sentence classification data format, splited by '\t'
+            items = open(self.train_dir,'r').readline().strip('\n').split('\t')
+        else:
+            ## if sequence labeling data format i.e. CoNLL 2003, split by ' '
+            items = open(self.train_dir,'r').readline().strip('\n').split()
         total_column = len(items)
         if total_column > 2:
             for idx in range(1, total_column-1):
@@ -203,21 +213,43 @@ class Data:
         in_lines = open(input_file,'r').readlines()
         for line in in_lines:
             if len(line) > 2:
-                pairs = line.strip().split()
-                word = pairs[0]
-                if sys.version_info[0] < 3:
-                    word = word.decode('utf-8')
-                if self.number_normalized:
-                    word = normalize_word(word)
-                label = pairs[-1]
-                self.label_alphabet.add(label)
-                self.word_alphabet.add(word)
-                ## build feature alphabet
-                for idx in range(self.feature_num):
-                    feat_idx = pairs[idx+1].split(']',1)[-1]
-                    self.feature_alphabets[idx].add(feat_idx)
-                for char in word:
-                    self.char_alphabet.add(char)
+                ## if sentence classification data format, splited by \t
+                if self.sentence_classification:
+                    pairs = line.strip().split('\t')
+                    sent = pairs[0]
+                    if sys.version_info[0] < 3:
+                        sent = sent.decode('utf-8')
+                    words = sent.split()
+                    for word in words:
+                        if self.number_normalized:
+                            word = normalize_word(word)
+                            self.word_alphabet.add(word)
+                            for char in word:
+                                self.char_alphabet.add(char)
+                    label = pairs[-1]
+                    self.label_alphabet.add(label)
+                    ## build feature alphabet
+                    for idx in range(self.feature_num):
+                        feat_idx = pairs[idx+1].split(']',1)[-1]
+                        self.feature_alphabets[idx].add(feat_idx)
+
+                ## if sequence labeling data format i.e. CoNLL 2003
+                else:
+                    pairs = line.strip().split()
+                    word = pairs[0]
+                    if sys.version_info[0] < 3:
+                        word = word.decode('utf-8')
+                    if self.number_normalized:
+                        word = normalize_word(word)
+                    label = pairs[-1]
+                    self.label_alphabet.add(label)
+                    self.word_alphabet.add(word)
+                    ## build feature alphabet
+                    for idx in range(self.feature_num):
+                        feat_idx = pairs[idx+1].split(']',1)[-1]
+                        self.feature_alphabets[idx].add(feat_idx)
+                    for char in word:
+                        self.char_alphabet.add(char)
         self.word_alphabet_size = self.word_alphabet.size()
         self.char_alphabet_size = self.char_alphabet.size()
         self.label_alphabet_size = self.label_alphabet.size()
@@ -235,6 +267,8 @@ class Data:
                 self.tagScheme = "BMES"
             else:
                 self.tagScheme = "BIO"
+        if self.sentence_classification:
+            self.tagScheme = "Not sequence labeling task"
 
 
     def fix_alphabet(self):
@@ -261,13 +295,13 @@ class Data:
     def generate_instance(self, name):
         self.fix_alphabet()
         if name == "train":
-            self.train_texts, self.train_Ids = read_instance(self.train_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH)
+            self.train_texts, self.train_Ids = read_instance(self.train_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification)
         elif name == "dev":
-            self.dev_texts, self.dev_Ids = read_instance(self.dev_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH)
+            self.dev_texts, self.dev_Ids = read_instance(self.dev_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification)
         elif name == "test":
-            self.test_texts, self.test_Ids = read_instance(self.test_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH)
+            self.test_texts, self.test_Ids = read_instance(self.test_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification)
         elif name == "raw":
-            self.raw_texts, self.raw_Ids = read_instance(self.raw_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH)
+            self.raw_texts, self.raw_Ids = read_instance(self.raw_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification)
         else:
             print("Error: you can only generate train/dev/test instance! Illegal input:%s"%(name))
 
@@ -403,7 +437,9 @@ class Data:
         if the_item in config:
             self.number_normalized = str2bool(config[the_item])
 
-
+        the_item = 'sentence_classification'
+        if the_item in config:
+            self.sentence_classification = str2bool(config[the_item])
         the_item = 'seg'
         if the_item in config:
             self.seg = str2bool(config[the_item])
@@ -434,10 +470,6 @@ class Data:
         the_item = 'feature'
         if the_item in config:
             self.feat_config = config[the_item] ## feat_config is a dict
-
-
-
-
 
 
         ## read training setting:
@@ -496,7 +528,9 @@ class Data:
         the_item = 'l2'
         if the_item in config:
             self.HP_l2 = float(config[the_item])
-
+        ## no seg for sentence classification
+        if self.sentence_classification:
+            self.seg = False
 
 
 def config_file_to_dict(input_file):

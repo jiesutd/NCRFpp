@@ -2,9 +2,10 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-04-26 14:50:58
+# @Last Modified time: 2019-01-02 00:37:16
 from __future__ import print_function
 from __future__ import absolute_import
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
@@ -23,11 +24,12 @@ class WordSequence(nn.Module):
         self.lstm_layer = data.HP_lstm_layer
         self.wordrep = WordRep(data)
         self.input_size = data.word_emb_dim
+        self.feature_num = data.feature_num
         if self.use_char:
             self.input_size += data.HP_char_hidden_dim
             if data.char_feature_extractor == "ALL":
                 self.input_size += data.HP_char_hidden_dim
-        for idx in range(data.feature_num):
+        for idx in range(self.feature_num):
             self.input_size += data.feature_emb_dims[idx]
         # The LSTM takes word embeddings as inputs, and outputs hidden states
         # with dimensionality hidden_dim.
@@ -50,7 +52,7 @@ class WordSequence(nn.Module):
             self.cnn_drop_list = nn.ModuleList()
             self.cnn_batchnorm_list = nn.ModuleList()
             kernel = 3
-            pad_size = (kernel-1)/2
+            pad_size = int((kernel-1)/2)
             for idx in range(self.cnn_layer):
                 self.cnn_list.append(nn.Conv1d(data.HP_hidden_dim, data.HP_hidden_dim, kernel_size=kernel, padding=pad_size))
                 self.cnn_drop_list.append(nn.Dropout(data.HP_dropout))
@@ -75,6 +77,7 @@ class WordSequence(nn.Module):
         """
             input:
                 word_inputs: (batch_size, sent_len)
+                feature_inputs: [(batch_size, sent_len), ...] list of variables
                 word_seq_lengths: list of batch_size, (batch_size,1)
                 char_inputs: (batch_size*sent_len, word_length)
                 char_seq_lengths: list of whole batch_size for char, (batch_size*sent_len, 1)
@@ -85,7 +88,7 @@ class WordSequence(nn.Module):
         word_represent = self.wordrep(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover)
         ## word_embs (batch_size, seq_len, embed_size)
         if self.word_feature_extractor == "CNN":
-            word_in = F.tanh(self.word2cnn(word_represent)).transpose(2,1).contiguous()
+            word_in = torch.tanh(self.word2cnn(word_represent)).transpose(2,1).contiguous()
             for idx in range(self.cnn_layer):
                 if idx == 0:
                     cnn_feature = F.relu(self.cnn_list[idx](word_in))
@@ -103,4 +106,49 @@ class WordSequence(nn.Module):
             feature_out = self.droplstm(lstm_out.transpose(1,0))
         ## feature_out (batch_size, seq_len, hidden_size)
         outputs = self.hidden2tag(feature_out)
+        return outputs
+
+    def sentence_representation(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover):
+        """
+            input:
+                word_inputs: (batch_size, sent_len)
+                feature_inputs: [(batch_size, ), ...] list of variables
+                word_seq_lengths: list of batch_size, (batch_size,1)
+                char_inputs: (batch_size*sent_len, word_length)
+                char_seq_lengths: list of whole batch_size for char, (batch_size*sent_len, 1)
+                char_seq_recover: variable which records the char order information, used to recover char order
+            output:
+                Variable(batch_size, sent_len, hidden_dim)
+        """
+        word_represent = self.wordrep(word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover)
+        print("b",word_represent)
+        ## word_embs (batch_size, seq_len, embed_size)
+        batch_size = word_inputs.size(0)
+        if self.word_feature_extractor == "CNN":
+            word_in = torch.tanh(self.word2cnn(word_represent)).transpose(2,1).contiguous()
+            for idx in range(self.cnn_layer):
+                if idx == 0:
+                    cnn_feature = F.relu(self.cnn_list[idx](word_in))
+                else:
+                    cnn_feature = F.relu(self.cnn_list[idx](cnn_feature))
+                cnn_feature = self.cnn_drop_list[idx](cnn_feature)
+                cnn_feature = self.cnn_batchnorm_list[idx](cnn_feature)
+                print("a", cnn_feature)
+            feature_out = F.max_pool1d(cnn_feature, cnn_feature.size(2)).view(batch_size, -1)
+            print(feature_out)
+            exit(0)
+        else:
+            packed_words = pack_padded_sequence(word_represent, word_seq_lengths.cpu().numpy(), True)
+            hidden = None
+            lstm_out, hidden = self.lstm(packed_words, hidden)
+            ## lstm_out (seq_len, seq_len, hidden_size)
+            ## feature_out (batch_size, hidden_size)
+            feature_out = hidden[0].transpose(1,0).contiguous().view(batch_size,-1)
+            
+        feature_list = [feature_out]
+        for idx in range(self.feature_num):
+            feature_list.append(self.feature_embeddings[idx](feature_inputs[idx]))
+        final_feature = torch.cat(feature_list, 1)
+        outputs = self.hidden2tag(self.droplstm(final_feature))
+        ## outputs: (batch_size, label_alphabet_size)
         return outputs

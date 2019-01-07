@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-09-05 23:05:37
+# @Last Modified time: 2019-01-01 21:09:38
 
 from __future__ import print_function
 import time
@@ -18,7 +18,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
 from utils.metric import get_ner_fmeasure
-from model.seqmodel import SeqModel
+from model.seqlabel import SeqLabel
 from utils.data import Data
 
 try:
@@ -283,7 +283,7 @@ def train(data):
     data.show_data_summary()
     save_data_name = data.model_dir +".dset"
     data.save(save_data_name)
-    model = SeqModel(data)
+    model = SeqLabel(data)
     loss_function = nn.NLLLoss()
     if data.optimizer.lower() == "sgd":
         optimizer = optim.SGD(model.parameters(), lr=data.HP_lr, momentum=data.HP_momentum,weight_decay=data.HP_l2)

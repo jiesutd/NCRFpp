@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-03-30 16:20:07
+# @Last Modified time: 2019-01-01 21:10:00
 
 from __future__ import print_function
 from __future__ import absolute_import
@@ -12,11 +12,11 @@ import torch.nn.functional as F
 from .wordsequence import WordSequence
 from .crf import CRF
 
-class SeqModel(nn.Module):
+class SeqLabel(nn.Module):
     def __init__(self, data):
-        super(SeqModel, self).__init__()
+        super(SeqLabel, self).__init__()
         self.use_crf = data.use_crf
-        print("build network...")
+        print("build sequence labeling network...")
         print("use_char: ", data.use_char)
         if data.use_char:
             print("char feature extractor: ", data.char_feature_extractor)
