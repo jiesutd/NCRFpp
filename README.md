@@ -1,7 +1,7 @@
 ![NCRF++ Logo](https://github.com/jiesutd/NCRFpp/blob/master/readme/logo.png)
 
 ****
-### NCRF++: An Open-source Neural Sequence Labeling Toolkit
+# NCRF++: An Open-source Neural Sequence Labeling Toolkit
 
 
 * [Introduction](#Introduction)
