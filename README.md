@@ -4,19 +4,19 @@
 # NCRF++: An Open-source Neural Sequence Labeling Toolkit
 
 
-* [Introduction](#Introduction)
-* [Requirement](#Requirement)
-* [Advantages](#Advantages)
-* [Usage](#Usage)
-* [Data Format](#Data-Format)
-* [Performance](#Performance)
-* [Add Handcrafted Features](#Add-Handcrafted-Features)
-* [Speed](#Speed)
-* [N best Decoding](#N-best-Decoding)
-* [Reproduce Paper Results and Hyperparameter Tuning](#Reproduce-Paper-Results-and-Hyperparameter-Tuning)
-* [Report Issue or Problem](#Report-Issue-or-Problem)
-* [Cite](#Cite)
-* [Update](#Update)
+* [1. Introduction](#Introduction)
+* [2. Requirement](#Requirement)
+* [3. Advantages](#Advantages)
+* [4. Usage](#Usage)
+* [5. Data Format](#Data-Format)
+* [6. Performance](#Performance)
+* [7. Add Handcrafted Features](#Add-Handcrafted-Features)
+* [8. Speed](#Speed)
+* [9. N best Decoding](#N-best-Decoding)
+* [10. Reproduce Paper Results and Hyperparameter Tuning](#Reproduce-Paper-Results-and-Hyperparameter-Tuning)
+* [11. Report Issue or Problem](#Report-Issue-or-Problem)
+* [12. Cite](#Cite)
+* [13. Update](#Update)
 
 ## Introduction
 
