@@ -16,7 +16,7 @@
 * [Reproduce Paper Results and Hyperparameter Tuning](#Reproduce-Paper-Results-and-Hyperparameter-Tuning)
 * [Report Issue or Problem](#Report-Issue-or-Problem)
 * [Cite](#Cite)
-* [Updating...](#Updating...)
+* [Update](#Update)
 
 ## Introduction
 -----------
@@ -145,7 +145,6 @@ If you want to report an issue or ask a problem, please attach the following mat
 
 ## Cite
 -----------------
-
 If you use NCRF++ in your paper, please cite our [ACL demo paper](https://arxiv.org/abs/1806.05626):
 
     @inproceedings{yang2018ncrf,  
@@ -168,8 +167,7 @@ If you use experiments results and analysis of NCRF++, please cite our [COLING p
     }
 
 
-## Updating...
--------------------
+## Update
 * 2018-Dec-17, NCRF++ v0.2, support PyTorch 1.0
 * 2018-Mar-30, NCRF++ v0.1, initial version
 * 2018-Jan-06, add result comparison.
