@@ -22,11 +22,11 @@
 
 Sequence labeling models are quite popular in many NLP tasks, such as Named Entity Recognition (NER), part-of-speech (POS) tagging and word segmentation. State-of-the-art sequence labeling models mostly utilize the CRF structure with input word features. LSTM (or bidirectional LSTM) is a popular deep learning based feature extractor in sequence labeling task. And CNN can also be used due to faster computation. Besides, features within word are also useful to represent word, which can be captured by character LSTM or character CNN structure or human-defined neural features.
 
-NCRF++ is a PyTorch based framework with flexiable choices of input features and output structures. The design of neural sequence labeling models with NCRF++ is fully configurable through a configuration file, which does not require any code work. NCRF++ is a neural version of [CRF++](http://taku910.github.io/crfpp/), which is a famous statistical CRF framework. 
+NCRF++ is a PyTorch based framework with flexiable choices of input features and output structures. The design of neural sequence labeling models with NCRF++ is fully configurable through a configuration file, which does not require any code work. NCRF++ can be regarded as a neural network version of [CRF++](http://taku910.github.io/crfpp/), which is a famous statistical CRF framework. 
 
-This framework has been accepted by [ACL 2018](https://arxiv.org/abs/1806.05626) as demonstration paper. And the detailed experiment report and analysis using NCRF++ has been accepted at [COLING 2018](https://arxiv.org/abs/1806.04470).
+This framework has been accepted by [ACL 2018](https://arxiv.org/abs/1806.05626) as demonstration paper. And the detailed experiment report and analysis using NCRF++ has been accepted at [COLING 2018](https://arxiv.org/abs/1806.04470) as the best paper.
 
-NCRF++ supports diffent structure combinations of on three levels: character sequence representation, word sequence representation and inference layer.
+NCRF++ supports different structure combinations of on three levels: character sequence representation, word sequence representation and inference layer.
 
 * Character sequence representation: character LSTM, character GRU, character CNN and handcrafted word features.
 * Word sequence representation: word LSTM, word GRU, word CNN.

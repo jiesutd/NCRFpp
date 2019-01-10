@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-11-27 16:53:36
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-06-25 10:26:30
+# @Last Modified time: 2019-01-09 21:39:10
 
 
 """
@@ -127,7 +127,7 @@ def choose_label(input_file, output_file):
 if __name__ == '__main__':
     '''Convert NER tag schemes among IOB/BIO/BIOES.
         For example: if you want to convert the IOB tag scheme to BIO, then you run as following:
-            python NERSchemeConverter.py IOB2BIO input_iob_file output_bio_file
+            python tagSchemeConverter.py IOB2BIO input_iob_file output_bio_file
         Input data format is the standard CoNLL 2003 data format.
     '''
     if sys.argv[1].upper() == "IOB2BIO":
