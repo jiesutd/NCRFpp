@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-02 00:37:16
+# @Last Modified time: 2019-01-10 15:01:16
 from __future__ import print_function
 from __future__ import absolute_import
 import torch
@@ -121,7 +121,7 @@ class WordSequence(nn.Module):
                 Variable(batch_size, sent_len, hidden_dim)
         """
         word_represent = self.wordrep(word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover)
-        print("b",word_represent)
+        # print("b",word_represent)
         ## word_embs (batch_size, seq_len, embed_size)
         batch_size = word_inputs.size(0)
         if self.word_feature_extractor == "CNN":
@@ -131,9 +131,10 @@ class WordSequence(nn.Module):
                     cnn_feature = F.relu(self.cnn_list[idx](word_in))
                 else:
                     cnn_feature = F.relu(self.cnn_list[idx](cnn_feature))
+                # print("cnn: %s"%idx, cnn_feature)
                 cnn_feature = self.cnn_drop_list[idx](cnn_feature)
                 cnn_feature = self.cnn_batchnorm_list[idx](cnn_feature)
-                print("a", cnn_feature)
+                # print("a", cnn_feature)
             feature_out = F.max_pool1d(cnn_feature, cnn_feature.size(2)).view(batch_size, -1)
             print(feature_out)
             exit(0)

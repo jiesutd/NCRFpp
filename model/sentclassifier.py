@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2019-01-01 21:11:50
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-02 00:35:39
+# @Last Modified time: 2019-01-10 14:53:57
 
 from __future__ import print_function
 from __future__ import absolute_import
@@ -42,7 +42,9 @@ class SentClassifier(nn.Module):
         _, tag_seq  = torch.max(score, 1)
         if self.average_batch:
             total_loss = total_loss / batch_size
+        print("aa")
         print(total_loss)
+        exit(0)
         return total_loss, tag_seq
 
 

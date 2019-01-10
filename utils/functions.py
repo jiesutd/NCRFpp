@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-01 23:44:28
+# @Last Modified time: 2019-01-10 15:03:31
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -81,6 +81,16 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
                 word_Ids = []
                 feature_Ids = []
                 label_Ids = []
+        if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
+            instence_texts.append([words, feat_list, chars, label])
+            instence_Ids.append([word_Ids, feat_Id, char_Ids,label_Id])
+            words = []
+            features = []
+            chars = []
+            char_Ids = []
+            word_Ids = []
+            feature_Ids = []
+            label_Ids = []
 
     else:
     ### for sequence labeling data format i.e. CoNLL 2003
@@ -136,6 +146,10 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
                 feature_Ids = []
                 char_Ids = []
                 label_Ids = []
+        if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
+            instence_texts.append([words, features, chars, labels])
+            instence_Ids.append([word_Ids, feature_Ids, char_Ids,label_Ids])
+
     return instence_texts, instence_Ids
 
 
