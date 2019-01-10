@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-10 15:03:31
+# @Last Modified time: 2019-01-10 15:08:07
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -149,6 +149,14 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
         if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
             instence_texts.append([words, features, chars, labels])
             instence_Ids.append([word_Ids, feature_Ids, char_Ids,label_Ids])
+            words = []
+            features = []
+            chars = []
+            labels = []
+            word_Ids = []
+            feature_Ids = []
+            char_Ids = []
+            label_Ids = []
 
     return instence_texts, instence_Ids
 
