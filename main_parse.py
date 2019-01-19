@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-01 21:09:38
+# @Last Modified time: 2019-01-18 21:02:01
 
 from __future__ import print_function
 import time
@@ -387,7 +387,7 @@ def train(data):
 
 def load_model_decode(data, name):
     print("Load Model from file: ", data.model_dir)
-    model = SeqModel(data)
+    model = SeqLabel(data)
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     # if not gpu:
     #     model.load_state_dict(torch.load(model_dir))

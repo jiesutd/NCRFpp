@@ -2,3 +2,7 @@
 __pycache__
 *.dset
 *.model
+*.txt
+demo.clf.*
+sent.*
+*.out

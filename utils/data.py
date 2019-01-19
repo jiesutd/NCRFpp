@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-01 23:50:34
+# @Last Modified time: 2019-01-11 09:53:05
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -38,7 +38,7 @@ class Data:
 
         self.label_alphabet = Alphabet('label',True)
         self.tagScheme = "NoSeg" ## BMES/BIO
-
+        self.split_token = ' ||| '
         self.seg = True
 
         ### I/O
@@ -109,6 +109,7 @@ class Data:
         self.HP_l2 = 1e-8
 
     def show_data_summary(self):
+        
         print("++"*50)
         print("DATA SUMMARY START:")
         print(" I/O:")
@@ -117,6 +118,7 @@ class Data:
         else:
             print("     Start   Sequence   Laebling   task...")
         print("     Tag          scheme: %s"%(self.tagScheme))
+        print("     Split         token: %s"%(self.split_token))
         print("     MAX SENTENCE LENGTH: %s"%(self.MAX_SENTENCE_LENGTH))
         print("     MAX   WORD   LENGTH: %s"%(self.MAX_WORD_LENGTH))
         print("     Number   normalized: %s"%(self.number_normalized))
@@ -215,7 +217,7 @@ class Data:
             if len(line) > 2:
                 ## if sentence classification data format, splited by \t
                 if self.sentence_classification:
-                    pairs = line.strip().split('\t')
+                    pairs = line.strip().split(self.split_token)
                     sent = pairs[0]
                     if sys.version_info[0] < 3:
                         sent = sent.decode('utf-8')
@@ -295,19 +297,19 @@ class Data:
     def generate_instance(self, name):
         self.fix_alphabet()
         if name == "train":
-            self.train_texts, self.train_Ids = read_instance(self.train_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification)
+            self.train_texts, self.train_Ids = read_instance(self.train_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification, self.split_token)
         elif name == "dev":
-            self.dev_texts, self.dev_Ids = read_instance(self.dev_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification)
+            self.dev_texts, self.dev_Ids = read_instance(self.dev_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification, self.split_token)
         elif name == "test":
-            self.test_texts, self.test_Ids = read_instance(self.test_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification)
+            self.test_texts, self.test_Ids = read_instance(self.test_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification, self.split_token)
         elif name == "raw":
-            self.raw_texts, self.raw_Ids = read_instance(self.raw_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification)
+            self.raw_texts, self.raw_Ids = read_instance(self.raw_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification, self.split_token)
         else:
             print("Error: you can only generate train/dev/test instance! Illegal input:%s"%(name))
 
 
     def write_decoded_results(self, predict_results, name):
-        fout = open(self.decode_dir,'w')
+        
         sent_num = len(predict_results)
         content_list = []
         if name == 'raw':
@@ -321,12 +323,16 @@ class Data:
         else:
             print("Error: illegal name during writing predict result, name should be within train/dev/test/raw !")
         assert(sent_num == len(content_list))
+        fout = open(self.decode_dir,'w')
         for idx in range(sent_num):
-            sent_length = len(predict_results[idx])
-            for idy in range(sent_length):
-                ## content_list[idx] is a list with [word, char, label]
-                fout.write(content_list[idx][0][idy].encode('utf-8') + " " + predict_results[idx][idy] + '\n')
-            fout.write('\n')
+            if self.sentence_classification:
+                fout.write(" ".join(content_list[idx][0])+"\t"+predict_results[idx]+ '\n')
+            else:
+                sent_length = len(predict_results[idx])
+                for idy in range(sent_length):
+                    ## content_list[idx] is a list with [word, char, label]
+                    fout.write(content_list[idx][0][idy].encode('utf-8') + " " + predict_results[idx][idy] + '\n')
+                fout.write('\n')
         fout.close()
         print("Predict %s result has been written into file. %s"%(name, self.decode_dir))
 
@@ -531,6 +537,7 @@ class Data:
         ## no seg for sentence classification
         if self.sentence_classification:
             self.seg = False
+            self.use_crf = False
 
 
 def config_file_to_dict(input_file):
@@ -568,6 +575,8 @@ def config_file_to_dict(input_file):
                 if item in config:
                     print("Warning: duplicated config item found: %s, updated."%(pair[0]))
                 config[item] = pair[-1]
+
+
     return config
 
 

@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-02-16 09:53:19
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2017-12-19 15:23:12
+# @Last Modified time: 2019-01-18 21:04:10
 
 # from operator import add
 #
@@ -27,7 +27,7 @@ def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES"):
             if golden_list[idy] == predict_list[idy]:
                 right_tag += 1
         all_tag += len(golden_list)
-        if label_type == "BMES":
+        if label_type == "BMES" or "BIOES":
             gold_matrix = get_ner_BMES(golden_list)
             pred_matrix = get_ner_BMES(predict_list)
         else:
@@ -56,7 +56,10 @@ def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES"):
         f_measure = 2*precision*recall/(precision+recall)
     accuracy = (right_tag+0.0)/all_tag
     # print "Accuracy: ", right_tag,"/",all_tag,"=",accuracy
-    print("gold_num = ", golden_num, " pred_num = ", predict_num, " right_num = ", right_num)
+    if  label_type.upper().startswith("B-"):
+        print("gold_num = ", golden_num, " pred_num = ", predict_num, " right_num = ", right_num)
+    else:
+        print("Right token = ", right_tag, " All token = ", all_tag, " acc = ", accuracy)
     return accuracy, precision, recall, f_measure
 
 

@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-01 23:18:36
+# @Last Modified time: 2019-01-10 16:41:16
 from __future__ import print_function
 from __future__ import absolute_import
 import torch
@@ -57,8 +57,6 @@ class WordRep(nn.Module):
             else:
                 self.feature_embeddings[idx].weight.data.copy_(torch.from_numpy(self.random_embedding(data.feature_alphabets[idx].size(), self.feature_embedding_dims[idx])))
 
-
-
         if self.gpu:
             self.drop = self.drop.cuda()
             self.word_embedding = self.word_embedding.cuda()
@@ -94,9 +92,10 @@ class WordRep(nn.Module):
         if not self.sentence_classification:
             for idx in range(self.feature_num):
                 word_list.append(self.feature_embeddings[idx](feature_inputs[idx]))
-
         if self.use_char:
             ## calculate char lstm last hidden
+            # print("charinput:", char_inputs)
+            # exit(0)
             char_features = self.char_feature.get_last_hiddens(char_inputs, char_seq_lengths.cpu().numpy())
             char_features = char_features[char_seq_recover]
             char_features = char_features.view(batch_size,sent_len,-1)
@@ -108,7 +107,7 @@ class WordRep(nn.Module):
                 char_features_extra = char_features_extra[char_seq_recover]
                 char_features_extra = char_features_extra.view(batch_size,sent_len,-1)
                 ## concat word and char together
-                word_list.append(char_features_extra)
+                word_list.append(char_features_extra)    
         word_embs = torch.cat(word_list, 2)
         word_represent = self.drop(word_embs)
         return word_represent

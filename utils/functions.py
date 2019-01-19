@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-10 15:08:07
+# @Last Modified time: 2019-01-14 11:08:45
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -18,9 +18,9 @@ def normalize_word(word):
     return new_word
 
 
-def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, label_alphabet, number_normalized, max_sent_length, sentence_classification=False, char_padding_size=-1, char_padding_symbol = '</pad>'):
+def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, label_alphabet, number_normalized, max_sent_length, sentence_classification=False, split_token='\t', char_padding_size=-1, char_padding_symbol = '</pad>'):
     feature_num = len(feature_alphabets)
-    in_lines = open(input_file,'r').readlines()
+    in_lines = open(input_file,'r', encoding="utf8").readlines()
     instence_texts = []
     instence_Ids = []
     words = []
@@ -36,28 +36,28 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
     if sentence_classification:
         for line in in_lines:
             if len(line) > 2:
-                pairs = line.strip().split('\t')
+                pairs = line.strip().split(split_token)
                 sent = pairs[0]
                 if sys.version_info[0] < 3:
                     sent = sent.decode('utf-8')
                 original_words = sent.split()
                 for word in original_words:
+                    words.append(word)
                     if number_normalized:
                         word = normalize_word(word)
-                    words.append(word)
                     word_Ids.append(word_alphabet.get_index(word))
                     ## get char
                     char_list = []
                     char_Id = []
                     for char in word:
                         char_list.append(char)
-                        if char_padding_size > 0:
-                            char_number = len(char_list)
-                            if char_number < char_padding_size:
-                                char_list = char_list + [char_padding_symbol]*(char_padding_size-char_number)
-                            assert(len(char_list) == char_padding_size)
-                        for char in char_list:
-                            char_Id.append(char_alphabet.get_index(char))
+                    if char_padding_size > 0:
+                        char_number = len(char_list)
+                        if char_number < char_padding_size:
+                            char_list = char_list + [char_padding_symbol]*(char_padding_size-char_number)
+                        assert(len(char_list) == char_padding_size)
+                    for char in char_list:
+                        char_Id.append(char_alphabet.get_index(char))
                     chars.append(char_list)
                     char_Ids.append(char_Id)
 
@@ -100,11 +100,10 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
                 word = pairs[0]
                 if sys.version_info[0] < 3:
                     word = word.decode('utf-8')
-
+                words.append(word)
                 if number_normalized:
                     word = normalize_word(word)
                 label = pairs[-1]
-                words.append(word)
                 labels.append(label)
                 word_Ids.append(word_alphabet.get_index(word))
                 label_Ids.append(label_alphabet.get_index(label))
@@ -157,7 +156,6 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
             feature_Ids = []
             char_Ids = []
             label_Ids = []
-
     return instence_texts, instence_Ids
 
 
@@ -198,7 +196,7 @@ def norm2one(vec):
 def load_pretrain_emb(embedding_path):
     embedd_dim = -1
     embedd_dict = dict()
-    with open(embedding_path, 'r') as file:
+    with open(embedding_path, 'r', encoding="utf8") as file:
         for line in file:
             line = line.strip()
             if len(line) == 0:

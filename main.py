@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-01 23:58:38
+# @Last Modified time: 2019-01-14 16:09:16
 
 from __future__ import print_function
 import time
@@ -121,32 +121,6 @@ def recover_nbest_label(pred_variable, mask_variable, label_alphabet, word_recov
     return pred_label
 
 
-
-# def save_data_setting(data, save_file):
-#     new_data = copy.deepcopy(data)
-#     ## remove input instances
-#     new_data.train_texts = []
-#     new_data.dev_texts = []
-#     new_data.test_texts = []
-#     new_data.raw_texts = []
-
-#     new_data.train_Ids = []
-#     new_data.dev_Ids = []
-#     new_data.test_Ids = []
-#     new_data.raw_Ids = []
-#     ## save data settings
-#     with open(save_file, 'w') as fp:
-#         pickle.dump(new_data, fp)
-#     print("Data setting saved to file:",save_file)
-
-
-# def load_data_setting(save_file):
-#     with open(save_file, 'r') as fp:
-#         data = pickle.load(fp)
-#     print("Data setting loaded from file: ", save_file)
-#     data.show_data_summary()
-#     return data
-
 def lr_decay(optimizer, epoch, decay_rate, init_lr):
     lr = init_lr/(1+decay_rate*epoch)
     print(" Learning rate is set as:", lr)
@@ -189,7 +163,7 @@ def evaluate(data, model, name, nbest=None):
         if not instance:
             continue
         batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask  = batchify_with_label(instance, data.HP_gpu, False, data.sentence_classification)
-        if nbest:
+        if nbest and not data.sentence_classification:
             scores, nbest_tag_seq = model.decode_nbest(batch_word,batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask, nbest)
             nbest_pred_result = recover_nbest_label(nbest_tag_seq, mask, data.label_alphabet, batch_wordrecover)
             nbest_pred_results += nbest_pred_result
@@ -205,7 +179,7 @@ def evaluate(data, model, name, nbest=None):
     decode_time = time.time() - start_time
     speed = len(instances)/decode_time
     acc, p, r, f = get_ner_fmeasure(gold_results, pred_results, data.tagScheme)
-    if nbest:
+    if nbest and not data.sentence_classification:
         return speed, acc, p, r, f, nbest_pred_results, pred_scores
     return speed, acc, p, r, f, pred_results, pred_scores
 
@@ -415,6 +389,7 @@ def train(data):
         right_token = 0
         whole_token = 0
         random.shuffle(data.train_Ids)
+        print("Shuffle: first input word list:", data.train_Ids[0][0])
         ## set model in train model
         model.train()
         model.zero_grad()
@@ -432,7 +407,7 @@ def train(data):
                 continue
             batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask  = batchify_with_label(instance, data.HP_gpu, True, data.sentence_classification)
             instance_count += 1
-            loss, tag_seq = model.neg_log_likelihood_loss(batch_word,batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_label, mask)
+            loss, tag_seq = model.neg_log_likelihood_loss(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_label, mask)
             right, whole = predict_check(tag_seq, batch_label, mask, data.sentence_classification)
             right_token += right
             whole_token += whole
@@ -497,7 +472,11 @@ def train(data):
 
 def load_model_decode(data, name):
     print("Load Model from file: ", data.model_dir)
-    model = SeqModel(data)
+    if data.sentence_classification:
+        model = SentClassifier(data)
+    else:
+        model = SeqLabel(data)
+    # model = SeqModel(data)
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     # if not gpu:
     #     model.load_state_dict(torch.load(model_dir))
@@ -553,7 +532,7 @@ if __name__ == '__main__':
         data.generate_instance('raw')
         print("nbest: %s"%(data.nbest))
         decode_results, pred_scores = load_model_decode(data, 'raw')
-        if data.nbest:
+        if data.nbest and not data.sentence_classification:
             data.write_nbest_decoded_results(decode_results, pred_scores, 'raw')
         else:
             data.write_decoded_results(decode_results, 'raw')

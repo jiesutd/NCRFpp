@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-10 15:01:16
+# @Last Modified time: 2019-01-11 13:55:41
 from __future__ import print_function
 from __future__ import absolute_import
 import torch
@@ -85,9 +85,11 @@ class WordSequence(nn.Module):
             output:
                 Variable(batch_size, sent_len, hidden_dim)
         """
+        
         word_represent = self.wordrep(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover)
         ## word_embs (batch_size, seq_len, embed_size)
         if self.word_feature_extractor == "CNN":
+            batch_size = word_inputs.size(0)
             word_in = torch.tanh(self.word2cnn(word_represent)).transpose(2,1).contiguous()
             for idx in range(self.cnn_layer):
                 if idx == 0:
@@ -95,7 +97,8 @@ class WordSequence(nn.Module):
                 else:
                     cnn_feature = F.relu(self.cnn_list[idx](cnn_feature))
                 cnn_feature = self.cnn_drop_list[idx](cnn_feature)
-                cnn_feature = self.cnn_batchnorm_list[idx](cnn_feature)
+                if batch_size > 1:
+                    cnn_feature = self.cnn_batchnorm_list[idx](cnn_feature)
             feature_out = cnn_feature.transpose(2,1).contiguous()
         else:
             packed_words = pack_padded_sequence(word_represent, word_seq_lengths.cpu().numpy(), True)
@@ -120,8 +123,8 @@ class WordSequence(nn.Module):
             output:
                 Variable(batch_size, sent_len, hidden_dim)
         """
+
         word_represent = self.wordrep(word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover)
-        # print("b",word_represent)
         ## word_embs (batch_size, seq_len, embed_size)
         batch_size = word_inputs.size(0)
         if self.word_feature_extractor == "CNN":
@@ -131,13 +134,10 @@ class WordSequence(nn.Module):
                     cnn_feature = F.relu(self.cnn_list[idx](word_in))
                 else:
                     cnn_feature = F.relu(self.cnn_list[idx](cnn_feature))
-                # print("cnn: %s"%idx, cnn_feature)
                 cnn_feature = self.cnn_drop_list[idx](cnn_feature)
-                cnn_feature = self.cnn_batchnorm_list[idx](cnn_feature)
-                # print("a", cnn_feature)
+                if batch_size > 1:
+                    cnn_feature = self.cnn_batchnorm_list[idx](cnn_feature)
             feature_out = F.max_pool1d(cnn_feature, cnn_feature.size(2)).view(batch_size, -1)
-            print(feature_out)
-            exit(0)
         else:
             packed_words = pack_padded_sequence(word_represent, word_seq_lengths.cpu().numpy(), True)
             hidden = None
