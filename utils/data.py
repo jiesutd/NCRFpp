@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-11 09:53:05
+# @Last Modified time: 2019-01-25 20:25:59
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -225,9 +225,9 @@ class Data:
                     for word in words:
                         if self.number_normalized:
                             word = normalize_word(word)
-                            self.word_alphabet.add(word)
-                            for char in word:
-                                self.char_alphabet.add(char)
+                        self.word_alphabet.add(word)
+                        for char in word:
+                            self.char_alphabet.add(char)
                     label = pairs[-1]
                     self.label_alphabet.add(label)
                     ## build feature alphabet

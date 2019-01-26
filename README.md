@@ -16,6 +16,7 @@
 * [10. Reproduce Paper Results and Hyperparameter Tuning](#Reproduce-Paper-Results-and-Hyperparameter-Tuning)
 * [11. Report Issue or Problem](#Report-Issue-or-Problem)
 * [12. Cite](#Cite)
+* [13. Future Plan](#Future-Plan)
 * [13. Update](#Update)
 
 ## Introduction
@@ -165,6 +166,15 @@ If you use experiments results and analysis of NCRF++, please cite our [COLING p
      Url = {http://aclweb.org/anthology/C18-1327},
      year={2018}  
     }
+
+## Future Plan 
+
+* Document classification (working)
+* Support API usage
+* Upload trained model on Word Segmentation/POS tagging/NER
+* Enable loading pretrained ELMo parameters
+* Add BERT feature extraction layer 
+
 
 
 ## Update
