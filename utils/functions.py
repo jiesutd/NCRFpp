@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-14 11:08:45
+# @Last Modified time: 2019-02-14 12:23:52
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -204,8 +204,10 @@ def load_pretrain_emb(embedding_path):
             tokens = line.split()
             if embedd_dim < 0:
                 embedd_dim = len(tokens) - 1
-            else:
-                assert (embedd_dim + 1 == len(tokens))
+            elif embedd_dim + 1 != len(tokens):
+                ## ignore illegal embedding line
+                continue
+                # assert (embedd_dim + 1 == len(tokens))
             embedd = np.empty([1, embedd_dim])
             embedd[:] = tokens[1:]
             if sys.version_info[0] < 3:

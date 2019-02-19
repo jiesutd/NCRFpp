@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-10 16:41:16
+# @Last Modified time: 2019-02-01 15:52:01
 from __future__ import print_function
 from __future__ import absolute_import
 import torch
@@ -87,7 +87,9 @@ class WordRep(nn.Module):
         """
         batch_size = word_inputs.size(0)
         sent_len = word_inputs.size(1)
+
         word_embs =  self.word_embedding(word_inputs)
+
         word_list = [word_embs]
         if not self.sentence_classification:
             for idx in range(self.feature_num):
@@ -109,5 +111,8 @@ class WordRep(nn.Module):
                 ## concat word and char together
                 word_list.append(char_features_extra)    
         word_embs = torch.cat(word_list, 2)
+        # if a == 0:
+        #     print("inputs", word_inputs)
+        #     print("embeddings:", word_embs)
         word_represent = self.drop(word_embs)
         return word_represent

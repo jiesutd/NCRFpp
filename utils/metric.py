@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-02-16 09:53:19
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-18 21:04:10
+# @Last Modified time: 2019-02-17 22:46:59
 
 # from operator import add
 #
@@ -27,7 +27,7 @@ def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES"):
             if golden_list[idy] == predict_list[idy]:
                 right_tag += 1
         all_tag += len(golden_list)
-        if label_type == "BMES" or "BIOES":
+        if label_type == "BMES" or label_type == "BIOES":
             gold_matrix = get_ner_BMES(golden_list)
             pred_matrix = get_ner_BMES(predict_list)
         else:

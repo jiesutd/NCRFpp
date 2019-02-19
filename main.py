@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-14 16:09:16
+# @Last Modified time: 2019-02-13 12:41:44
 
 from __future__ import print_function
 import time
@@ -51,6 +51,8 @@ def predict_check(pred_variable, gold_variable, mask_variable, sentence_classifi
     mask = mask_variable.cpu().data.numpy()
     overlaped = (pred == gold)
     if sentence_classification:
+        # print(overlaped)
+        # print(overlaped*pred)
         right_token = np.sum(overlaped)
         total_token = overlaped.shape[0] ## =batch_size
     else:
@@ -359,7 +361,7 @@ def train(data):
         model = SentClassifier(data)
     else:
         model = SeqLabel(data)
-    # loss_function = nn.NLLLoss()
+
     if data.optimizer.lower() == "sgd":
         optimizer = optim.SGD(model.parameters(), lr=data.HP_lr, momentum=data.HP_momentum,weight_decay=data.HP_l2)
     elif data.optimizer.lower() == "adagrad":
@@ -407,7 +409,7 @@ def train(data):
                 continue
             batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask  = batchify_with_label(instance, data.HP_gpu, True, data.sentence_classification)
             instance_count += 1
-            loss, tag_seq = model.neg_log_likelihood_loss(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_label, mask)
+            loss, tag_seq = model.calculate_loss(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_label, mask)
             right, whole = predict_check(tag_seq, batch_label, mask, data.sentence_classification)
             right_token += right
             whole_token += whole
@@ -504,13 +506,41 @@ def load_model_decode(data, name):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Tuning with NCRF++')
     # parser.add_argument('--status', choices=['train', 'decode'], help='update algorithm', default='train')
-    parser.add_argument('--config',  help='Configuration File' )
+    parser.add_argument('--config',  help='Configuration File', default='None')
+    parser.add_argument('--wordemb',  help='Embedding for words', default='None')
+    parser.add_argument('--charemb',  help='Embedding for chars', default='None')
+    parser.add_argument('--status', choices=['train', 'decode'], help='update algorithm', default='train')
+    parser.add_argument('--savemodel', default="data/model/saved_model.lstmcrf.")
+    parser.add_argument('--savedset', help='Dir of saved data setting')
+    parser.add_argument('--train', default="data/conll03/train.bmes") 
+    parser.add_argument('--dev', default="data/conll03/dev.bmes" )  
+    parser.add_argument('--test', default="data/conll03/test.bmes") 
+    parser.add_argument('--seg', default="True") 
+    parser.add_argument('--raw') 
+    parser.add_argument('--loadmodel')
+    parser.add_argument('--output') 
 
     args = parser.parse_args()
     data = Data()
     data.HP_gpu = torch.cuda.is_available()
-    data.read_config(args.config)
-    data.show_data_summary()
+    if args.config == 'None':
+        data.train_dir = args.train 
+        data.dev_dir = args.dev 
+        data.test_dir = args.test
+        data.model_dir = args.savemodel
+        data.dset_dir = args.savedset
+        print("Save dset directory:",data.dset_dir)
+        save_model_dir = args.savemodel
+        data.word_emb_dir = args.wordemb
+        data.char_emb_dir = args.charemb
+        if args.seg.lower() == 'true':
+            data.seg = True
+        else:
+            data.seg = False
+        print("Seed num:",seed_num)
+    else:
+        data.read_config(args.config)
+    # data.show_data_summary()
     status = data.status.lower()
     print("Seed num:",seed_num)
 

@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-18 21:02:01
+# @Last Modified time: 2019-02-13 10:58:43
 
 from __future__ import print_function
 import time
@@ -434,7 +434,7 @@ if __name__ == '__main__':
     data.test_dir = args.test
     data.model_dir = args.savemodel
     data.dset_dir = args.savedset
-    print("aaa",data.dset_dir)
+    print("dset directory:",data.dset_dir)
     status = args.status.lower()
     save_model_dir = args.savemodel
     data.HP_gpu = torch.cuda.is_available()

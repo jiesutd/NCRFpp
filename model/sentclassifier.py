@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2019-01-01 21:11:50
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-14 14:56:28
+# @Last Modified time: 2019-02-13 12:30:56
 
 from __future__ import print_function
 from __future__ import absolute_import
@@ -27,7 +27,7 @@ class SentClassifier(nn.Module):
 
 
 
-    def neg_log_likelihood_loss(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_label, mask):
+    def calculate_loss(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_label, mask):
         outs = self.word_hidden.sentence_representation(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover)
         batch_size = word_inputs.size(0)
         # loss_function = nn.CrossEntropyLoss(ignore_index=0, reduction='sum')
@@ -40,6 +40,7 @@ class SentClassifier(nn.Module):
         # exit(0)
         total_loss = F.cross_entropy(outs, batch_label.view(batch_size))
         # total_loss = loss_function(score, batch_label.view(batch_size))
+        
         _, tag_seq  = torch.max(outs, 1)
         if self.average_batch:
             total_loss = total_loss / batch_size
@@ -51,6 +52,8 @@ class SentClassifier(nn.Module):
         batch_size = word_inputs.size(0)
         outs = outs.view(batch_size, -1)
         _, tag_seq  = torch.max(outs, 1)
+        # if a == 0:
+        #     print(tag_seq)
         return tag_seq
 
 
