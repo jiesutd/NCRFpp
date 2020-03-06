@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-02-14 12:23:52
+# @Last Modified time: 2019-04-01 15:52:06
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -16,6 +16,20 @@ def normalize_word(word):
         else:
             new_word += char
     return new_word
+
+
+def sentence_preprocessing(input_sentence_string):
+    ## add your own sentence preprocessing script here
+    if sys.version_info[0] < 3:
+        input_sentence_string = input_sentence_string.decode('utf-8')
+    return input_sentence_string
+
+
+def word_preprocessing(input_word_string):
+    ## add your own word preprocessing script here
+    if sys.version_info[0] < 3:
+        input_word_string = input_word_string.decode('utf-8')
+    return input_word_string
 
 
 def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, label_alphabet, number_normalized, max_sent_length, sentence_classification=False, split_token='\t', char_padding_size=-1, char_padding_symbol = '</pad>'):
@@ -32,14 +46,13 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
     char_Ids = []
     label_Ids = []
 
-    ## if sentence classification data format, splited by \t
+    ## if sentence classification data format, splited by split token
     if sentence_classification:
         for line in in_lines:
             if len(line) > 2:
                 pairs = line.strip().split(split_token)
                 sent = pairs[0]
-                if sys.version_info[0] < 3:
-                    sent = sent.decode('utf-8')
+                sent = sentence_preprocessing(sent)
                 original_words = sent.split()
                 for word in original_words:
                     words.append(word)
@@ -81,16 +94,6 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
                 word_Ids = []
                 feature_Ids = []
                 label_Ids = []
-        if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
-            instence_texts.append([words, feat_list, chars, label])
-            instence_Ids.append([word_Ids, feat_Id, char_Ids,label_Id])
-            words = []
-            features = []
-            chars = []
-            char_Ids = []
-            word_Ids = []
-            feature_Ids = []
-            label_Ids = []
 
     else:
     ### for sequence labeling data format i.e. CoNLL 2003
@@ -98,8 +101,7 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
             if len(line) > 2:
                 pairs = line.strip().split()
                 word = pairs[0]
-                if sys.version_info[0] < 3:
-                    word = word.decode('utf-8')
+                word = word_preprocessing(word)
                 words.append(word)
                 if number_normalized:
                     word = normalize_word(word)
@@ -159,6 +161,153 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
     return instence_texts, instence_Ids
 
 
+def read_instance_from_list(input_list, word_count_dict, word_cutoff,  word_alphabet, char_alphabet, feature_alphabets, label_alphabet, number_normalized, max_sent_length, sentence_classification=False, split_token='\t', char_padding_size=-1, char_padding_symbol = '</pad>'):
+    '''
+          
+          input_list: [sent_list, label_list, feature_list]
+              sent_list: list of list [[word1, word2,...],...,[wordx, wordy]...]
+              label_list:     if sentence_classification: 
+                                   list of labels [label1, label2,...labelx, labely,...]
+                              else: 
+                                   list of list [[label1, label2,...],...,[labelx, labely,...]]
+              feature_list:   if sentence_classification: 
+                                   list of labels [[feat1, feat2,..],...,[feat1, feat2,..]], len(feature_list)= sentence_num
+                              else: 
+                                   list of list [[[feat1, feat2,..],...,[feat1, feat2,..]],...,[[feat1, feat2,..],...,[feat1, feat2,..]]], , len(feature_list)= sentence_num
+          word_count_dict: word occurence number dict
+          word_cutoff: int, threshold of cutoff low frequence word
+    '''
+    sent_list, label_list, feature_list = input_list
+    feature_num = len(feature_alphabets)
+    instence_texts = []
+    instence_Ids = []
+    words = []
+    features = []
+    chars = []
+    labels = []
+    word_Ids = []
+    feature_Ids = []
+    char_Ids = []
+    label_Ids = []
+
+    ## if sentence classification data format, splited by split token
+    if sentence_classification:
+        for sent, label, feature in zip(sent_list, label_list, feature_list):
+            for word in sent:
+                if (word not in word_count_dict) or (word_count_dict[word] > word_cutoff):
+                    words.append(word)
+                    if number_normalized:
+                        word = normalize_word(word)
+                    word_Ids.append(word_alphabet.get_index(word))
+                    char_list = []
+                    char_Id = []
+                    for char in word:
+                        char_list.append(char)
+                    if char_padding_size > 0:
+                        char_number = len(char_list)
+                        if char_number < char_padding_size:
+                            char_list = char_list + [char_padding_symbol]*(char_padding_size-char_number)
+                        assert(len(char_list) == char_padding_size)
+                    for char in char_list:
+                        char_Id.append(char_alphabet.get_index(char))
+                    chars.append(char_list)
+                    char_Ids.append(char_Id)
+                    
+            if len(words) == 0:
+                for word in sent:
+                    words.append(word)
+                    if (word not in word_count_dict) or (word_count_dict[word] > word_cutoff):
+                        if number_normalized:
+                            word = normalize_word(word)
+                        word_Ids.append(word_alphabet.get_index(word))
+                    else:
+                        word_Ids.append(word_alphabet.get_index(word_alphabet.UNKNOWN))
+                    char_list = []
+                    char_Id = []
+                    for char in word:
+                        char_list.append(char)
+                    if char_padding_size > 0:
+                        char_number = len(char_list)
+                        if char_number < char_padding_size:
+                            char_list = char_list + [char_padding_symbol]*(char_padding_size-char_number)
+                        assert(len(char_list) == char_padding_size)
+                    for char in char_list:
+                        char_Id.append(char_alphabet.get_index(char))
+                    chars.append(char_list)
+                    char_Ids.append(char_Id)
+
+                
+
+            label_Id = label_alphabet.get_index(label)
+            ## get features
+            feat_list = []
+            feat_Id = []
+            for idx in range(feature_num):
+                feat_idx = feature[idx].split(']',1)[-1]
+                feat_list.append(feat_idx)
+                feat_Id.append(feature_alphabets[idx].get_index(feat_idx))
+
+            if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)):
+                instence_texts.append([words, feat_list, chars, label])
+                instence_Ids.append([word_Ids, feat_Id, char_Ids,label_Id])
+            words = []
+            features = []
+            chars = []
+            char_Ids = []
+            word_Ids = []
+            feature_Ids = []
+            label_Ids = []
+    else:
+    ### for sequence labeling data format i.e. CoNLL 2003
+        for sent, labels, features in zip(sent_list, label_list, feature_list):
+            for word, label, feature in zip(sent, labels, features):
+                if (word not in word_count_dict) or (word_count_dict[word] > word_cutoff):
+                    words.append(word)
+                    if number_normalized:
+                        word = normalize_word(word)
+                    word_Ids.append(word_alphabet.get_index(word))
+                    char_list = []
+                    char_Id = []
+                    for char in word:
+                        char_list.append(char)
+                    if char_padding_size > 0:
+                        char_number = len(char_list)
+                        if char_number < char_padding_size:
+                            char_list = char_list + [char_padding_symbol]*(char_padding_size-char_number)
+                        assert(len(char_list) == char_padding_size)
+                    for char in char_list:
+                        char_Id.append(char_alphabet.get_index(char))
+                    chars.append(char_list)
+                    char_Ids.append(char_Id)
+
+                    labels.append(label)
+                    label_Ids.append(label_alphabet.get_index(label))
+                    ## get features
+                    feat_list = []
+                    feat_Id = []
+                    for idx in range(feature_num):
+                        feat_idx = feature[idx].split(']',1)[-1]
+                        feat_list.append(feat_idx)
+                        feat_Id.append(feature_alphabets[idx].get_index(feat_idx))
+                    features.append(feat_list)
+                    feature_Ids.append(feat_Id)
+            
+            if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
+                instence_texts.append([words, features, chars, labels])
+                instence_Ids.append([word_Ids, feature_Ids, char_Ids,label_Ids])
+            words = []
+            features = []
+            chars = []
+            labels = []
+            word_Ids = []
+            feature_Ids = []
+            char_Ids = []
+            label_Ids = []
+
+    return instence_texts, instence_Ids
+
+
+
 def build_pretrain_embedding(embedding_path, word_alphabet, embedd_dim=100, norm=True):
     embedd_dict = dict()
     if embedding_path != None:
@@ -210,10 +359,8 @@ def load_pretrain_emb(embedding_path):
                 # assert (embedd_dim + 1 == len(tokens))
             embedd = np.empty([1, embedd_dim])
             embedd[:] = tokens[1:]
-            if sys.version_info[0] < 3:
-                first_col = tokens[0].decode('utf-8')
-            else:
-                first_col = tokens[0]
+            first_col = tokens[0]
+            first_col = word_preprocessing(first_col)
             embedd_dict[first_col] = embedd
     return embedd_dict, embedd_dim
 

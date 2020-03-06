@@ -233,7 +233,7 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     feature_seq_tensors = []
     for idx in range(feature_num):
         feature_seq_tensors.append(autograd.Variable(torch.zeros((batch_size, max_seq_len)),volatile =  volatile_flag).long())
-    mask = autograd.Variable(torch.zeros((batch_size, max_seq_len)),volatile =  volatile_flag).byte()
+    mask = autograd.Variable(torch.zeros((batch_size, max_seq_len)),volatile =  volatile_flag).bool()
     for idx, (seq, label, seqlen) in enumerate(zip(words, labels, word_seq_lengths)):
         word_seq_tensor[idx, :seqlen] = torch.LongTensor(seq)
         label_seq_tensor[idx, :seqlen] = torch.LongTensor(label)

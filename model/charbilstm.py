@@ -12,7 +12,6 @@ import numpy as np
 class CharBiLSTM(nn.Module):
     def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, gpu, bidirect_flag = True):
         super(CharBiLSTM, self).__init__()
-        print("build char sequence feature extractor: LSTM ...")
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         if bidirect_flag:

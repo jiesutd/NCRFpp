@@ -2,7 +2,7 @@
 # @Author: Jie Yang
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-02-01 15:52:01
+# @Last Modified time: 2019-02-25 13:34:46
 from __future__ import print_function
 from __future__ import absolute_import
 import torch
@@ -15,7 +15,8 @@ from .charcnn import CharCNN
 class WordRep(nn.Module):
     def __init__(self, data):
         super(WordRep, self).__init__()
-        print("build word representation...")
+        if not data.silence:
+            print("build word representation...")
         self.gpu = data.HP_gpu
         self.use_char = data.use_char
         self.batch_size = data.HP_batch_size
@@ -25,6 +26,8 @@ class WordRep(nn.Module):
         if self.use_char:
             self.char_hidden_dim = data.HP_char_hidden_dim
             self.char_embedding_dim = data.char_emb_dim
+            if not data.silence:
+                print("build char sequence feature extractor: %s ..."%(data.char_feature_extractor))
             if data.char_feature_extractor == "CNN":
                 self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
             elif data.char_feature_extractor == "LSTM":
@@ -87,9 +90,7 @@ class WordRep(nn.Module):
         """
         batch_size = word_inputs.size(0)
         sent_len = word_inputs.size(1)
-
         word_embs =  self.word_embedding(word_inputs)
-
         word_list = [word_embs]
         if not self.sentence_classification:
             for idx in range(self.feature_num):

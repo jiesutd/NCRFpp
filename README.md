@@ -178,7 +178,7 @@ If you use experiments results and analysis of NCRF++, please cite our [COLING p
 
 
 ## Update
-
+* 2020-Mar-06, dev version, sentence classification, framework change, model saved in one file. 
 * 2018-Dec-17, NCRF++ v0.2, support PyTorch 1.0
 * 2018-Mar-30, NCRF++ v0.1, initial version
 * 2018-Jan-06, add result comparison.

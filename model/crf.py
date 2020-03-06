@@ -28,9 +28,10 @@ def log_sum_exp(vec, m_size):
 
 class CRF(nn.Module):
 
-    def __init__(self, tagset_size, gpu):
+    def __init__(self, tagset_size, gpu, silence=False):
         super(CRF, self).__init__()
-        print("build CRF...")
+        if not silence:
+            print("build CRF...")
         self.gpu = gpu
         # Matrix of transition parameters.  Entry i,j is the score of transitioning from i to j.
         self.tagset_size = tagset_size
@@ -133,7 +134,7 @@ class CRF(nn.Module):
         partition_history = list()
         ##  reverse mask (bug for mask = 1- mask, use this as alternative choice)
         # mask = 1 + (-1)*mask
-        mask =  (1 - mask.long()).byte()
+        mask =  (1 - mask.long()).bool()
         _, inivalues = next(seq_iter)  # bat_size * from_target_size * to_target_size
         # only need start from start_tag
         partition = inivalues[:, START_TAG, :].clone().view(batch_size, tag_size)  # bat_size * to_target_size
@@ -297,7 +298,7 @@ class CRF(nn.Module):
         partition_history = list()
         ##  reverse mask (bug for mask = 1- mask, use this as alternative choice)
         # mask = 1 + (-1)*mask
-        mask =  (1 - mask.long()).byte()
+        mask =  (1 - mask.long()).bool()
         _, inivalues = next(seq_iter)  # bat_size * from_target_size * to_target_size
         # only need start from start_tag
         partition = inivalues[:, START_TAG, :].clone()  # bat_size * to_target_size

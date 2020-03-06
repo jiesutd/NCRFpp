@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-02-16 09:53:19
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-02-17 22:46:59
+# @Last Modified time: 2019-02-28 10:42:38
 
 # from operator import add
 #
@@ -60,6 +60,40 @@ def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES"):
         print("gold_num = ", golden_num, " pred_num = ", predict_num, " right_num = ", right_num)
     else:
         print("Right token = ", right_tag, " All token = ", all_tag, " acc = ", accuracy)
+    return accuracy, precision, recall, f_measure
+
+
+## input as sentence level labels
+def get_sent_fmeasure(gold_list, pred_list, target_label=None):
+    sent_num = len(gold_list)
+    agree_num = 0 
+    agree_target_num = 0 
+    pred_target_num = 0 
+    gold_target_num = 0
+    for gold, pred in zip(gold_list, pred_list):
+        if gold == pred:
+            agree_num += 1
+        if gold == target_label:
+            gold_target_num += 1 
+        if pred == target_label:
+            pred_target_num += 1
+        if gold == target_label and pred == target_label:
+            agree_target_num += 1
+    print("All_num:%s, All_agree:%s, Gold_target:%s, Pred_target:%s, Agree_target:%s"%(sent_num, agree_num, gold_target_num, pred_target_num, agree_target_num))
+    accuracy = (agree_num+0.)/sent_num
+    if pred_target_num == 0:
+        precision = -1
+    else:
+        precision = (agree_target_num+0.)/pred_target_num
+    if gold_target_num == 0:
+        recall = -1
+    else:
+        recall = (agree_target_num+0.)/gold_target_num
+    if (precision == -1) or (recall == -1) or (precision+recall) <= 0.:
+        f_measure = -1
+    else:
+        f_measure = 2*precision*recall/(precision+recall)
+
     return accuracy, precision, recall, f_measure
 
 

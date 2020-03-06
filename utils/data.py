@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-01-25 20:25:59
+# @Last Modified time: 2019-03-25 15:39:06
 from __future__ import print_function
 from __future__ import absolute_import
 import sys
@@ -22,24 +22,28 @@ PADDING = "</pad>"
 class Data:
     def __init__(self):
         self.sentence_classification = False
-        self.MAX_SENTENCE_LENGTH = 250
+        self.words2sent_representation = "Attention"
+        self.MAX_SENTENCE_LENGTH = 1250
         self.MAX_WORD_LENGTH = -1
         self.number_normalized = True
         self.norm_word_emb = False
         self.norm_char_emb = False
         self.word_alphabet = Alphabet('word')
         self.char_alphabet = Alphabet('character')
+        self.word_count_dict = {}
+        self.word_cutoff = 0
 
         self.feature_name = []
         self.feature_alphabets = []
         self.feature_num = len(self.feature_alphabets)
         self.feat_config = None
-
-
+        
         self.label_alphabet = Alphabet('label',True)
-        self.tagScheme = "NoSeg" ## BMES/BIO
+        self.tagScheme = "Unknown" ## BIOES/BIO
         self.split_token = ' ||| '
         self.seg = True
+
+        self.silence = False
 
         ### I/O
         self.train_dir = None
@@ -85,7 +89,7 @@ class Data:
         self.use_char = True
         self.char_feature_extractor = "CNN" ## "LSTM"/"CNN"/"GRU"/None
         self.use_crf = True
-        self.nbest = None
+        self.nbest = 0
 
         ## Training
         self.average_batch_loss = False
@@ -108,29 +112,45 @@ class Data:
         self.HP_momentum = 0
         self.HP_l2 = 1e-8
 
-    def show_data_summary(self):
-        
+
+    def initial_alphabets(self, input_list=None):
+        if input_list == None:
+            self.initial_feature_alphabets()
+            self.build_alphabet(self.train_dir)
+            self.build_alphabet(self.dev_dir)
+            self.build_alphabet(self.test_dir)
+        else:
+            '''
+            input_list: [train_list, dev_list, test_list]
+                  train_list/dev_list/test_list: [sent_list, label_list, feature_list]
+                          sent_list: list of list [[word1, word2,...],...,[wordx, wordy]...]
+                          label_list:     if sentence_classification: 
+                                               list of labels [label1, label2,...labelx, labely,...]
+                                          else: 
+                                               list of list [[label1, label2,...],...,[labelx, labely,...]]
+                          feature_list:   if sentence_classification: 
+                                               list of labels [[feat1, feat2,..],...,[feat1, feat2,..]], len(feature_list)= sentence_num
+                                          else: 
+                                               list of list [[[feat1, feat2,..],...,[feat1, feat2,..]],...,[[feat1, feat2,..],...,[feat1, feat2,..]]], , len(feature_list)= sentence_num
+            '''
+            self.initial_feature_alphabets_from_list(input_list[0][2][0])
+            for each_list in input_list:
+                self.build_alphabet_from_list(each_list[0], each_list[1], each_list[2])
+        self.fix_alphabet()
+
+    def summary(self):
+        print("++"*50)
+        if self.sentence_classification:
+            print("Start Sentence Classification task...")
+            
+        else:
+            print("Start   Sequence   Laebling   task...")
         print("++"*50)
         print("DATA SUMMARY START:")
         print(" I/O:")
-        if self.sentence_classification:
-            print("     Start Sentence Classification task...")
-        else:
-            print("     Start   Sequence   Laebling   task...")
-        print("     Tag          scheme: %s"%(self.tagScheme))
-        print("     Split         token: %s"%(self.split_token))
-        print("     MAX SENTENCE LENGTH: %s"%(self.MAX_SENTENCE_LENGTH))
-        print("     MAX   WORD   LENGTH: %s"%(self.MAX_WORD_LENGTH))
-        print("     Number   normalized: %s"%(self.number_normalized))
-        print("     Word  alphabet size: %s"%(self.word_alphabet_size))
-        print("     Char  alphabet size: %s"%(self.char_alphabet_size))
-        print("     Label alphabet size: %s"%(self.label_alphabet_size))
         print("     Word embedding  dir: %s"%(self.word_emb_dir))
         print("     Char embedding  dir: %s"%(self.char_emb_dir))
-        print("     Word embedding size: %s"%(self.word_emb_dim))
-        print("     Char embedding size: %s"%(self.char_emb_dim))
-        print("     Norm   word     emb: %s"%(self.norm_word_emb))
-        print("     Norm   char     emb: %s"%(self.norm_char_emb))
+        
         print("     Train  file directory: %s"%(self.train_dir))
         print("     Dev    file directory: %s"%(self.dev_dir))
         print("     Test   file directory: %s"%(self.test_dir))
@@ -139,10 +159,23 @@ class Data:
         print("     Model  file directory: %s"%(self.model_dir))
         print("     Loadmodel   directory: %s"%(self.load_model_dir))
         print("     Decode file directory: %s"%(self.decode_dir))
+        print("++"*20)
+        print("Data and Settings:")
+        print("     Tag          scheme: %s"%(self.tagScheme))
+        print("     Split         token: %s"%(self.split_token))
+        print("     MAX SENTENCE LENGTH: %s"%(self.MAX_SENTENCE_LENGTH))
+        print("     MAX   WORD   LENGTH: %s"%(self.MAX_WORD_LENGTH))
+        print("     Number   normalized: %s"%(self.number_normalized))
+        print("     Word         cutoff: %s"%(self.word_cutoff))
         print("     Train instance number: %s"%(len(self.train_texts)))
         print("     Dev   instance number: %s"%(len(self.dev_texts)))
         print("     Test  instance number: %s"%(len(self.test_texts)))
         print("     Raw   instance number: %s"%(len(self.raw_texts)))
+        print("     Word  alphabet size: %s"%(self.word_alphabet_size))
+        print("     Char  alphabet size: %s"%(self.char_alphabet_size))
+        print("     Label alphabet size: %s"%(self.label_alphabet_size))
+        print("     Norm   word     emb: %s"%(self.norm_word_emb))
+        print("     Norm   char     emb: %s"%(self.norm_char_emb))
         print("     FEATURE num: %s"%(self.feature_num))
         for idx in range(self.feature_num):
             print("         Fe: %s  alphabet  size: %s"%(self.feature_alphabets[idx].name, self.feature_alphabet_sizes[idx]))
@@ -154,6 +187,10 @@ class Data:
         print("     Model        use_crf: %s"%(self.use_crf))
         print("     Model word extractor: %s"%(self.word_feature_extractor))
         print("     Model       use_char: %s"%(self.use_char))
+        print("     Word embedding size: %s"%(self.word_emb_dim))
+        print("     Char embedding size: %s"%(self.char_emb_dim))
+        if self.sentence_classification:
+            print("     Words hidden 2 sent: %s"%(self.words2sent_representation))
         if self.use_char:
             print("     Model char extractor: %s"%(self.char_feature_extractor))
             print("     Model char_hidden_dim: %s"%(self.HP_char_hidden_dim))
@@ -183,12 +220,13 @@ class Data:
 
 
     def initial_feature_alphabets(self):
+        first_line = open(self.train_dir,'r').readline().strip('\n')
         if self.sentence_classification:
             ## if sentence classification data format, splited by '\t'
-            items = open(self.train_dir,'r').readline().strip('\n').split('\t')
+            items = first_line.split(self.split_token)
         else:
             ## if sequence labeling data format i.e. CoNLL 2003, split by ' '
-            items = open(self.train_dir,'r').readline().strip('\n').split()
+            items = first_line.split()
         total_column = len(items)
         if total_column > 2:
             for idx in range(1, total_column-1):
@@ -208,7 +246,37 @@ class Data:
                     self.feature_emb_dims[idx] = self.feat_config[self.feature_name[idx]]['emb_size']
                     self.feature_emb_dirs[idx] = self.feat_config[self.feature_name[idx]]['emb_dir']
                     self.norm_feature_embs[idx] = self.feat_config[self.feature_name[idx]]['emb_norm']
-        # exit(0)
+
+    def initial_feature_alphabets_from_list(self, one_feature_list):
+        ## one_feature_list: features of one instance. 
+        # if sentence_classification:
+        #   one_feature_list = [f1, f2, f3] for one sentence
+        # else;
+        #   one_feature_list = [[f1, f2, f3], [f1,f2,f3],...] for words within one sentence
+        # 
+        if self.sentence_classification:
+            items = one_feature_list 
+        else:
+            items = one_feature_list[0]
+        total_column = len(items)
+        if total_column > 2:
+            for idx in range(1, total_column-1):
+                feature_prefix = items[idx].split(']',1)[0]+"]"
+                self.feature_alphabets.append(Alphabet(feature_prefix))
+                self.feature_name.append(feature_prefix)
+                print("Find feature: ", feature_prefix)
+        self.feature_num = len(self.feature_alphabets)
+        self.pretrain_feature_embeddings = [None]*self.feature_num
+        self.feature_emb_dims = [20]*self.feature_num
+        self.feature_emb_dirs = [None]*self.feature_num
+        self.norm_feature_embs = [False]*self.feature_num
+        self.feature_alphabet_sizes = [0]*self.feature_num
+        if self.feat_config:
+            for idx in range(self.feature_num):
+                if self.feature_name[idx] in self.feat_config:
+                    self.feature_emb_dims[idx] = self.feat_config[self.feature_name[idx]]['emb_size']
+                    self.feature_emb_dirs[idx] = self.feat_config[self.feature_name[idx]]['emb_dir']
+                    self.norm_feature_embs[idx] = self.feat_config[self.feature_name[idx]]['emb_norm']
 
 
     def build_alphabet(self, input_file):
@@ -219,8 +287,7 @@ class Data:
                 if self.sentence_classification:
                     pairs = line.strip().split(self.split_token)
                     sent = pairs[0]
-                    if sys.version_info[0] < 3:
-                        sent = sent.decode('utf-8')
+                    sent = sentence_preprocessing(sent)
                     words = sent.split()
                     for word in words:
                         if self.number_normalized:
@@ -239,8 +306,7 @@ class Data:
                 else:
                     pairs = line.strip().split()
                     word = pairs[0]
-                    if sys.version_info[0] < 3:
-                        word = word.decode('utf-8')
+                    word = word_preprocessing(word)
                     if self.number_normalized:
                         word = normalize_word(word)
                     label = pairs[-1]
@@ -266,11 +332,67 @@ class Data:
                 startB = True
         if startB:
             if startS:
-                self.tagScheme = "BMES"
+                self.tagScheme = "BIOES"
             else:
                 self.tagScheme = "BIO"
         if self.sentence_classification:
             self.tagScheme = "Not sequence labeling task"
+
+
+    def build_alphabet_from_list(self, sent_list, label_list=None, feature_list = None):
+        ''' 
+        sent_list: list of list [[word1, word2,...],...,[wordx, wordy]...]
+        label_list: if sentence_classification: list of labels [label1, label2,...labelx, labely,...]
+                      else: list of list [[label1, label2,...],...,[labelx, labely,...]]
+        feature_list: if sentence_classification: list of labels [[feat1, feat2,..],...,[feat1, feat2,..]], len(feature_list)= sentence_num
+                      else: list of list [[[feat1, feat2,..],...,[feat1, feat2,..]],...,[[feat1, feat2,..],...,[feat1, feat2,..]]], , len(feature_list)= sentence_num
+        '''
+        ## count word        
+        for sent in sent_list:
+            for word in sent:
+                if self.number_normalized:
+                    word = normalize_word(word)
+                if word in self.word_count_dict:
+                    self.word_count_dict[word] += 1
+                else:
+                    self.word_count_dict[word] = 1
+
+        for sent in sent_list:
+            for word in sent:
+                if self.number_normalized:
+                    word = normalize_word(word)
+                if self.word_count_dict[word] > self.word_cutoff:
+                    self.word_alphabet.add(word)
+                    for char in word:
+                        self.char_alphabet.add(char)
+                ## TODO: add feature list
+        if label_list != None:
+            for label in label_list:
+                if type(label) is list:
+                    for each_label in label:
+                        self.label_alphabet.add(each_label)
+                else:
+                    self.label_alphabet.add(label)
+        self.word_alphabet_size = self.word_alphabet.size()
+        self.char_alphabet_size = self.char_alphabet.size()
+        self.label_alphabet_size = self.label_alphabet.size()
+        ## TODO: feature alphabet
+        if label_list != None:
+            startS = False
+            startB = False
+            for label,_ in self.label_alphabet.iteritems():
+                if "S-" in label.upper():
+                    startS = True
+                elif "B-" in label.upper():
+                    startB = True
+            if startB:
+                if startS:
+                    self.tagScheme = "BIOES"
+                else:
+                    self.tagScheme = "BIO"
+        if self.sentence_classification:
+            self.tagScheme = "Not sequence labeling task"
+
 
 
     def fix_alphabet(self):
@@ -305,7 +427,38 @@ class Data:
         elif name == "raw":
             self.raw_texts, self.raw_Ids = read_instance(self.raw_dir, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification, self.split_token)
         else:
-            print("Error: you can only generate train/dev/test instance! Illegal input:%s"%(name))
+            print("Error: you can only generate train/dev/test/raw instance! Illegal input:%s"%(name))
+
+
+    def generate_instance_from_list(self, input_list, name):
+        '''
+        input_list: [sent_list, label_list, feature_list]
+              sent_list: list of list [[word1, word2,...],...,[wordx, wordy]...]
+              label_list:     if sentence_classification: 
+                                   list of labels [label1, label2,...labelx, labely,...]
+                              else: 
+                                   list of list [[label1, label2,...],...,[labelx, labely,...]]
+              feature_list:   if sentence_classification: 
+                                   list of labels [[feat1, feat2,..],...,[feat1, feat2,..]], len(feature_list)= sentence_num
+                              else: 
+                                   list of list [[[feat1, feat2,..],...,[feat1, feat2,..]],...,[[feat1, feat2,..],...,[feat1, feat2,..]]], , len(feature_list)= sentence_num
+        '''
+        
+        instance_texts, instance_Ids = read_instance_from_list(input_list, self.word_count_dict, self.word_cutoff, self.word_alphabet, self.char_alphabet, self.feature_alphabets, self.label_alphabet, self.number_normalized, self.MAX_SENTENCE_LENGTH, self.sentence_classification, self.split_token)
+        self.fix_alphabet()
+        if name == "train":
+            self.train_texts, self.train_Ids = instance_texts, instance_Ids
+        elif name == "dev":
+            self.dev_texts, self.dev_Ids = instance_texts, instance_Ids
+        elif name == "test":
+            self.test_texts, self.test_Ids = instance_texts, instance_Ids
+        elif name == "raw":
+            self.raw_texts, self.raw_Ids = instance_texts, instance_Ids
+        else:
+            print("Error: you can only generate train/dev/test/raw instance! Illegal input:%s"%(name))
+        return instance_Ids
+        
+
 
 
     def write_decoded_results(self, predict_results, name):
@@ -326,12 +479,15 @@ class Data:
         fout = open(self.decode_dir,'w')
         for idx in range(sent_num):
             if self.sentence_classification:
-                fout.write(" ".join(content_list[idx][0])+"\t"+predict_results[idx]+ '\n')
+                fout.write(" ".join(content_list[idx][0])+self.split_token+predict_results[idx]+ '\n')
             else:
                 sent_length = len(predict_results[idx])
                 for idy in range(sent_length):
                     ## content_list[idx] is a list with [word, char, label]
-                    fout.write(content_list[idx][0][idy].encode('utf-8') + " " + predict_results[idx][idy] + '\n')
+                    try:
+                        fout.write(content_list[idx][0][idy].encode('utf-8') + " " + predict_results[idx][idy] + '\n')
+                    except:
+                        fout.write(content_list[idx][0][idy] + " " + predict_results[idx][idy] + '\n')
                 fout.write('\n')
         fout.close()
         print("Predict %s result has been written into file. %s"%(name, self.decode_dir))
@@ -390,8 +546,8 @@ class Data:
         print("Predict %s %s-best result has been written into file. %s"%(name,nbest, self.decode_dir))
 
 
-    def read_config(self,config_file):
-        config = config_file_to_dict(config_file)
+    def manual_config(self, manual_dict):
+        config = manual_dict
         ## read data:
         the_item = 'train_dir'
         if the_item in config:
@@ -425,7 +581,6 @@ class Data:
         if the_item in config:
             self.char_emb_dir = config[the_item]
 
-
         the_item = 'MAX_SENTENCE_LENGTH'
         if the_item in config:
             self.MAX_SENTENCE_LENGTH = int(config[the_item])
@@ -442,6 +597,9 @@ class Data:
         the_item = 'number_normalized'
         if the_item in config:
             self.number_normalized = str2bool(config[the_item])
+        the_item = 'word_cutoff'
+        if the_item in config:
+            self.word_cutoff = int(config[the_item])
 
         the_item = 'sentence_classification'
         if the_item in config:
@@ -534,10 +692,21 @@ class Data:
         the_item = 'l2'
         if the_item in config:
             self.HP_l2 = float(config[the_item])
+        the_item = 'words2sent'
+        if the_item in config:
+            self.words2sent_representation = config[the_item]
         ## no seg for sentence classification
         if self.sentence_classification:
             self.seg = False
             self.use_crf = False
+
+
+
+
+    def read_config(self,config_file):
+        config = config_file_to_dict(config_file)
+        self.manual_config(config)
+        
 
 
 def config_file_to_dict(input_file):
@@ -575,8 +744,6 @@ def config_file_to_dict(input_file):
                 if item in config:
                     print("Warning: duplicated config item found: %s, updated."%(pair[0]))
                 config[item] = pair[-1]
-
-
     return config
 
 
