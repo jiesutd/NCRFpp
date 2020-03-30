@@ -19,7 +19,7 @@ from model.seqlabel import SeqLabel
 from model.sentclassifier import SentClassifier
 from utils.data import Data
 from main import *
-
+from tqdm import tqdm
 
 seed_num = 42
 random.seed(seed_num)
@@ -112,7 +112,6 @@ class NCRF:
 
 
     def load(self, model_dir = "ncrf.model"):
-        
         the_dict = torch.load(model_dir)
         self.data = the_dict['data']
         self.data.silence = True
@@ -161,7 +160,7 @@ class NCRF:
             batch_id = 0
             train_num = len(self.data.train_Ids)
             total_batch = train_num//batch_size+1
-            for batch_id in range(total_batch):
+            for batch_id in tqdm(range(total_batch)):
                 start = batch_id*batch_size
                 end = (batch_id+1)*batch_size
                 if end >train_num:
