@@ -18,6 +18,7 @@ from utils.metric import get_ner_fmeasure,get_sent_fmeasure
 from model.seqlabel import SeqLabel
 from model.sentclassifier import SentClassifier
 from utils.data import Data
+from tqdm import tqdm
 
 try:
     import cPickle as pickle
@@ -156,7 +157,7 @@ def evaluate(data, model, name, nbest=0):
     start_time = time.time()
     instance_num = len(instances)
     total_batch = instance_num//batch_size+1
-    for batch_id in range(total_batch):
+    for batch_id in tqdm(range(total_batch)):
         start = batch_id*batch_size
         end = (batch_id+1)*batch_size
         if end > instance_num:
@@ -164,16 +165,16 @@ def evaluate(data, model, name, nbest=0):
         instance = instances[start:end]
         if not instance:
             continue
-        batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask  = batchify_with_label(instance, data.HP_gpu, False, data.sentence_classification)
+        batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask, batch_word_text   = batchify_with_label(instance, data.HP_gpu, False, data.sentence_classification)
         if nbest > 1 and not data.sentence_classification:
-            scores, nbest_tag_seq = model.decode_nbest(batch_word,batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask, nbest)
+            scores, nbest_tag_seq = model.decode_nbest(batch_word,batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask, nbest, batch_word_text)
             nbest_pred_result = recover_nbest_label(nbest_tag_seq, mask, data.label_alphabet, batch_wordrecover)
             nbest_pred_results += nbest_pred_result
             pred_scores += scores[batch_wordrecover].cpu().data.numpy().tolist()
             ## select the best sequence to evalurate
             tag_seq = nbest_tag_seq[:,:,0]
         else:
-            tag_seq = model(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask)
+            tag_seq = model(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask, batch_word_text)
         pred_label, gold_label = recover_label(tag_seq, batch_label, mask, data.label_alphabet, batch_wordrecover, data.sentence_classification)
         pred_results += pred_label
         gold_results += gold_label
@@ -201,11 +202,17 @@ def batchify_with_label(input_batch_list, gpu, if_train=True, sentence_classific
 
 def batchify_sequence_labeling_with_label(input_batch_list, gpu, if_train=True):
     """
-        input: list of words, chars and labels, various length. [[words, features, chars, labels],[words, features, chars,labels],...]
-            words: word ids for one sentence. (batch_size, sent_len)
-            features: features ids for one sentence. (batch_size, sent_len, feature_num)
-            chars: char ids for on sentences, various length. (batch_size, sent_len, each_word_length)
-            labels: label ids for one sentence. (batch_size, sent_len)
+        ## to incoperate the transformer, the input add the original word text
+        input: list of words, chars and labels, various length. [[word_ids, feature_ids, char_ids, label_ids, words, features, chars, labels],[word_ids, feature_ids, char_ids, label_ids, words, features, chars, labels],...]
+            
+            word_Ids: word ids for one sentence. (batch_size, sent_len)
+            feature_Ids: features ids for one sentence. (batch_size, sent_len, feature_num)
+            char_Ids: char ids for on sentences, various length. (batch_size, sent_len, each_word_length)
+            label_Ids: label ids for one sentence. (batch_size, sent_len)
+            words: word text for one sentence. (batch_size, sent_len)
+            features: features text for one sentence. (batch_size, sent_len, feature_num)
+            chars: char text for on sentences, various length. (batch_size, sent_len, each_word_length)
+            labels: label text for one sentence. (batch_size, sent_len)
 
         output:
             zero padding for word and char, with their batch length
@@ -217,6 +224,7 @@ def batchify_sequence_labeling_with_label(input_batch_list, gpu, if_train=True):
             char_seq_recover: (batch_size*max_sent_len,1)  recover char sequence order
             label_seq_tensor: (batch_size, max_sent_len)
             mask: (batch_size, max_sent_len)
+            batch_word_list: list of list, (batch_size, ) list of words for the batch, original order, not reordered, it will be reordered in transformer
     """
     batch_size = len(input_batch_list)
     words = [sent[0] for sent in input_batch_list]
@@ -224,6 +232,7 @@ def batchify_sequence_labeling_with_label(input_batch_list, gpu, if_train=True):
     feature_num = len(features[0][0])
     chars = [sent[2] for sent in input_batch_list]
     labels = [sent[3] for sent in input_batch_list]
+    batch_word_list = [sent[4] for sent in input_batch_list]
     word_seq_lengths = torch.LongTensor(list(map(len, words)))
     max_seq_len = word_seq_lengths.max().item()
     word_seq_tensor = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).long()
@@ -274,17 +283,19 @@ def batchify_sequence_labeling_with_label(input_batch_list, gpu, if_train=True):
         char_seq_tensor = char_seq_tensor.cuda()
         char_seq_recover = char_seq_recover.cuda()
         mask = mask.cuda()
-    return word_seq_tensor,feature_seq_tensors, word_seq_lengths, word_seq_recover, char_seq_tensor, char_seq_lengths, char_seq_recover, label_seq_tensor, mask
+    return word_seq_tensor,feature_seq_tensors, word_seq_lengths, word_seq_recover, char_seq_tensor, char_seq_lengths, char_seq_recover, label_seq_tensor, mask, batch_word_list
 
 
 def batchify_sentence_classification_with_label(input_batch_list, gpu, if_train=True):
     """
-        input: list of words, chars and labels, various length. [[words, features, chars, labels],[words, features, chars,labels],...]
-            words: word ids for one sentence. (batch_size, sent_len)
-            features: features ids for one sentence. (batch_size, feature_num), each sentence has one set of feature
-            chars: char ids for on sentences, various length. (batch_size, sent_len, each_word_length)
-            labels: label ids for one sentence. (batch_size,), each sentence has one set of feature
-
+        ## to incoperate the transformer, the input add the original word text
+        input: list of words, chars and labels, various length. [[word_ids, feature_ids, char_ids, label_ids, words, features, chars, labels],[word_ids, feature_ids, char_ids, label_ids, words, features, chars, labels],...]
+            word_ids: word ids for one sentence. (batch_size, sent_len)
+            feature_ids: features ids for one sentence. (batch_size, feature_num), each sentence has one set of feature
+            char_ids: char ids for on sentences, various length. (batch_size, sent_len, each_word_length)
+            label_ids: label ids for one sentence. (batch_size,), each sentence has one set of feature
+            words: word text for one sentence. (batch_size, sent_len)
+            ...
         output:
             zero padding for word and char, with their batch length
             word_seq_tensor: (batch_size, max_sent_len) Variable
@@ -295,6 +306,7 @@ def batchify_sentence_classification_with_label(input_batch_list, gpu, if_train=
             char_seq_recover: (batch_size*max_sent_len,1)  recover char sequence order
             label_seq_tensor: (batch_size, )
             mask: (batch_size, max_sent_len)
+            batch_word_list: list of list, (batch_size, ) list of words for the batch, original order, not reordered, it will be reordered in transformer
     """
 
     batch_size = len(input_batch_list)
@@ -303,6 +315,7 @@ def batchify_sentence_classification_with_label(input_batch_list, gpu, if_train=
     feature_num = len(features[0])
     chars = [sent[2] for sent in input_batch_list]
     labels = [sent[3] for sent in input_batch_list]
+    batch_word_list = [sent[4] for sent in input_batch_list]
     word_seq_lengths = torch.LongTensor(list(map(len, words)))
     max_seq_len = word_seq_lengths.max().item()
     word_seq_tensor = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).long()
@@ -353,7 +366,7 @@ def batchify_sentence_classification_with_label(input_batch_list, gpu, if_train=
         char_seq_recover = char_seq_recover.cuda()
         feature_seq_tensors = feature_seq_tensors.cuda()
         mask = mask.cuda()
-    return word_seq_tensor,feature_seq_tensors, word_seq_lengths, word_seq_recover, char_seq_tensor, char_seq_lengths, char_seq_recover, label_seq_tensor, mask
+    return word_seq_tensor,feature_seq_tensors, word_seq_lengths, word_seq_recover, char_seq_tensor, char_seq_lengths, char_seq_recover, label_seq_tensor, mask,batch_word_list
 
 
 

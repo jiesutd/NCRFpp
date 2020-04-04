@@ -29,8 +29,8 @@ class SentClassifier(nn.Module):
 
 
 
-    def calculate_loss(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_label, mask):
-        outs, _ = self.word_hidden.sentence_representation(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover,mask)
+    def calculate_loss(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_label, mask, batch_word_text):
+        outs, _ = self.word_hidden.sentence_representation(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover,mask, batch_word_text)
         batch_size = word_inputs.size(0)
         # loss_function = nn.CrossEntropyLoss(ignore_index=0, reduction='sum')
         outs = outs.view(batch_size, -1)
@@ -51,8 +51,8 @@ class SentClassifier(nn.Module):
         return total_loss, tag_seq
 
 
-    def forward(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, mask):
-        outs,_ = self.word_hidden.sentence_representation(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover,mask)
+    def forward(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, mask, batch_word_text):
+        outs,_ = self.word_hidden.sentence_representation(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover,mask, batch_word_text)
         batch_size = word_inputs.size(0)
         outs = outs.view(batch_size, -1)
         _, tag_seq  = torch.max(outs, 1)
@@ -60,8 +60,8 @@ class SentClassifier(nn.Module):
         #     print(tag_seq)
         return tag_seq
 
-    def get_target_probability(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, mask):
-        outs, weights = self.word_hidden.sentence_representation(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover,mask)
+    def get_target_probability(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, mask, batch_word_text):
+        outs, weights = self.word_hidden.sentence_representation(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover,mask, batch_word_text)
         batch_size = word_inputs.size(0)
         outs = outs.view(batch_size, -1)
         _, tag_seq  = torch.max(outs, 1)

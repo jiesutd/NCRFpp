@@ -87,7 +87,10 @@ class Data:
         ###Networks
         self.word_feature_extractor = "LSTM" ## "LSTM"/"CNN"/"GRU"/
         self.use_char = True
+        self.use_word = True
         self.char_feature_extractor = "CNN" ## "LSTM"/"CNN"/"GRU"/None
+        self.low_level_transformer = None  ## different bert model, if concatenate bert output in word_input level  (bert + word embedding + char)
+        self.high_level_transformer = None #### different bert model, if concatenate bert output in word sequence level  (bert + word LSTM/CNN)
         self.use_crf = True
         self.nbest = 0
 
@@ -106,6 +109,7 @@ class Data:
         self.HP_bilstm = True
 
         self.HP_gpu = False
+        self.device = 'cpu'
         self.HP_lr = 0.015
         self.HP_lr_decay = 0.05
         self.HP_clip = None
@@ -187,6 +191,9 @@ class Data:
         print("     Model        use_crf: %s"%(self.use_crf))
         print("     Model word extractor: %s"%(self.word_feature_extractor))
         print("     Model       use_char: %s"%(self.use_char))
+        print("     Model       use_word: %s"%(self.use_word))
+        print("     Model low level transformer: %s"%(self.low_level_transformer))
+        print("     Model high level transformer: %s"%(self.high_level_transformer))
         print("     Word embedding size: %s"%(self.word_emb_dim))
         print("     Char embedding size: %s"%(self.char_emb_dim))
         if self.sentence_classification:
@@ -214,6 +221,7 @@ class Data:
         print("     Hyper      lstm_layer: %s"%(self.HP_lstm_layer))
         print("     Hyper          bilstm: %s"%(self.HP_bilstm))
         print("     Hyper             GPU: %s"%(self.HP_gpu))
+        print("     Hyper          device: %s"%(self.device))
         print("DATA SUMMARY END.")
         print("++"*50)
         sys.stdout.flush()
@@ -621,12 +629,21 @@ class Data:
         the_item = 'use_char'
         if the_item in config:
             self.use_char = str2bool(config[the_item])
+        the_item = 'use_word'
+        if the_item in config:
+            self.use_word = str2bool(config[the_item])
         the_item = 'word_seq_feature'
         if the_item in config:
             self.word_feature_extractor = config[the_item]
         the_item = 'char_seq_feature'
         if the_item in config:
             self.char_feature_extractor = config[the_item]
+        the_item = 'low_level_transformer'
+        if the_item in config:
+            self.low_level_transformer = config[the_item]
+        the_item = 'high_level_transformer'
+        if the_item in config:
+            self.high_level_transformer = config[the_item]
         the_item = 'nbest'
         if the_item in config:
             self.nbest = int(config[the_item])
@@ -677,6 +694,9 @@ class Data:
         the_item = 'gpu'
         if the_item in config:
             self.HP_gpu = str2bool(config[the_item])
+        the_item = 'device'
+        if the_item in config:
+            self.device = config[the_item]
         the_item = 'learning_rate'
         if the_item in config:
             self.HP_lr = float(config[the_item])

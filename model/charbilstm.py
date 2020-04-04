@@ -10,23 +10,18 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import numpy as np
 
 class CharBiLSTM(nn.Module):
-    def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, gpu, bidirect_flag = True):
+    def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, device, bidirect_flag = True):
         super(CharBiLSTM, self).__init__()
-        self.gpu = gpu
         self.hidden_dim = hidden_dim
         if bidirect_flag:
             self.hidden_dim = hidden_dim // 2
-        self.char_drop = nn.Dropout(dropout)
-        self.char_embeddings = nn.Embedding(alphabet_size, embedding_dim)
+        self.char_drop = nn.Dropout(dropout).to(device)
+        self.char_embeddings = nn.Embedding(alphabet_size, embedding_dim).to(device)
         if pretrain_char_embedding is not None:
             self.char_embeddings.weight.data.copy_(torch.from_numpy(pretrain_char_embedding))
         else:
             self.char_embeddings.weight.data.copy_(torch.from_numpy(self.random_embedding(alphabet_size, embedding_dim)))
-        self.char_lstm = nn.LSTM(embedding_dim, self.hidden_dim, num_layers=1, batch_first=True, bidirectional=bidirect_flag)
-        if self.gpu:
-            self.char_drop = self.char_drop.cuda()
-            self.char_embeddings = self.char_embeddings.cuda()
-            self.char_lstm = self.char_lstm.cuda()
+        self.char_lstm = nn.LSTM(embedding_dim, self.hidden_dim, num_layers=1, batch_first=True, bidirectional=bidirect_flag).to(device)
 
 
     def random_embedding(self, vocab_size, embedding_dim):

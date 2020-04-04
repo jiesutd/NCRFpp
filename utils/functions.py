@@ -86,7 +86,7 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
                 ## combine together and return, notice the feature/label as different format with sequence labeling task
                 if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)):
                     instence_texts.append([words, feat_list, chars, label])
-                    instence_Ids.append([word_Ids, feat_Id, char_Ids,label_Id])
+                    instence_Ids.append([word_Ids, feat_Id, char_Ids, label_Id, words, features, chars, labels])
                 words = []
                 features = []
                 chars = []
@@ -138,7 +138,7 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
             else:
                 if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
                     instence_texts.append([words, features, chars, labels])
-                    instence_Ids.append([word_Ids, feature_Ids, char_Ids,label_Ids])
+                    instence_Ids.append([word_Ids, feature_Ids, char_Ids, label_Ids, words, features, chars, labels])
                 words = []
                 features = []
                 chars = []
@@ -149,7 +149,7 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
                 label_Ids = []
         if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
             instence_texts.append([words, features, chars, labels])
-            instence_Ids.append([word_Ids, feature_Ids, char_Ids,label_Ids])
+            instence_Ids.append([word_Ids, feature_Ids, char_Ids, label_Ids, words, features, chars, labels])
             words = []
             features = []
             chars = []
@@ -249,7 +249,7 @@ def read_instance_from_list(input_list, word_count_dict, word_cutoff,  word_alph
 
             if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)):
                 instence_texts.append([words, feat_list, chars, label])
-                instence_Ids.append([word_Ids, feat_Id, char_Ids,label_Id])
+                instence_Ids.append([word_Ids, feat_Id, char_Ids, label_Id, words, features, chars, labels])
             words = []
             features = []
             chars = []
@@ -294,7 +294,7 @@ def read_instance_from_list(input_list, word_count_dict, word_cutoff,  word_alph
             
             if (len(words) > 0) and ((max_sent_length < 0) or (len(words) < max_sent_length)) :
                 instence_texts.append([words, features, chars, labels])
-                instence_Ids.append([word_Ids, feature_Ids, char_Ids,label_Ids])
+                instence_Ids.append([word_Ids, feature_Ids, char_Ids, label_Ids, words, features, chars, labels])
             words = []
             features = []
             chars = []

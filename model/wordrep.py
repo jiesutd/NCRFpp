@@ -11,6 +11,7 @@ import numpy as np
 from .charbilstm import CharBiLSTM
 from .charbigru import CharBiGRU
 from .charcnn import CharCNN
+from .ncrf_transformers import NCRFTransformers
 
 class WordRep(nn.Module):
     def __init__(self, data):
@@ -18,29 +19,34 @@ class WordRep(nn.Module):
         if not data.silence:
             print("build word representation...")
         self.gpu = data.HP_gpu
+        self.device = data.device
         self.use_char = data.use_char
         self.batch_size = data.HP_batch_size
         self.char_hidden_dim = 0
         self.char_all_feature = False
+        self.char_feature_extractor = data.char_feature_extractor
         self.sentence_classification = data.sentence_classification
-        if self.use_char:
+        if self.use_char and data.char_feature_extractor != "None" and data.char_feature_extractor != None:
             self.char_hidden_dim = data.HP_char_hidden_dim
             self.char_embedding_dim = data.char_emb_dim
             if not data.silence:
                 print("build char sequence feature extractor: %s ..."%(data.char_feature_extractor))
             if data.char_feature_extractor == "CNN":
-                self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+                self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.device)
             elif data.char_feature_extractor == "LSTM":
-                self.char_feature = CharBiLSTM(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+                self.char_feature = CharBiLSTM(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.device)
             elif data.char_feature_extractor == "GRU":
-                self.char_feature = CharBiGRU(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+                self.char_feature = CharBiGRU(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.device)
             elif data.char_feature_extractor == "ALL":
                 self.char_all_feature = True
-                self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
-                self.char_feature_extra = CharBiLSTM(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+                self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.device)
+                self.char_feature_extra = CharBiLSTM(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.device)
             else:
                 print("Error char feature selection, please check parameter data.char_feature_extractor (CNN/LSTM/GRU/ALL).")
                 exit(0)
+        self.low_level_transformer = data.low_level_transformer
+        if self.low_level_transformer != None and self.low_level_transformer != "None":
+            self.transformer = NCRFTransformers(self.low_level_transformer, data.device)
         self.embedding_dim = data.word_emb_dim
         self.drop = nn.Dropout(data.HP_dropout)
         self.word_embedding = nn.Embedding(data.word_alphabet.size(), self.embedding_dim)
@@ -76,7 +82,7 @@ class WordRep(nn.Module):
         return pretrain_emb
 
 
-    def forward(self, word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover):
+    def forward(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text):
         """
             input:
                 word_inputs: (batch_size, sent_len)
@@ -95,7 +101,7 @@ class WordRep(nn.Module):
         if not self.sentence_classification:
             for idx in range(self.feature_num):
                 word_list.append(self.feature_embeddings[idx](feature_inputs[idx]))
-        if self.use_char:
+        if self.use_char and self.char_feature_extractor != "None" and self.char_feature_extractor != None:
             ## calculate char lstm last hidden
             # print("charinput:", char_inputs)
             # exit(0)
@@ -110,7 +116,11 @@ class WordRep(nn.Module):
                 char_features_extra = char_features_extra[char_seq_recover]
                 char_features_extra = char_features_extra.view(batch_size,sent_len,-1)
                 ## concat word and char together
-                word_list.append(char_features_extra)    
+                word_list.append(char_features_extra)
+        
+        if self.low_level_transformer != None and self.low_level_transformer != "None":
+            transformer_output = self.transformer.extract_features(batch_word_text)
+            word_list.append(transformer_output)
         word_embs = torch.cat(word_list, 2)
         # if a == 0:
         #     print("inputs", word_inputs)
