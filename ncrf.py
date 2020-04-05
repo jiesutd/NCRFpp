@@ -158,12 +158,13 @@ class NCRF:
             print("Shuffle: first input: [%s]" %(first_list))
             ## set model in train model
             self.model.train()
-            self.model.zero_grad()
+            
             batch_size = self.data.HP_batch_size
             batch_id = 0
             train_num = len(self.data.train_Ids)
             total_batch = train_num//batch_size+1
             for batch_id in range(total_batch):
+                self.optimizer.zero_grad()
                 start = batch_id*batch_size
                 end = (batch_id+1)*batch_size
                 if end >train_num:
@@ -171,9 +172,9 @@ class NCRF:
                 instance = self.data.train_Ids[start:end]
                 if not instance:
                     continue
-                batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask, batch_word_text  = batchify_with_label(instance, self.data.HP_gpu, True, self.data.sentence_classification)
+                batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_word_text, batch_label, mask  = batchify_with_label(instance, self.data.HP_gpu, True, self.data.sentence_classification)
                 instance_count += 1
-                loss, tag_seq = self.model.calculate_loss(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_label, mask, batch_word_text)
+                loss, tag_seq = self.model.calculate_loss(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_word_text, batch_label, mask)
                 right, whole = predict_check(tag_seq, batch_label, mask, self.data.sentence_classification)
                 right_token += right
                 whole_token += whole
@@ -192,7 +193,6 @@ class NCRF:
                     sample_loss = 0
                 loss.backward()
                 self.optimizer.step()
-                self.model.zero_grad()
             temp_time = time.time()
             temp_cost = temp_time - temp_start
             print("     Instance: %s; Time: %.2fs; loss: %.4f; acc: %s/%s=%.4f"%(end, temp_cost, sample_loss, right_token, whole_token,(right_token+0.)/whole_token))
@@ -262,8 +262,8 @@ class NCRF:
             instance = instances[start:end]
             if not instance:
                 continue
-            batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask, batch_word_text  = batchify_with_label(instance, self.data.HP_gpu, False, self.data.sentence_classification)
-            tag_seq = self.model(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask, batch_word_text)
+            batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_word_text, batch_label, mask  = batchify_with_label(instance, self.data.HP_gpu, False, self.data.sentence_classification)
+            tag_seq = self.model(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_word_text, None, mask)
             tag_seq = tag_seq[batch_wordrecover.cpu()]
             decode_label += tag_seq.cpu().data.numpy().tolist()
         return  decode_label
@@ -299,8 +299,8 @@ class NCRF:
                 print("Decode: ", start)
             if not instance:
                 continue
-            batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask, batch_word_text  = batchify_with_label(instance, self.data.HP_gpu, False, self.data.sentence_classification)
-            target_probability, _ = self.model.get_target_probability(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask, batch_word_text)
+            batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_word_text, batch_label, mask  = batchify_with_label(instance, self.data.HP_gpu, False, self.data.sentence_classification)
+            target_probability, _ = self.model.get_target_probability(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_word_text, None, mask)
             target_probability = target_probability[batch_wordrecover.cpu()]
             target_probability_list.append(target_probability)
         target_probabilities = np.concatenate(target_probability_list, axis = 0)
@@ -339,8 +339,8 @@ class NCRF:
                 print("Decode: ", start)
             if not instance:
                 continue
-            batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_label, mask, batch_word_text  = batchify_with_label(instance, self.data.HP_gpu, False, self.data.sentence_classification)
-            target_probability, weights = self.model.get_target_probability(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, mask, batch_word_text)
+            batch_word, batch_features, batch_wordlen, batch_wordrecover, batch_char, batch_charlen, batch_charrecover, batch_word_text, batch_label, mask  = batchify_with_label(instance, self.data.HP_gpu, False, self.data.sentence_classification)
+            target_probability, weights = self.model.get_target_probability(batch_word, batch_features, batch_wordlen, batch_char, batch_charlen, batch_charrecover, batch_word_text, None, mask)
             ## target_probability, weights are both numpy
             target_probability = target_probability[batch_wordrecover.cpu()]
             weights = weights[batch_wordrecover.cpu()]

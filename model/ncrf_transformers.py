@@ -6,6 +6,7 @@
  '''
 
 import torch
+import torch.nn as nn
 from transformers import *
 
 MODELS = [(BertModel,       BertTokenizer,       'bert-base-uncased'),
@@ -25,8 +26,9 @@ models_dict = {}
 for each_tuple in MODELS:
     models_dict[each_tuple[-1]] = each_tuple
 
-class NCRFTransformers:
+class NCRFTransformers(nn.Module):
         def __init__(self, model_name, device, fix_embeddings=False):
+            super(NCRFTransformers, self).__init__()
             print("Loading transformer... model:", model_name )
             self.device = device
             self.model_class, self.tokenizer_class, self.pretrained_weights = models_dict[model_name]
@@ -38,7 +40,7 @@ class NCRFTransformers:
                         param.requires_grad = False
 
 
-        def extract_features(self, input_batch_list):
+        def extract_features(self, input_batch_list, training=False):
             ## extract word list and calculate max_word seq len, get rank order (word_perm_idx) to fit other network settings (e.g. LSTM)
             batch_size = len(input_batch_list)
             words = [sent for sent in input_batch_list]
@@ -78,8 +80,9 @@ class NCRFTransformers:
             subword_word_indicator = subword_word_indicator[word_perm_idx].to(self.device) ## subword-> word mapping
 
             ## extract BERTs features for batch token tensor input
-            with torch.no_grad():
-                last_hidden_states = self.model(batch_token_ids_padded_tensor)[0]  # Models outputs are now tuples
+            
+            last_hidden_states = self.model(batch_token_ids_padded_tensor)[0]  # Models outputs are now tuples
+
             ## recover the batch token to word level representation. Four ways of merging subwords to words, i.e. max-pooling, min-pooling, average-pooling, first-subword-selection. Currently only use non-batch method to recover. Current supports first-subword only
             token_dimension = last_hidden_states.shape[2]
             batch_word_mask_tensor_list = []

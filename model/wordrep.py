@@ -47,6 +47,7 @@ class WordRep(nn.Module):
                 exit(0)
         self.low_level_transformer = data.low_level_transformer
         if self.low_level_transformer != None and self.low_level_transformer.lower() != "none":
+            self.low_level_transformer_finetune = data.low_level_transformer_finetune
             self.transformer = NCRFTransformers(self.low_level_transformer, data.device)
         if self.use_word_emb:
             self.embedding_dim = data.word_emb_dim
@@ -79,7 +80,8 @@ class WordRep(nn.Module):
         return pretrain_emb
 
 
-    def forward(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text):
+    def forward(self, *input):
+        word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text = input[:7]
         """
             input:
                 word_inputs: (batch_size, sent_len)
@@ -117,7 +119,13 @@ class WordRep(nn.Module):
                 word_list.append(char_features_extra)
         
         if self.low_level_transformer != None and self.low_level_transformer.lower() != "none":
-            transformer_output = self.transformer.extract_features(batch_word_text)
+            if self.training and self.low_level_transformer_finetune:
+                self.transformer.train()
+                transformer_output = self.transformer.extract_features(batch_word_text)
+            else:
+                self.transformer.eval()
+                with torch.no_grad():
+                    transformer_output = self.transformer.extract_features(batch_word_text)
             word_list.append(transformer_output)
         word_embs = torch.cat(word_list, 2)
         # if a == 0:

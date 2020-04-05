@@ -91,7 +91,9 @@ class Data:
         self.use_word_emb = True
         self.char_feature_extractor = "CNN" ## "LSTM"/"CNN"/"GRU"/None
         self.low_level_transformer = None  ## different bert model, if concatenate bert output in word_input level  (bert + word embedding + char)
+        self.low_level_transformer_finetune=True
         self.high_level_transformer = None #### different bert model, if concatenate bert output in word sequence level  (bert + word LSTM/CNN)
+        self.high_level_transformer_finetune=True
         self.use_crf = True
         self.nbest = 0
 
@@ -153,8 +155,7 @@ class Data:
         print("++"*50)
         print("DATA SUMMARY START:")
         print(" I/O:")
-        print("     Word embedding  dir: %s"%(self.word_emb_dir))
-        print("     Char embedding  dir: %s"%(self.char_emb_dir))
+
         
         print("     Train  file directory: %s"%(self.train_dir))
         print("     Dev    file directory: %s"%(self.dev_dir))
@@ -179,8 +180,8 @@ class Data:
         print("     Word  alphabet size: %s"%(self.word_alphabet_size))
         print("     Char  alphabet size: %s"%(self.char_alphabet_size))
         print("     Label alphabet size: %s"%(self.label_alphabet_size))
-        print("     Norm   word     emb: %s"%(self.norm_word_emb))
-        print("     Norm   char     emb: %s"%(self.norm_char_emb))
+        
+        
         print("     FEATURE num: %s"%(self.feature_num))
         for idx in range(self.feature_num):
             print("         Fe: %s  alphabet  size: %s"%(self.feature_alphabets[idx].name, self.feature_alphabet_sizes[idx]))
@@ -194,18 +195,27 @@ class Data:
         if self.use_word_seq:
             print("     Model   use_word_seq: %s"%(self.use_word_seq))
             print("     Model   use_word_emb: %s"%(self.use_word_emb))
+            
+            if self.use_word_emb:
+                print("     Word embedding  dir: %s"%(self.word_emb_dir))
+                print("     Word embedding size: %s"%(self.word_emb_dim))
+                print("     Norm   word     emb: %s"%(self.norm_word_emb))
+            print("     Model       use_char: %s"%(self.use_char))
+            if self.use_char:
+                print("     Model char extractor: %s"%(self.char_feature_extractor))
+                print("     Char embedding  dir: %s"%(self.char_emb_dir))
+                print("     Char embedding size: %s"%(self.char_emb_dim))
+                print("     Norm   char     emb: %s"%(self.norm_char_emb))
+                print("     Model char_hidden_dim: %s"%(self.HP_char_hidden_dim))
+                
             print("     Model word extractor: %s"%(self.word_feature_extractor))
         
-        print("     Model low level transformer: %s"%(self.low_level_transformer))
-        print("     Model high level transformer: %s"%(self.high_level_transformer))
-        print("     Word embedding size: %s"%(self.word_emb_dim))
-        print("     Char embedding size: %s"%(self.char_emb_dim))
+        print("     Model low level transformer: %s; Finetune: %s"%(self.low_level_transformer,self.low_level_transformer_finetune))
+        print("     Model high level transformer: %s; Finetune: %s"%(self.high_level_transformer,self.high_level_transformer_finetune))
+        
         if self.sentence_classification:
-            print("     Words hidden 2 sent: %s"%(self.words2sent_representation))
-        if self.use_char:
-            print("     Model       use_char: %s"%(self.use_char))
-            print("     Model char extractor: %s"%(self.char_feature_extractor))
-            print("     Model char_hidden_dim: %s"%(self.HP_char_hidden_dim))
+            print("     Words hidden 2 sent: %s"%(self.words2sent_representation))       
+            
         print(" "+"++"*20)
         print(" Training:")
         print("     Optimizer: %s"%(self.optimizer))
@@ -215,16 +225,17 @@ class Data:
 
         print(" "+"++"*20)
         print(" Hyperparameters:")
-
         print("     Hyper              lr: %s"%(self.HP_lr))
         print("     Hyper        lr_decay: %s"%(self.HP_lr_decay))
         print("     Hyper         HP_clip: %s"%(self.HP_clip))
         print("     Hyper        momentum: %s"%(self.HP_momentum))
         print("     Hyper              l2: %s"%(self.HP_l2))
-        print("     Hyper      hidden_dim: %s"%(self.HP_hidden_dim))
+        if self.word_feature_extractor != None and self.word_feature_extractor.lower() != "none":
+            print("     Hyper      hidden_dim: %s"%(self.HP_hidden_dim))
         print("     Hyper         dropout: %s"%(self.HP_dropout))
-        print("     Hyper      lstm_layer: %s"%(self.HP_lstm_layer))
-        print("     Hyper          bilstm: %s"%(self.HP_bilstm))
+        if self.word_feature_extractor == "GRU" or self.word_feature_extractor == "LSTM":
+            print("     Hyper      lstm_layer: %s"%(self.HP_lstm_layer))
+            print("     Hyper          bilstm: %s"%(self.HP_bilstm))
         print("     Hyper             GPU: %s"%(self.HP_gpu))
         print("     Hyper          device: %s"%(self.device))
         print("DATA SUMMARY END.")
@@ -649,9 +660,15 @@ class Data:
         the_item = 'low_level_transformer'
         if the_item in config:
             self.low_level_transformer = config[the_item]
+        the_item = 'low_level_transformer_finetune'
+        if the_item in config:
+            self.low_level_transformer_finetune = str2bool(config[the_item])
         the_item = 'high_level_transformer'
         if the_item in config:
             self.high_level_transformer = config[the_item]
+        the_item = 'high_level_transformer_finetune'
+        if the_item in config:
+            self.high_level_transformer_finetune = str2bool(config[the_item])
         the_item = 'nbest'
         if the_item in config:
             self.nbest = int(config[the_item])

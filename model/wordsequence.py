@@ -80,6 +80,7 @@ class WordSequence(nn.Module):
         ## set high level transformer
         self.high_level_transformer = data.high_level_transformer 
         if self.high_level_transformer != None and self.high_level_transformer != "None":
+            self.high_level_transformer_finetune = data.high_level_transformer_finetune
             self.high_transformer = NCRFTransformers(self.high_level_transformer, self.device)
             self.output_hidden_dim += 768 ## Todo: dim may change with the choice of BERT models
 
@@ -117,7 +118,8 @@ class WordSequence(nn.Module):
 
 
 
-    def network_out_features(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text):
+    def network_out_features(self, *input):
+        word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text = input[:7]
         """
             input:
                 word_inputs: (batch_size, sent_len)
@@ -130,7 +132,7 @@ class WordSequence(nn.Module):
                 Variable(batch_size, sent_len, hidden_dim)
         """
         if self.use_word_seq:
-            word_represent = self.wordrep(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text)
+            word_represent = self.wordrep(*input)
             ## word_embs (batch_size, seq_len, embed_size)
             if self.word_feature_extractor == "CNN":
                 batch_size = word_inputs.size(0)
@@ -159,7 +161,13 @@ class WordSequence(nn.Module):
             feature_out = feature_out.contiguous()
             ## merge bert features
             if self.high_level_transformer != None and self.high_level_transformer != "None":
-                transformer_output = self.high_transformer.extract_features(batch_word_text)
+                if self.training and self.high_level_transformer_finetune:
+                    self.high_transformer.train()
+                    transformer_output = self.high_transformer.extract_features(batch_word_text)
+                else:
+                    self.high_transformer.eval()
+                    with torch.no_grad():
+                        transformer_output = self.high_transformer.extract_features(batch_word_text)
                 feature_out = torch.cat([feature_out, transformer_output], 2)
         else:
             if self.high_level_transformer != None and self.high_level_transformer.lower() != "none":
@@ -167,15 +175,16 @@ class WordSequence(nn.Module):
         return feature_out
         
 
-    def forward(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text):
-        feature_out = self.network_out_features(word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text)
+    def forward(self, *input):
+        feature_out = self.network_out_features(*input) 
         feature_out = self.dropout(feature_out)
         ## feature_out (batch_size, seq_len, hidden_size)
         outputs = self.hidden2tag(feature_out)
         return outputs
 
 
-    def sentence_representation(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, mask, batch_word_text):
+    def sentence_representation(self, *input):
+        word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text, mask, training = input[:9]
         """
             input:
                 word_inputs: (batch_size, sent_len)
@@ -188,7 +197,7 @@ class WordSequence(nn.Module):
                 Variable(batch_size, sent_len, hidden_dim)
         """
         batch_size = word_inputs.size(0)
-        feature_out = self.network_out_features(word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text)
+        feature_out = self.network_out_features(*input)
         ## feature_out: (batch_size, seq_len, hidden_size)
     
         ## mask padding elements
