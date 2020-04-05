@@ -20,6 +20,7 @@ class WordRep(nn.Module):
             print("build word representation...")
         self.gpu = data.HP_gpu
         self.device = data.device
+        self.use_word_emb = data.use_word_emb
         self.use_char = data.use_char
         self.batch_size = data.HP_batch_size
         self.char_hidden_dim = 0
@@ -45,32 +46,28 @@ class WordRep(nn.Module):
                 print("Error char feature selection, please check parameter data.char_feature_extractor (CNN/LSTM/GRU/ALL).")
                 exit(0)
         self.low_level_transformer = data.low_level_transformer
-        if self.low_level_transformer != None and self.low_level_transformer != "None":
+        if self.low_level_transformer != None and self.low_level_transformer.lower() != "none":
             self.transformer = NCRFTransformers(self.low_level_transformer, data.device)
-        self.embedding_dim = data.word_emb_dim
-        self.drop = nn.Dropout(data.HP_dropout)
-        self.word_embedding = nn.Embedding(data.word_alphabet.size(), self.embedding_dim)
-        if data.pretrain_word_embedding is not None:
-            self.word_embedding.weight.data.copy_(torch.from_numpy(data.pretrain_word_embedding))
-        else:
-            self.word_embedding.weight.data.copy_(torch.from_numpy(self.random_embedding(data.word_alphabet.size(), self.embedding_dim)))
+        if self.use_word_emb:
+            self.embedding_dim = data.word_emb_dim
+            self.word_embedding = nn.Embedding(data.word_alphabet.size(), self.embedding_dim).to(self.device)
+            if data.pretrain_word_embedding is not None:
+                self.word_embedding.weight.data.copy_(torch.from_numpy(data.pretrain_word_embedding))
+            else:
+                self.word_embedding.weight.data.copy_(torch.from_numpy(self.random_embedding(data.word_alphabet.size(), self.embedding_dim)))
 
         self.feature_num = data.feature_num
         self.feature_embedding_dims = data.feature_emb_dims
         self.feature_embeddings = nn.ModuleList()
         for idx in range(self.feature_num):
-            self.feature_embeddings.append(nn.Embedding(data.feature_alphabets[idx].size(), self.feature_embedding_dims[idx]))
+            self.feature_embeddings.append(nn.Embedding(data.feature_alphabets[idx].size(), self.feature_embedding_dims[idx]).to(self.device))
         for idx in range(self.feature_num):
             if data.pretrain_feature_embeddings[idx] is not None:
                 self.feature_embeddings[idx].weight.data.copy_(torch.from_numpy(data.pretrain_feature_embeddings[idx]))
             else:
                 self.feature_embeddings[idx].weight.data.copy_(torch.from_numpy(self.random_embedding(data.feature_alphabets[idx].size(), self.feature_embedding_dims[idx])))
+        self.drop = nn.Dropout(data.HP_dropout).to(self.device)
 
-        if self.gpu:
-            self.drop = self.drop.cuda()
-            self.word_embedding = self.word_embedding.cuda()
-            for idx in range(self.feature_num):
-                self.feature_embeddings[idx] = self.feature_embeddings[idx].cuda()
 
 
 
@@ -96,12 +93,14 @@ class WordRep(nn.Module):
         """
         batch_size = word_inputs.size(0)
         sent_len = word_inputs.size(1)
-        word_embs =  self.word_embedding(word_inputs)
-        word_list = [word_embs]
+        word_list = []
+        if self.use_word_emb:
+            word_embs =  self.word_embedding(word_inputs)
+            word_list.append(word_embs)
         if not self.sentence_classification:
             for idx in range(self.feature_num):
                 word_list.append(self.feature_embeddings[idx](feature_inputs[idx]))
-        if self.use_char and self.char_feature_extractor != "None" and self.char_feature_extractor != None:
+        if self.use_char and self.char_feature_extractor.lower() != "none" and self.char_feature_extractor != None:
             ## calculate char lstm last hidden
             # print("charinput:", char_inputs)
             # exit(0)
@@ -110,7 +109,6 @@ class WordRep(nn.Module):
             char_features = char_features.view(batch_size,sent_len,-1)
             ## concat word and char together
             word_list.append(char_features)
-            word_embs = torch.cat([word_embs, char_features], 2)
             if self.char_all_feature:
                 char_features_extra = self.char_feature_extra.get_last_hiddens(char_inputs, char_seq_lengths.cpu().numpy())
                 char_features_extra = char_features_extra[char_seq_recover]
@@ -118,7 +116,7 @@ class WordRep(nn.Module):
                 ## concat word and char together
                 word_list.append(char_features_extra)
         
-        if self.low_level_transformer != None and self.low_level_transformer != "None":
+        if self.low_level_transformer != None and self.low_level_transformer.lower() != "none":
             transformer_output = self.transformer.extract_features(batch_word_text)
             word_list.append(transformer_output)
         word_embs = torch.cat(word_list, 2)

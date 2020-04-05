@@ -87,7 +87,8 @@ class Data:
         ###Networks
         self.word_feature_extractor = "LSTM" ## "LSTM"/"CNN"/"GRU"/
         self.use_char = True
-        self.use_word = True
+        self.use_word_seq = True
+        self.use_word_emb = True
         self.char_feature_extractor = "CNN" ## "LSTM"/"CNN"/"GRU"/None
         self.low_level_transformer = None  ## different bert model, if concatenate bert output in word_input level  (bert + word embedding + char)
         self.high_level_transformer = None #### different bert model, if concatenate bert output in word sequence level  (bert + word LSTM/CNN)
@@ -188,10 +189,13 @@ class Data:
             print("         Fe: %s  norm       emb: %s"%(self.feature_alphabets[idx].name, self.norm_feature_embs[idx]))
         print(" "+"++"*20)
         print(" Model Network:")
-        print("     Model        use_crf: %s"%(self.use_crf))
-        print("     Model word extractor: %s"%(self.word_feature_extractor))
-        print("     Model       use_char: %s"%(self.use_char))
-        print("     Model       use_word: %s"%(self.use_word))
+        if not self.sentence_classification:
+            print("     Model        use_crf: %s"%(self.use_crf))
+        if self.use_word_seq:
+            print("     Model   use_word_seq: %s"%(self.use_word_seq))
+            print("     Model   use_word_emb: %s"%(self.use_word_emb))
+            print("     Model word extractor: %s"%(self.word_feature_extractor))
+        
         print("     Model low level transformer: %s"%(self.low_level_transformer))
         print("     Model high level transformer: %s"%(self.high_level_transformer))
         print("     Word embedding size: %s"%(self.word_emb_dim))
@@ -199,6 +203,7 @@ class Data:
         if self.sentence_classification:
             print("     Words hidden 2 sent: %s"%(self.words2sent_representation))
         if self.use_char:
+            print("     Model       use_char: %s"%(self.use_char))
             print("     Model char extractor: %s"%(self.char_feature_extractor))
             print("     Model char_hidden_dim: %s"%(self.HP_char_hidden_dim))
         print(" "+"++"*20)
@@ -629,9 +634,12 @@ class Data:
         the_item = 'use_char'
         if the_item in config:
             self.use_char = str2bool(config[the_item])
-        the_item = 'use_word'
+        the_item = 'use_word_seq'
         if the_item in config:
-            self.use_word = str2bool(config[the_item])
+            self.use_word_seq = str2bool(config[the_item])
+        the_item = 'use_word_emb'
+        if the_item in config:
+            self.use_word_emb = str2bool(config[the_item])
         the_item = 'word_seq_feature'
         if the_item in config:
             self.word_feature_extractor = config[the_item]

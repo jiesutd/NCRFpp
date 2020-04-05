@@ -2,13 +2,14 @@
  # @ Author: Jie Yang
  # @ Create Time: 2020-03-28 00:03:18
  # @ Last Modified by: Jie Yang  Contact: jieynlp@gmail.com
- # @ Last Modified time: 2020-03-29 18:35:15
+ # @ Last Modified time: 2020-04-04 02:47:54
  '''
 
 import torch
 from transformers import *
 
 MODELS = [(BertModel,       BertTokenizer,       'bert-base-uncased'),
+            (BertModel,       BertTokenizer,       'bert-base-cased'),
             (OpenAIGPTModel,  OpenAIGPTTokenizer,  'openai-gpt'),
             (GPT2Model,       GPT2Tokenizer,       'gpt2'),
             (CTRLModel,       CTRLTokenizer,       'ctrl'),
@@ -25,7 +26,7 @@ for each_tuple in MODELS:
     models_dict[each_tuple[-1]] = each_tuple
 
 class NCRFTransformers:
-        def __init__(self, model_name, device, fix_embeddings=True):
+        def __init__(self, model_name, device, fix_embeddings=False):
             print("Loading transformer... model:", model_name )
             self.device = device
             self.model_class, self.tokenizer_class, self.pretrained_weights = models_dict[model_name]
@@ -57,7 +58,7 @@ class NCRFTransformers:
                     word_tokens = self.tokenizer.tokenize(word)
                     one_subword_word_indicator.append(len(one_sent_token)+1)
                     one_sent_token += word_tokens
-                ## add [cls] and [sep] tokens
+                ## add [cls] and [sep] tokens, only for classific BERT, GPT have different type
                 one_sent_token = ['[CLS]'] + one_sent_token + ['[SEP]']
                 one_sent_token_id = self.tokenizer.convert_tokens_to_ids(one_sent_token)
                 batch_tokens.append(one_sent_token)
@@ -98,6 +99,11 @@ if __name__ == '__main__':
                         ["One", "way", "of", "measuring", "the", "complexity" ],
                         ["I", "encode", "money"]
                     ]
-    the_transformer = NCRFTransformers('bert-base-uncased', True)
+    the_transformer = NCRFTransformers('openai-gpt','cuda', True)
+    sentence = " ".join(input_test_list[0])
+    ids = the_transformer.tokenizer.encode(sentence, add_special_tokens=True)
+    print(ids)
+    print(the_transformer.tokenizer.convert_ids_to_tokens(ids))
+    exit(0)
     batch_features = the_transformer.extract_features(input_test_list)
     print(batch_features.shape)

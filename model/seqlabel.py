@@ -43,7 +43,7 @@ class SeqLabel(nn.Module):
             total_loss = self.crf.neg_log_likelihood_loss(outs, mask, batch_label)
             scores, tag_seq = self.crf._viterbi_decode(outs, mask)
         else:
-            loss_function = nn.NLLLoss(ignore_index=0, size_average=False)
+            loss_function = nn.NLLLoss(ignore_index=0, reduction='sum')
             outs = outs.view(batch_size * seq_len, -1)
             score = F.log_softmax(outs, 1)
             total_loss = loss_function(score, batch_label.view(batch_size * seq_len))

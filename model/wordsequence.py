@@ -16,29 +16,31 @@ from .ncrf_transformers import NCRFTransformers
 class WordSequence(nn.Module):
     def __init__(self, data):
         super(WordSequence, self).__init__()
-        if (not data.use_word) and (data.high_level_transformer == None or data.high_level_transformer == "None"):
+        if (not data.use_word_seq) and (data.high_level_transformer == None or data.high_level_transformer == "None"):
             print("ERROR: at least one of use_word and high_level_transformer should be valid")
             exit(0)
-        if not data.silence:
-            print("build word sequence feature extractor: %s..."%(data.word_feature_extractor))
         self.gpu = data.HP_gpu
         self.device = data.device
         self.words2sent = data.words2sent_representation.upper()
         self.use_char = data.use_char
-        self.use_word = data.use_word
+        self.use_word_seq = data.use_word_seq
+        self.use_word_emb = data.use_word_emb
         self.dropout = nn.Dropout(data.HP_dropout).to(self.device)
         self.wordrep = WordRep(data)
-        self.input_size = data.word_emb_dim  ## input size of upper layer
+        self.input_size = 0 #data.word_emb_dim  ## input size of upper layer
         self.feature_num = data.feature_num
         self.output_hidden_dim = data.HP_hidden_dim
-        if self.use_word:
+        if self.use_word_seq:
+            if not data.silence:
+                print("build word sequence feature extractor: %s..."%(data.word_feature_extractor))
             if self.use_char:
                 self.input_size += data.HP_char_hidden_dim
                 if data.char_feature_extractor == "ALL":
                     self.input_size += data.HP_char_hidden_dim
-    
+            if self.use_word_emb:
+                self.input_size += data.word_emb_dim
             self.low_level_transformer = data.low_level_transformer
-            if self.low_level_transformer != None and self.low_level_transformer != "None":
+            if self.low_level_transformer != None and self.low_level_transformer.lower() != "none":
                 self.input_size += 768 ## maybe changed based on the choice of BERT model
             
             if not data.sentence_classification:
@@ -127,7 +129,7 @@ class WordSequence(nn.Module):
             output:
                 Variable(batch_size, sent_len, hidden_dim)
         """
-        if self.use_word:
+        if self.use_word_seq:
             word_represent = self.wordrep(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_word_text)
             ## word_embs (batch_size, seq_len, embed_size)
             if self.word_feature_extractor == "CNN":
@@ -144,7 +146,7 @@ class WordSequence(nn.Module):
                 feature_out = cnn_feature.transpose(2,1).contiguous()
             elif self.word_feature_extractor == "FF":
                 feature_out = torch.tanh(self.ff(word_represent)).transpose(2,1).contiguous()
-            elif self.word_feature_extractor == "None" or self.word_feature_extractor == None:
+            elif self.word_feature_extractor == None or self.word_feature_extractor.lower() == "none" :
                 feature_out = word_represent
             else:
                 packed_words = pack_padded_sequence(word_represent, word_seq_lengths.cpu().numpy(), True)
@@ -160,7 +162,7 @@ class WordSequence(nn.Module):
                 transformer_output = self.high_transformer.extract_features(batch_word_text)
                 feature_out = torch.cat([feature_out, transformer_output], 2)
         else:
-            if self.high_level_transformer != None and self.high_level_transformer != "None":
+            if self.high_level_transformer != None and self.high_level_transformer.lower() != "none":
                 feature_out = self.high_transformer.extract_features(batch_word_text)                
         return feature_out
         

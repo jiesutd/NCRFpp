@@ -71,7 +71,8 @@ class NCRF:
 
     def initialize_data(self, input_list=None):
         self.data.initial_alphabets(input_list)
-        self.data.build_pretrain_emb()
+        if self.data.use_word_emb and self.data.use_word_seq:
+            self.data.build_pretrain_emb()
 
 
     def initialization(self, input_list=None):
@@ -152,9 +153,9 @@ class NCRF:
             total_loss = 0
             right_token = 0
             whole_token = 0
-            #random.shuffle(self.data.train_Ids)
+            random.shuffle(self.data.train_Ids)
             first_list = ", ".join([self.data.word_alphabet.get_instance(a) for a in self.data.train_Ids[0][0]])
-            print("Shuffle: first input word list: [%s]" %(first_list))
+            print("Shuffle: first input: [%s]" %(first_list))
             ## set model in train model
             self.model.train()
             self.model.zero_grad()
