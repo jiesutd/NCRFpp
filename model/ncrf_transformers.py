@@ -38,10 +38,8 @@ class NCRFTransformers:
                         param.requires_grad = False
 
 
-
         def extract_features(self, input_batch_list):
             ## extract word list and calculate max_word seq len, get rank order (word_perm_idx) to fit other network settings (e.g. LSTM)
-            
             batch_size = len(input_batch_list)
             words = [sent for sent in input_batch_list]
             word_seq_lengths = torch.LongTensor(list(map(len, words)))
@@ -69,7 +67,6 @@ class NCRFTransformers:
             max_token_seq_len = token_seq_lengths.max().item()
             
             ## padding token ids and generate tensor
-
             batch_token_ids_padded = []
             for the_ids in batch_token_ids:
                 batch_token_ids_padded.append(the_ids + [0]*(max_token_seq_len-len(the_ids))) 
