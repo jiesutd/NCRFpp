@@ -11,6 +11,7 @@ from transformers import *
 
 MODELS = [(BertModel,       BertTokenizer,       'bert-base-uncased'),
             (BertModel,       BertTokenizer,       'bert-base-cased'),
+            (BertModel,       BertTokenizer,       'bert-large-cased'),
             (OpenAIGPTModel,  OpenAIGPTTokenizer,  'openai-gpt'),
             (GPT2Model,       GPT2Tokenizer,       'gpt2'),
             (CTRLModel,       CTRLTokenizer,       'ctrl'),

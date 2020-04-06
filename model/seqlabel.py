@@ -17,12 +17,13 @@ class SeqLabel(nn.Module):
         super(SeqLabel, self).__init__()
         self.use_crf = data.use_crf
         if not data.silence:
-            print("why not:",not data.silence)
             print("build sequence labeling network...")
             print("use_char: ", data.use_char)
-            if data.use_char:
-                print("char feature extractor: ", data.char_feature_extractor)
-            print("word feature extractor: ", data.word_feature_extractor)
+            if data.use_word_seq:
+                print("word feature extractor: ", data.word_feature_extractor)
+                if data.use_char:
+                    print("char feature extractor: ", data.char_feature_extractor)
+            
             print("use crf: ", self.use_crf)
 
         self.gpu = data.HP_gpu

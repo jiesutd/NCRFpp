@@ -233,7 +233,7 @@ class Data:
         if self.word_feature_extractor != None and self.word_feature_extractor.lower() != "none":
             print("     Hyper      hidden_dim: %s"%(self.HP_hidden_dim))
         print("     Hyper         dropout: %s"%(self.HP_dropout))
-        if self.word_feature_extractor == "GRU" or self.word_feature_extractor == "LSTM":
+        if self.use_word_seq and (self.word_feature_extractor == "GRU" or self.word_feature_extractor == "LSTM"):
             print("     Hyper      lstm_layer: %s"%(self.HP_lstm_layer))
             print("     Hyper          bilstm: %s"%(self.HP_bilstm))
         print("     Hyper             GPU: %s"%(self.HP_gpu))
