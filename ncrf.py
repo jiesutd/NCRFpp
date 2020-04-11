@@ -208,8 +208,13 @@ class NCRF:
             speed, acc, p, r, f, _,_ = evaluate(self.data, self.model, "dev")
             dev_finish = time.time()
             dev_cost = dev_finish - epoch_finish
-            current_score = f
-            print("Dev: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f"%(dev_cost, speed, acc, p, r, f))
+            
+            if self.data.seg:
+                print("Dev: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f"%(dev_cost, speed, acc, p, r, f))
+                current_score = f
+            else:
+                print("Dev: time: %.2fs, speed: %.2fst/s; acc: %.4f"%(dev_cost, speed, acc))
+                current_score = acc
             if current_score > best_dev:
                 if self.data.seg:
                     print("Exceed previous best f score:", best_dev)
@@ -227,10 +232,10 @@ class NCRF:
             speed, acc, p, r, f, test_result,_ = evaluate(self.data, self.model, "test")
             test_finish = time.time()
             test_cost = test_finish - dev_finish
-            # if self.data.seg:
-            print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f"%(test_cost, speed, acc, p, r, f))
-            # else:
-            #     print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f"%(test_cost, speed, acc))
+            if self.data.seg:
+                print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f"%(test_cost, speed, acc, p, r, f))
+            else:
+                print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f"%(test_cost, speed, acc))
             gc.collect()
         if best_model != None:
             self.load(best_model)
@@ -403,8 +408,10 @@ if __name__ == '__main__':
         speed, acc, p, r, f, decode_results, pred_scores = evaluate(ncrf.data, ncrf.model, "raw", ncrf.data.nbest)
         test_finish = time.time()
         test_cost = test_finish - dev_finish
-        # if self.data.seg:
-        print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f"%(test_cost, speed, acc, p, r, f))
+        if self.data.seg:
+            print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f, p: %.4f, r: %.4f, f: %.4f"%(test_cost, speed, acc, p, r, f))
+        else:
+            print("Test: time: %.2fs, speed: %.2fst/s; acc: %.4f"%(test_cost, speed, acc))
         if ncrf.data.nbest >1 and not ncrf.data.sentence_classification:
             ncrf.data.write_nbest_decoded_results(decode_results, pred_scores, 'raw')
         else:

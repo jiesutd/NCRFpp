@@ -121,12 +121,13 @@ class WordRep(nn.Module):
         if self.low_level_transformer != None and self.low_level_transformer.lower() != "none":
             if self.training and self.low_level_transformer_finetune:
                 self.transformer.train()
-                transformer_output = self.transformer.extract_features(batch_word_text)
             else:
                 self.transformer.eval()
-                with torch.no_grad():
-                    transformer_output = self.transformer.extract_features(batch_word_text)
+            transformer_output, sequence_vector = self.transformer.extract_features(batch_word_text)
             word_list.append(transformer_output)
+        if len(word_list) == 0:
+            print("ERROR: if use_word_seq == True, at least one of transformer/char/word_emb should be used.")
+            exit(0)
         word_embs = torch.cat(word_list, 2)
         # if a == 0:
         #     print("inputs", word_inputs)

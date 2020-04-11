@@ -35,6 +35,7 @@ class NCRFTransformers(nn.Module):
             self.model_class, self.tokenizer_class, self.pretrained_weights = models_dict[model_name]
             self.tokenizer = self.tokenizer_class.from_pretrained(self.pretrained_weights)
             self.model = self.model_class.from_pretrained(self.pretrained_weights).to(self.device)
+        
             if fix_embeddings:
                 for name, param in self.model.named_parameters():                
                     if name.startswith('embeddings'):
@@ -81,9 +82,7 @@ class NCRFTransformers(nn.Module):
             subword_word_indicator = subword_word_indicator[word_perm_idx].to(self.device) ## subword-> word mapping
 
             ## extract BERTs features for batch token tensor input
-            
             last_hidden_states = self.model(batch_token_ids_padded_tensor)[0]  # Models outputs are now tuples
-
             ## recover the batch token to word level representation. Four ways of merging subwords to words, i.e. max-pooling, min-pooling, average-pooling, first-subword-selection. Currently only use non-batch method to recover. Current supports first-subword only
             token_dimension = last_hidden_states.shape[2]
             batch_word_mask_tensor_list = []
@@ -91,7 +90,12 @@ class NCRFTransformers(nn.Module):
                 one_sentence_vector = torch.index_select(last_hidden_states[idx], 0, subword_word_indicator[idx]).unsqueeze(0)
                 batch_word_mask_tensor_list.append(one_sentence_vector)
             batch_word_mask_tensor = torch.cat(batch_word_mask_tensor_list,0)
-            return batch_word_mask_tensor        
+
+            ## extract sequence representation, current only use the first token (i.e. [CLS]) as the sequence representation
+            sequence_tensor = last_hidden_states[:,0,:] 
+
+
+            return batch_word_mask_tensor, sequence_tensor       
 
 
 if __name__ == '__main__':
@@ -100,11 +104,11 @@ if __name__ == '__main__':
                         ["One", "way", "of", "measuring", "the", "complexity" ],
                         ["I", "encode", "money"]
                     ]
-    the_transformer = NCRFTransformers('openai-gpt','cuda', True)
+    the_transformer = NCRFTransformers('bert-base-cased','cuda', True)
     sentence = " ".join(input_test_list[0])
     ids = the_transformer.tokenizer.encode(sentence, add_special_tokens=True)
     print(ids)
     print(the_transformer.tokenizer.convert_ids_to_tokens(ids))
-    exit(0)
+   
     batch_features = the_transformer.extract_features(input_test_list)
     print(batch_features.shape)
