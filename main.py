@@ -225,7 +225,7 @@ def batchify_sequence_labeling_with_label(input_batch_list, gpu, if_train=True):
     feature_seq_tensors = []
     for idx in range(feature_num):
         feature_seq_tensors.append(torch.zeros((batch_size, max_seq_len),requires_grad =  if_train).long())
-    mask = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).byte()
+    mask = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).bool()
     for idx, (seq, label, seqlen) in enumerate(zip(words, labels, word_seq_lengths)):
         seqlen = seqlen.item()
         word_seq_tensor[idx, :seqlen] = torch.LongTensor(seq)
@@ -304,7 +304,7 @@ def batchify_sentence_classification_with_label(input_batch_list, gpu, if_train=
     feature_seq_tensors = []
     for idx in range(feature_num):
         feature_seq_tensors.append(torch.zeros((batch_size, max_seq_len),requires_grad =  if_train).long())
-    mask = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).byte()
+    mask = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).bool()
     label_seq_tensor = torch.LongTensor(labels)
     # exit(0)
     for idx, (seq,  seqlen) in enumerate(zip(words,  word_seq_lengths)):
