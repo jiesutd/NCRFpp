@@ -5,6 +5,8 @@
 # @Last Modified time: 2019-01-25 20:25:59
 from __future__ import print_function
 from __future__ import absolute_import
+import io
+import os
 import sys
 from .alphabet import Alphabet
 from .functions import *
@@ -212,15 +214,14 @@ class Data:
 
 
     def build_alphabet(self, input_file):
-        in_lines = open(input_file,'r').readlines()
+        in_lines = io.open(input_file, mode='r', encoding='utf-8').readlines()
         for line in in_lines:
+            line = line.strip()
             if len(line) > 2:
                 ## if sentence classification data format, splited by \t
                 if self.sentence_classification:
-                    pairs = line.strip().split(self.split_token)
+                    pairs = line.split(self.split_token)
                     sent = pairs[0]
-                    if sys.version_info[0] < 3:
-                        sent = sent.decode('utf-8')
                     words = sent.split()
                     for word in words:
                         if self.number_normalized:
@@ -237,10 +238,8 @@ class Data:
 
                 ## if sequence labeling data format i.e. CoNLL 2003
                 else:
-                    pairs = line.strip().split()
+                    pairs = line.split()
                     word = pairs[0]
-                    if sys.version_info[0] < 3:
-                        word = word.decode('utf-8')
                     if self.number_normalized:
                         word = normalize_word(word)
                     label = pairs[-1]
@@ -313,7 +312,7 @@ class Data:
         sent_num = len(predict_results)
         content_list = []
         if name == 'raw':
-           content_list = self.raw_texts
+            content_list = self.raw_texts
         elif name == 'test':
             content_list = self.test_texts
         elif name == 'dev':
@@ -344,6 +343,9 @@ class Data:
         self.__dict__.update(tmp_dict)
 
     def save(self,save_file):
+        save_dir = os.path.dirname(save_file)
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
         f = open(save_file, 'wb')
         pickle.dump(self.__dict__, f, 2)
         f.close()
@@ -353,7 +355,9 @@ class Data:
     def write_nbest_decoded_results(self, predict_results, pred_scores, name):
         ## predict_results : [whole_sent_num, nbest, each_sent_length]
         ## pred_scores: [whole_sent_num, nbest]
-        fout = open(self.decode_dir,'w')
+        if not os.path.exists(os.path.dirname(self.decode_dir)):
+            os.makedirs(os.path.dirname(self.decode_dir))
+        fout = open(self.decode_dir, 'w', encoding="utf-8")
         sent_num = len(predict_results)
         content_list = []
         if name == 'raw':

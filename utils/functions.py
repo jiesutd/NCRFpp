@@ -5,6 +5,7 @@
 # @Last Modified time: 2019-02-14 12:23:52
 from __future__ import print_function
 from __future__ import absolute_import
+import io
 import sys
 import numpy as np
 
@@ -20,7 +21,7 @@ def normalize_word(word):
 
 def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, label_alphabet, number_normalized, max_sent_length, sentence_classification=False, split_token='\t', char_padding_size=-1, char_padding_symbol = '</pad>'):
     feature_num = len(feature_alphabets)
-    in_lines = open(input_file,'r', encoding="utf8").readlines()
+    in_lines = io.open(input_file, 'r', encoding="utf8").readlines()
     instence_texts = []
     instence_Ids = []
     words = []
@@ -35,11 +36,10 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
     ## if sentence classification data format, splited by \t
     if sentence_classification:
         for line in in_lines:
+            line = line.strip()
             if len(line) > 2:
-                pairs = line.strip().split(split_token)
+                pairs = line.split(split_token)
                 sent = pairs[0]
-                if sys.version_info[0] < 3:
-                    sent = sent.decode('utf-8')
                 original_words = sent.split()
                 for word in original_words:
                     words.append(word)
@@ -95,11 +95,10 @@ def read_instance(input_file, word_alphabet, char_alphabet, feature_alphabets, l
     else:
     ### for sequence labeling data format i.e. CoNLL 2003
         for line in in_lines:
+            line = line.strip()
             if len(line) > 2:
-                pairs = line.strip().split()
+                pairs = line.split()
                 word = pairs[0]
-                if sys.version_info[0] < 3:
-                    word = word.decode('utf-8')
                 words.append(word)
                 if number_normalized:
                     word = normalize_word(word)
@@ -196,7 +195,7 @@ def norm2one(vec):
 def load_pretrain_emb(embedding_path):
     embedd_dim = -1
     embedd_dict = dict()
-    with open(embedding_path, 'r', encoding="utf8") as file:
+    with io.open(embedding_path, 'r', encoding="utf8") as file:
         for line in file:
             line = line.strip()
             if len(line) == 0:
@@ -210,10 +209,7 @@ def load_pretrain_emb(embedding_path):
                 # assert (embedd_dim + 1 == len(tokens))
             embedd = np.empty([1, embedd_dim])
             embedd[:] = tokens[1:]
-            if sys.version_info[0] < 3:
-                first_col = tokens[0].decode('utf-8')
-            else:
-                first_col = tokens[0]
+            first_col = tokens[0]
             embedd_dict[first_col] = embedd
     return embedd_dict, embedd_dim
 
